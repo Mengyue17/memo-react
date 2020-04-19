@@ -1,4 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    abs
+    abstract (1.0.0)
+    actionmailer (3.0.10)
+      actionpack (= 3.0.10)
+      mai
