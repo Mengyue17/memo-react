@@ -22,4 +22,7 @@ GEM
     activerecord (3.0.10)
       activemodel (= 3.0.10)
       activesupport (= 3.0.10)
-    
+      arel (~> 2.0.10)
+      tzinfo (~> 0.3.23)
+    activeresource (3.0.10)
+      activemodel (= 3.0
