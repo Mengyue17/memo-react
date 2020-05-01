@@ -49,4 +49,7 @@ GEM
       actionmailer (= 3.0.10)
       actionpack (= 3.0.10)
       activerecord (= 3.0.10)
-      activ
+      activeresource (= 3.0.10)
+      activesupport (= 3.0.10)
+      bundler (~> 1.0)
+      railties (= 3.0.1
