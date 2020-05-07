@@ -1,2 +1,6 @@
 StockApp-GT is a simple rails application to check stock information.
-It accepts a s
+It accepts a standard ticker symbol and outputs:
+
+1. Trade Date
+2. Last Trade Price
+3. Stock Symb
