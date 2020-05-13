@@ -11,4 +11,6 @@ It accepts a standard ticker symbol and outputs:
 8. Stock Exchange
 
 
-Stoc
+StockApp-GT also gathers finance new from Yahoo for the chosen stock ticker.
+
+Stock Details return
