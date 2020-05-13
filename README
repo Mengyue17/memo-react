@@ -13,4 +13,5 @@ It accepts a standard ticker symbol and outputs:
 
 StockApp-GT also gathers finance new from Yahoo for the chosen stock ticker.
 
-Stock Details return
+Stock Details returned are saved to a database so that history comparison of your
+selections over a time peri
