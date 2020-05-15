@@ -14,4 +14,8 @@ It accepts a standard ticker symbol and outputs:
 StockApp-GT also gathers finance new from Yahoo for the chosen stock ticker.
 
 Stock Details returned are saved to a database so that history comparison of your
-selections over a time peri
+selections over a time period can be made.
+
+StockApp-GT was created by Gerard Tamakloe
+
+
