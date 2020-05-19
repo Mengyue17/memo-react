@@ -9,4 +9,4 @@ validates_presence_of :symbol
 
 
   def Stock::getStock(ticker)
-	# Special Charac
+	# Special Characters:d1=date,t1=Last Trade Time, s=Symbol, n=Name, g=Day's Low, l1=Last Trade (Price Only),
