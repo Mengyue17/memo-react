@@ -15,4 +15,6 @@ validates_presence_of :symbol
 
   def self.search(search)
     if search
-      find(:all, :conditions =>['symbol LIKE ?', "%#{sear
+      find(:all, :conditions =>['symbol LIKE ?', "%#{search}%"], :limit => 5, :order => 'date DESC, time DESC')
+    else
+      find(:all, :order 
