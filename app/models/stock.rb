@@ -17,4 +17,9 @@ validates_presence_of :symbol
     if search
       find(:all, :conditions =>['symbol LIKE ?', "%#{search}%"], :limit => 5, :order => 'date DESC, time DESC')
     else
-      find(:all, :order 
+      find(:all, :order => 'date DESC, time DESC')
+    end
+  end
+
+
+end
