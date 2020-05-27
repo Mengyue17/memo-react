@@ -4,4 +4,6 @@
       <h2><%= pluralize(@stock.errors.count, "error") %> prohibited this stock from being saved:</h2>
 
       <ul>
-      <% @st
+      <% @stock.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% e
