@@ -17,4 +17,6 @@
 
 <% @stocks.each do |stock| %>
   <tr>
-    <td><%= stock.dat
+    <td><%= stock.date.strftime("%a %d %b %Y") %></td>
+    <td><%= stock.time.strftime("%H:%M") %></td>
+    <td><%= s
