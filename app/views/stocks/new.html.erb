@@ -1,0 +1,8 @@
+<h1>Request Stock Quote</h1>
+
+<%= form_for(@stock, :url => {:action => 'create'}) do |f| %>
+
+
+  <% if @stock.errors.any? %>
+    <div id="error_explanation">
+ 
