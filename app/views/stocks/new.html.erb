@@ -5,4 +5,7 @@
 
   <% if @stock.errors.any? %>
     <div id="error_explanation">
- 
+      <h2><%= "Please Try Again" %> </h2>
+
+      <ul>
+      <% @stock.errors.full_messages.each d
