@@ -8,4 +8,12 @@
       <h2><%= "Please Try Again" %> </h2>
 
       <ul>
-      <% @stock.errors.full_messages.each d
+      <% @stock.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+ 
