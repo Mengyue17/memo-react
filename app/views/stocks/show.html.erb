@@ -1,3 +1,8 @@
 <h1> <%= @stock.symbol %> Stock Details </h1>
 
-<p id="notice"><%= not
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Trade Date:</b>
+  <%= @stock.date.strftime("%a %d %b %Y") %>
+</p>
