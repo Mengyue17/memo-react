@@ -6,3 +6,11 @@
   <b>Trade Date:</b>
   <%= @stock.date.strftime("%a %d %b %Y") %>
 </p>
+
+<p>
+  <b>Last Trade Price:</b>
+  <%= @stock.time.strftime("%H:%M") %>
+</p>
+
+<p>
+  <b>
