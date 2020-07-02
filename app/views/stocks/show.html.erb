@@ -46,4 +46,5 @@
 <% form_tag stocks_path, :method =>"get" do %>
 
       <p>
-	Click on button for upto last 5 r
+	Click on button for upto last 5 requested quotes <br />
+       <%=  hidden_field_tag :search, params[:search], :id => '
