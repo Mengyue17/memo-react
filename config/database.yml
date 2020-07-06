@@ -2,4 +2,8 @@
 #   gem install sqlite3
 development:
   adapter: sqlite3
-  datab
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
+
+# Warning: The database de
