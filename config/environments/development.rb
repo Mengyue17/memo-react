@@ -1,2 +1,4 @@
 StockAppGT::Application.configure do
-  # Settings specified here wil
+  # Settings specified here will take precedence over those in config/application.rb
+
+  # In the development environment y
