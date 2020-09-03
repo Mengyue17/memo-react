@@ -22,4 +22,7 @@ StockAppGT::Application.configure do
   # config.log_level = :debug
 
   # Use a different logger for distributed setups
-  # config.logger = SyslogLogge
+  # config.logger = SyslogLogger.new
+
+  # Use a different cache store in production
+  # config.cache_store = :mem_
