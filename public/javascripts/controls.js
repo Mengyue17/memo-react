@@ -273,3 +273,95 @@ Autocompleter.Base = Class.create({
 
       if(this.update.firstChild && this.update.down().childNodes) {
         this.entryCount =
+          this.update.down().childNodes.length;
+        for (var i = 0; i < this.entryCount; i++) {
+          var entry = this.getEntry(i);
+          entry.autocompleteIndex = i;
+          this.addObservers(entry);
+        }
+      } else {
+        this.entryCount = 0;
+      }
+
+      this.stopIndicator();
+      this.index = 0;
+
+      if(this.entryCount==1 && this.options.autoSelect) {
+        this.selectEntry();
+        this.hide();
+      } else {
+        this.render();
+      }
+    }
+  },
+
+  addObservers: function(element) {
+    Event.observe(element, "mouseover", this.onHover.bindAsEventListener(this));
+    Event.observe(element, "click", this.onClick.bindAsEventListener(this));
+  },
+
+  onObserverEvent: function() {
+    this.changed = false;
+    this.tokenBounds = null;
+    if(this.getToken().length>=this.options.minChars) {
+      this.getUpdatedChoices();
+    } else {
+      this.active = false;
+      this.hide();
+    }
+    this.oldElementValue = this.element.value;
+  },
+
+  getToken: function() {
+    var bounds = this.getTokenBounds();
+    return this.element.value.substring(bounds[0], bounds[1]).strip();
+  },
+
+  getTokenBounds: function() {
+    if (null != this.tokenBounds) return this.tokenBounds;
+    var value = this.element.value;
+    if (value.strip().empty()) return [-1, 0];
+    var diff = arguments.callee.getFirstDifferencePos(value, this.oldElementValue);
+    var offset = (diff == this.oldElementValue.length ? 1 : 0);
+    var prevTokenPos = -1, nextTokenPos = value.length;
+    var tp;
+    for (var index = 0, l = this.options.tokens.length; index < l; ++index) {
+      tp = value.lastIndexOf(this.options.tokens[index], diff + offset - 1);
+      if (tp > prevTokenPos) prevTokenPos = tp;
+      tp = value.indexOf(this.options.tokens[index], diff + offset);
+      if (-1 != tp && tp < nextTokenPos) nextTokenPos = tp;
+    }
+    return (this.tokenBounds = [prevTokenPos + 1, nextTokenPos]);
+  }
+});
+
+Autocompleter.Base.prototype.getTokenBounds.getFirstDifferencePos = function(newS, oldS) {
+  var boundary = Math.min(newS.length, oldS.length);
+  for (var index = 0; index < boundary; ++index)
+    if (newS[index] != oldS[index])
+      return index;
+  return boundary;
+};
+
+Ajax.Autocompleter = Class.create(Autocompleter.Base, {
+  initialize: function(element, update, url, options) {
+    this.baseInitialize(element, update, options);
+    this.options.asynchronous  = true;
+    this.options.onComplete    = this.onComplete.bind(this);
+    this.options.defaultParams = this.options.parameters || null;
+    this.url                   = url;
+  },
+
+  getUpdatedChoices: function() {
+    this.startIndicator();
+
+    var entry = encodeURIComponent(this.options.paramName) + '=' +
+      encodeURIComponent(this.getToken());
+
+    this.options.parameters = this.options.callback ?
+      this.options.callback(this.element, entry) : entry;
+
+    if(this.options.defaultParams)
+      this.options.parameters += '&' + this.options.defaultParams;
+
+    new Ajax.Request(this.url, this.options);
