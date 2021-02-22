@@ -85,3 +85,104 @@ Autocompleter.Base = Class.create({
     this.observer = null;
 
     this.element.setAttribute('autocomplete','off');
+
+    Element.hide(this.update);
+
+    Event.observe(this.element, 'blur', this.onBlur.bindAsEventListener(this));
+    Event.observe(this.element, 'keydown', this.onKeyPress.bindAsEventListener(this));
+  },
+
+  show: function() {
+    if(Element.getStyle(this.update, 'display')=='none') this.options.onShow(this.element, this.update);
+    if(!this.iefix &&
+      (Prototype.Browser.IE) &&
+      (Element.getStyle(this.update, 'position')=='absolute')) {
+      new Insertion.After(this.update,
+       '<iframe id="' + this.update.id + '_iefix" '+
+       'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
+       'src="javascript:false;" frameborder="0" scrolling="no"></iframe>');
+      this.iefix = $(this.update.id+'_iefix');
+    }
+    if(this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
+  },
+
+  fixIEOverlapping: function() {
+    Position.clone(this.update, this.iefix, {setTop:(!this.update.style.height)});
+    this.iefix.style.zIndex = 1;
+    this.update.style.zIndex = 2;
+    Element.show(this.iefix);
+  },
+
+  hide: function() {
+    this.stopIndicator();
+    if(Element.getStyle(this.update, 'display')!='none') this.options.onHide(this.element, this.update);
+    if(this.iefix) Element.hide(this.iefix);
+  },
+
+  startIndicator: function() {
+    if(this.options.indicator) Element.show(this.options.indicator);
+  },
+
+  stopIndicator: function() {
+    if(this.options.indicator) Element.hide(this.options.indicator);
+  },
+
+  onKeyPress: function(event) {
+    if(this.active)
+      switch(event.keyCode) {
+       case Event.KEY_TAB:
+       case Event.KEY_RETURN:
+         this.selectEntry();
+         Event.stop(event);
+       case Event.KEY_ESC:
+         this.hide();
+         this.active = false;
+         Event.stop(event);
+         return;
+       case Event.KEY_LEFT:
+       case Event.KEY_RIGHT:
+         return;
+       case Event.KEY_UP:
+         this.markPrevious();
+         this.render();
+         Event.stop(event);
+         return;
+       case Event.KEY_DOWN:
+         this.markNext();
+         this.render();
+         Event.stop(event);
+         return;
+      }
+     else
+       if(event.keyCode==Event.KEY_TAB || event.keyCode==Event.KEY_RETURN ||
+         (Prototype.Browser.WebKit > 0 && event.keyCode == 0)) return;
+
+    this.changed = true;
+    this.hasFocus = true;
+
+    if(this.observer) clearTimeout(this.observer);
+      this.observer =
+        setTimeout(this.onObserverEvent.bind(this), this.options.frequency*1000);
+  },
+
+  activate: function() {
+    this.changed = false;
+    this.hasFocus = true;
+    this.getUpdatedChoices();
+  },
+
+  onHover: function(event) {
+    var element = Event.findElement(event, 'LI');
+    if(this.index != element.autocompleteIndex)
+    {
+        this.index = element.autocompleteIndex;
+        this.render();
+    }
+    Event.stop(event);
+  },
+
+  onClick: function(event) {
+    var element = Event.findElement(event, 'LI');
+    this.index = element.autocompleteIndex;
+    this.selectEntry();
+    this.hide();
