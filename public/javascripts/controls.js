@@ -561,3 +561,86 @@ Ajax.InPlaceEditor = Class.create({
   },
   createForm: function() {
     var ipe = this;
+    function addText(mode, condition) {
+      var text = ipe.options['text' + mode + 'Controls'];
+      if (!text || condition === false) return;
+      ipe._form.appendChild(document.createTextNode(text));
+    };
+    this._form = $(document.createElement('form'));
+    this._form.id = this.options.formId;
+    this._form.addClassName(this.options.formClassName);
+    this._form.onsubmit = this._boundSubmitHandler;
+    this.createEditField();
+    if ('textarea' == this._controls.editor.tagName.toLowerCase())
+      this._form.appendChild(document.createElement('br'));
+    if (this.options.onFormCustomization)
+      this.options.onFormCustomization(this, this._form);
+    addText('Before', this.options.okControl || this.options.cancelControl);
+    this.createControl('ok', this._boundSubmitHandler);
+    addText('Between', this.options.okControl && this.options.cancelControl);
+    this.createControl('cancel', this._boundCancelHandler, 'editor_cancel');
+    addText('After', this.options.okControl || this.options.cancelControl);
+  },
+  destroy: function() {
+    if (this._oldInnerHTML)
+      this.element.innerHTML = this._oldInnerHTML;
+    this.leaveEditMode();
+    this.unregisterListeners();
+  },
+  enterEditMode: function(e) {
+    if (this._saving || this._editing) return;
+    this._editing = true;
+    this.triggerCallback('onEnterEditMode');
+    if (this.options.externalControl)
+      this.options.externalControl.hide();
+    this.element.hide();
+    this.createForm();
+    this.element.parentNode.insertBefore(this._form, this.element);
+    if (!this.options.loadTextURL)
+      this.postProcessEditField();
+    if (e) Event.stop(e);
+  },
+  enterHover: function(e) {
+    if (this.options.hoverClassName)
+      this.element.addClassName(this.options.hoverClassName);
+    if (this._saving) return;
+    this.triggerCallback('onEnterHover');
+  },
+  getText: function() {
+    return this.element.innerHTML.unescapeHTML();
+  },
+  handleAJAXFailure: function(transport) {
+    this.triggerCallback('onFailure', transport);
+    if (this._oldInnerHTML) {
+      this.element.innerHTML = this._oldInnerHTML;
+      this._oldInnerHTML = null;
+    }
+  },
+  handleFormCancellation: function(e) {
+    this.wrapUp();
+    if (e) Event.stop(e);
+  },
+  handleFormSubmission: function(e) {
+    var form = this._form;
+    var value = $F(this._controls.editor);
+    this.prepareSubmission();
+    var params = this.options.callback(form, value) || '';
+    if (Object.isString(params))
+      params = params.toQueryParams();
+    params.editorId = this.element.id;
+    if (this.options.htmlResponse) {
+      var options = Object.extend({ evalScripts: true }, this.options.ajaxOptions);
+      Object.extend(options, {
+        parameters: params,
+        onComplete: this._boundWrapperHandler,
+        onFailure: this._boundFailureHandler
+      });
+      new Ajax.Updater({ success: this.element }, this.url, options);
+    } else {
+      var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+      Object.extend(options, {
+        parameters: params,
+        onComplete: this._boundWrapperHandler,
+        onFailure: this._boundFailureHandler
+      });
+      new Ajax.Request(this.url, options);
