@@ -472,3 +472,92 @@ Autocompleter.Local = Class.create(Autocompleter.Base, {
 
 // Use this if you notice weird scrolling problems on some browsers,
 // the DOM might be a bit confused when this gets called so do this
+// waits 1 ms (with setTimeout) until it does the activation
+Field.scrollFreeActivate = function(field) {
+  setTimeout(function() {
+    Field.activate(field);
+  }, 1);
+};
+
+Ajax.InPlaceEditor = Class.create({
+  initialize: function(element, url, options) {
+    this.url = url;
+    this.element = element = $(element);
+    this.prepareOptions();
+    this._controls = { };
+    arguments.callee.dealWithDeprecatedOptions(options); // DEPRECATION LAYER!!!
+    Object.extend(this.options, options || { });
+    if (!this.options.formId && this.element.id) {
+      this.options.formId = this.element.id + '-inplaceeditor';
+      if ($(this.options.formId))
+        this.options.formId = '';
+    }
+    if (this.options.externalControl)
+      this.options.externalControl = $(this.options.externalControl);
+    if (!this.options.externalControl)
+      this.options.externalControlOnly = false;
+    this._originalBackground = this.element.getStyle('background-color') || 'transparent';
+    this.element.title = this.options.clickToEditText;
+    this._boundCancelHandler = this.handleFormCancellation.bind(this);
+    this._boundComplete = (this.options.onComplete || Prototype.emptyFunction).bind(this);
+    this._boundFailureHandler = this.handleAJAXFailure.bind(this);
+    this._boundSubmitHandler = this.handleFormSubmission.bind(this);
+    this._boundWrapperHandler = this.wrapUp.bind(this);
+    this.registerListeners();
+  },
+  checkForEscapeOrReturn: function(e) {
+    if (!this._editing || e.ctrlKey || e.altKey || e.shiftKey) return;
+    if (Event.KEY_ESC == e.keyCode)
+      this.handleFormCancellation(e);
+    else if (Event.KEY_RETURN == e.keyCode)
+      this.handleFormSubmission(e);
+  },
+  createControl: function(mode, handler, extraClasses) {
+    var control = this.options[mode + 'Control'];
+    var text = this.options[mode + 'Text'];
+    if ('button' == control) {
+      var btn = document.createElement('input');
+      btn.type = 'submit';
+      btn.value = text;
+      btn.className = 'editor_' + mode + '_button';
+      if ('cancel' == mode)
+        btn.onclick = this._boundCancelHandler;
+      this._form.appendChild(btn);
+      this._controls[mode] = btn;
+    } else if ('link' == control) {
+      var link = document.createElement('a');
+      link.href = '#';
+      link.appendChild(document.createTextNode(text));
+      link.onclick = 'cancel' == mode ? this._boundCancelHandler : this._boundSubmitHandler;
+      link.className = 'editor_' + mode + '_link';
+      if (extraClasses)
+        link.className += ' ' + extraClasses;
+      this._form.appendChild(link);
+      this._controls[mode] = link;
+    }
+  },
+  createEditField: function() {
+    var text = (this.options.loadTextURL ? this.options.loadingText : this.getText());
+    var fld;
+    if (1 >= this.options.rows && !/\r|\n/.test(this.getText())) {
+      fld = document.createElement('input');
+      fld.type = 'text';
+      var size = this.options.size || this.options.cols || 0;
+      if (0 < size) fld.size = size;
+    } else {
+      fld = document.createElement('textarea');
+      fld.rows = (1 >= this.options.rows ? this.options.autoRows : this.options.rows);
+      fld.cols = this.options.cols || 40;
+    }
+    fld.name = this.options.paramName;
+    fld.value = text; // No HTML breaks conversion anymore
+    fld.className = 'editor_field';
+    if (this.options.submitOnBlur)
+      fld.onblur = this._boundSubmitHandler;
+    this._controls.editor = fld;
+    if (this.options.loadTextURL)
+      this.loadExternalText();
+    this._form.appendChild(this._controls.editor);
+  },
+  createForm: function() {
+    var ipe = this;
