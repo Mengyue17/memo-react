@@ -644,3 +644,108 @@ Ajax.InPlaceEditor = Class.create({
         onFailure: this._boundFailureHandler
       });
       new Ajax.Request(this.url, options);
+    }
+    if (e) Event.stop(e);
+  },
+  leaveEditMode: function() {
+    this.element.removeClassName(this.options.savingClassName);
+    this.removeForm();
+    this.leaveHover();
+    this.element.style.backgroundColor = this._originalBackground;
+    this.element.show();
+    if (this.options.externalControl)
+      this.options.externalControl.show();
+    this._saving = false;
+    this._editing = false;
+    this._oldInnerHTML = null;
+    this.triggerCallback('onLeaveEditMode');
+  },
+  leaveHover: function(e) {
+    if (this.options.hoverClassName)
+      this.element.removeClassName(this.options.hoverClassName);
+    if (this._saving) return;
+    this.triggerCallback('onLeaveHover');
+  },
+  loadExternalText: function() {
+    this._form.addClassName(this.options.loadingClassName);
+    this._controls.editor.disabled = true;
+    var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+    Object.extend(options, {
+      parameters: 'editorId=' + encodeURIComponent(this.element.id),
+      onComplete: Prototype.emptyFunction,
+      onSuccess: function(transport) {
+        this._form.removeClassName(this.options.loadingClassName);
+        var text = transport.responseText;
+        if (this.options.stripLoadedTextTags)
+          text = text.stripTags();
+        this._controls.editor.value = text;
+        this._controls.editor.disabled = false;
+        this.postProcessEditField();
+      }.bind(this),
+      onFailure: this._boundFailureHandler
+    });
+    new Ajax.Request(this.options.loadTextURL, options);
+  },
+  postProcessEditField: function() {
+    var fpc = this.options.fieldPostCreation;
+    if (fpc)
+      $(this._controls.editor)['focus' == fpc ? 'focus' : 'activate']();
+  },
+  prepareOptions: function() {
+    this.options = Object.clone(Ajax.InPlaceEditor.DefaultOptions);
+    Object.extend(this.options, Ajax.InPlaceEditor.DefaultCallbacks);
+    [this._extraDefaultOptions].flatten().compact().each(function(defs) {
+      Object.extend(this.options, defs);
+    }.bind(this));
+  },
+  prepareSubmission: function() {
+    this._saving = true;
+    this.removeForm();
+    this.leaveHover();
+    this.showSaving();
+  },
+  registerListeners: function() {
+    this._listeners = { };
+    var listener;
+    $H(Ajax.InPlaceEditor.Listeners).each(function(pair) {
+      listener = this[pair.value].bind(this);
+      this._listeners[pair.key] = listener;
+      if (!this.options.externalControlOnly)
+        this.element.observe(pair.key, listener);
+      if (this.options.externalControl)
+        this.options.externalControl.observe(pair.key, listener);
+    }.bind(this));
+  },
+  removeForm: function() {
+    if (!this._form) return;
+    this._form.remove();
+    this._form = null;
+    this._controls = { };
+  },
+  showSaving: function() {
+    this._oldInnerHTML = this.element.innerHTML;
+    this.element.innerHTML = this.options.savingText;
+    this.element.addClassName(this.options.savingClassName);
+    this.element.style.backgroundColor = this._originalBackground;
+    this.element.show();
+  },
+  triggerCallback: function(cbName, arg) {
+    if ('function' == typeof this.options[cbName]) {
+      this.options[cbName](this, arg);
+    }
+  },
+  unregisterListeners: function() {
+    $H(this._listeners).each(function(pair) {
+      if (!this.options.externalControlOnly)
+        this.element.stopObserving(pair.key, pair.value);
+      if (this.options.externalControl)
+        this.options.externalControl.stopObserving(pair.key, pair.value);
+    }.bind(this));
+  },
+  wrapUp: function(transport) {
+    this.leaveEditMode();
+    // Can't use triggerCallback due to backward compatibility: requires
+    // binding + direct element
+    this._boundComplete(transport, this.element);
+  }
+});
