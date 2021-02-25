@@ -749,3 +749,65 @@ Ajax.InPlaceEditor = Class.create({
     this._boundComplete(transport, this.element);
   }
 });
+
+Object.extend(Ajax.InPlaceEditor.prototype, {
+  dispose: Ajax.InPlaceEditor.prototype.destroy
+});
+
+Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
+  initialize: function($super, element, url, options) {
+    this._extraDefaultOptions = Ajax.InPlaceCollectionEditor.DefaultOptions;
+    $super(element, url, options);
+  },
+
+  createEditField: function() {
+    var list = document.createElement('select');
+    list.name = this.options.paramName;
+    list.size = 1;
+    this._controls.editor = list;
+    this._collection = this.options.collection || [];
+    if (this.options.loadCollectionURL)
+      this.loadCollection();
+    else
+      this.checkForExternalText();
+    this._form.appendChild(this._controls.editor);
+  },
+
+  loadCollection: function() {
+    this._form.addClassName(this.options.loadingClassName);
+    this.showLoadingText(this.options.loadingCollectionText);
+    var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+    Object.extend(options, {
+      parameters: 'editorId=' + encodeURIComponent(this.element.id),
+      onComplete: Prototype.emptyFunction,
+      onSuccess: function(transport) {
+        var js = transport.responseText.strip();
+        if (!/^\[.*\]$/.test(js)) // TODO: improve sanity check
+          throw('Server returned an invalid collection representation.');
+        this._collection = eval(js);
+        this.checkForExternalText();
+      }.bind(this),
+      onFailure: this.onFailure
+    });
+    new Ajax.Request(this.options.loadCollectionURL, options);
+  },
+
+  showLoadingText: function(text) {
+    this._controls.editor.disabled = true;
+    var tempOption = this._controls.editor.firstChild;
+    if (!tempOption) {
+      tempOption = document.createElement('option');
+      tempOption.value = '';
+      this._controls.editor.appendChild(tempOption);
+      tempOption.selected = true;
+    }
+    tempOption.update((text || '').stripScripts().stripTags());
+  },
+
+  checkForExternalText: function() {
+    this._text = this.getText();
+    if (this.options.loadTextURL)
+      this.loadExternalText();
+    else
+      this.buildOptionList();
+  },
