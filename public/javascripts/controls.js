@@ -811,3 +811,88 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
     else
       this.buildOptionList();
   },
+
+  loadExternalText: function() {
+    this.showLoadingText(this.options.loadingText);
+    var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+    Object.extend(options, {
+      parameters: 'editorId=' + encodeURIComponent(this.element.id),
+      onComplete: Prototype.emptyFunction,
+      onSuccess: function(transport) {
+        this._text = transport.responseText.strip();
+        this.buildOptionList();
+      }.bind(this),
+      onFailure: this.onFailure
+    });
+    new Ajax.Request(this.options.loadTextURL, options);
+  },
+
+  buildOptionList: function() {
+    this._form.removeClassName(this.options.loadingClassName);
+    this._collection = this._collection.map(function(entry) {
+      return 2 === entry.length ? entry : [entry, entry].flatten();
+    });
+    var marker = ('value' in this.options) ? this.options.value : this._text;
+    var textFound = this._collection.any(function(entry) {
+      return entry[0] == marker;
+    }.bind(this));
+    this._controls.editor.update('');
+    var option;
+    this._collection.each(function(entry, index) {
+      option = document.createElement('option');
+      option.value = entry[0];
+      option.selected = textFound ? entry[0] == marker : 0 == index;
+      option.appendChild(document.createTextNode(entry[1]));
+      this._controls.editor.appendChild(option);
+    }.bind(this));
+    this._controls.editor.disabled = false;
+    Field.scrollFreeActivate(this._controls.editor);
+  }
+});
+
+//**** DEPRECATION LAYER FOR InPlace[Collection]Editor! ****
+//**** This only  exists for a while,  in order to  let ****
+//**** users adapt to  the new API.  Read up on the new ****
+//**** API and convert your code to it ASAP!            ****
+
+Ajax.InPlaceEditor.prototype.initialize.dealWithDeprecatedOptions = function(options) {
+  if (!options) return;
+  function fallback(name, expr) {
+    if (name in options || expr === undefined) return;
+    options[name] = expr;
+  };
+  fallback('cancelControl', (options.cancelLink ? 'link' : (options.cancelButton ? 'button' :
+    options.cancelLink == options.cancelButton == false ? false : undefined)));
+  fallback('okControl', (options.okLink ? 'link' : (options.okButton ? 'button' :
+    options.okLink == options.okButton == false ? false : undefined)));
+  fallback('highlightColor', options.highlightcolor);
+  fallback('highlightEndColor', options.highlightendcolor);
+};
+
+Object.extend(Ajax.InPlaceEditor, {
+  DefaultOptions: {
+    ajaxOptions: { },
+    autoRows: 3,                                // Use when multi-line w/ rows == 1
+    cancelControl: 'link',                      // 'link'|'button'|false
+    cancelText: 'cancel',
+    clickToEditText: 'Click to edit',
+    externalControl: null,                      // id|elt
+    externalControlOnly: false,
+    fieldPostCreation: 'activate',              // 'activate'|'focus'|false
+    formClassName: 'inplaceeditor-form',
+    formId: null,                               // id|elt
+    highlightColor: '#ffff99',
+    highlightEndColor: '#ffffff',
+    hoverClassName: '',
+    htmlResponse: true,
+    loadingClassName: 'inplaceeditor-loading',
+    loadingText: 'Loading...',
+    okControl: 'button',                        // 'link'|'button'|false
+    okText: 'ok',
+    paramName: 'value',
+    rows: 1,                                    // If 1 and multi-line, uses autoRows
+    savingClassName: 'inplaceeditor-saving',
+    savingText: 'Saving...',
+    size: 0,
+    stripLoadedTextTags: false,
+    submitOnBlur: false,
