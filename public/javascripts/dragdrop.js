@@ -359,3 +359,88 @@ var Draggable = Class.create({
     if(!this.dragging) this.startDrag(event);
 
     if(!this.options.quiet){
+      Position.prepare();
+      Droppables.show(pointer, this.element);
+    }
+
+    Draggables.notify('onDrag', this, event);
+
+    this.draw(pointer);
+    if(this.options.change) this.options.change(this);
+
+    if(this.options.scroll) {
+      this.stopScrolling();
+
+      var p;
+      if (this.options.scroll == window) {
+        with(this._getWindowScroll(this.options.scroll)) { p = [ left, top, left+width, top+height ]; }
+      } else {
+        p = Position.page(this.options.scroll);
+        p[0] += this.options.scroll.scrollLeft + Position.deltaX;
+        p[1] += this.options.scroll.scrollTop + Position.deltaY;
+        p.push(p[0]+this.options.scroll.offsetWidth);
+        p.push(p[1]+this.options.scroll.offsetHeight);
+      }
+      var speed = [0,0];
+      if(pointer[0] < (p[0]+this.options.scrollSensitivity)) speed[0] = pointer[0]-(p[0]+this.options.scrollSensitivity);
+      if(pointer[1] < (p[1]+this.options.scrollSensitivity)) speed[1] = pointer[1]-(p[1]+this.options.scrollSensitivity);
+      if(pointer[0] > (p[2]-this.options.scrollSensitivity)) speed[0] = pointer[0]-(p[2]-this.options.scrollSensitivity);
+      if(pointer[1] > (p[3]-this.options.scrollSensitivity)) speed[1] = pointer[1]-(p[3]-this.options.scrollSensitivity);
+      this.startScrolling(speed);
+    }
+
+    // fix AppleWebKit rendering
+    if(Prototype.Browser.WebKit) window.scrollBy(0,0);
+
+    Event.stop(event);
+  },
+
+  finishDrag: function(event, success) {
+    this.dragging = false;
+
+    if(this.options.quiet){
+      Position.prepare();
+      var pointer = [Event.pointerX(event), Event.pointerY(event)];
+      Droppables.show(pointer, this.element);
+    }
+
+    if(this.options.ghosting) {
+      if (!this._originallyAbsolute)
+        Position.relativize(this.element);
+      delete this._originallyAbsolute;
+      Element.remove(this._clone);
+      this._clone = null;
+    }
+
+    var dropped = false;
+    if(success) {
+      dropped = Droppables.fire(event, this.element);
+      if (!dropped) dropped = false;
+    }
+    if(dropped && this.options.onDropped) this.options.onDropped(this.element);
+    Draggables.notify('onEnd', this, event);
+
+    var revert = this.options.revert;
+    if(revert && Object.isFunction(revert)) revert = revert(this.element);
+
+    var d = this.currentDelta();
+    if(revert && this.options.reverteffect) {
+      if (dropped == 0 || revert != 'failure')
+        this.options.reverteffect(this.element,
+          d[1]-this.delta[1], d[0]-this.delta[0]);
+    } else {
+      this.delta = d;
+    }
+
+    if(this.options.zindex)
+      this.element.style.zIndex = this.originalZ;
+
+    if(this.options.endeffect)
+      this.options.endeffect(this.element);
+
+    Draggables.deactivate(this);
+    Droppables.reset();
+  },
+
+  keyPress: function(event) {
+    if(event.keyCode!=Event.KEY_ESC) return;
