@@ -444,3 +444,88 @@ var Draggable = Class.create({
 
   keyPress: function(event) {
     if(event.keyCode!=Event.KEY_ESC) return;
+    this.finishDrag(event, false);
+    Event.stop(event);
+  },
+
+  endDrag: function(event) {
+    if(!this.dragging) return;
+    this.stopScrolling();
+    this.finishDrag(event, true);
+    Event.stop(event);
+  },
+
+  draw: function(point) {
+    var pos = this.element.cumulativeOffset();
+    if(this.options.ghosting) {
+      var r   = Position.realOffset(this.element);
+      pos[0] += r[0] - Position.deltaX; pos[1] += r[1] - Position.deltaY;
+    }
+
+    var d = this.currentDelta();
+    pos[0] -= d[0]; pos[1] -= d[1];
+
+    if(this.options.scroll && (this.options.scroll != window && this._isScrollChild)) {
+      pos[0] -= this.options.scroll.scrollLeft-this.originalScrollLeft;
+      pos[1] -= this.options.scroll.scrollTop-this.originalScrollTop;
+    }
+
+    var p = [0,1].map(function(i){
+      return (point[i]-pos[i]-this.offset[i])
+    }.bind(this));
+
+    if(this.options.snap) {
+      if(Object.isFunction(this.options.snap)) {
+        p = this.options.snap(p[0],p[1],this);
+      } else {
+      if(Object.isArray(this.options.snap)) {
+        p = p.map( function(v, i) {
+          return (v/this.options.snap[i]).round()*this.options.snap[i] }.bind(this));
+      } else {
+        p = p.map( function(v) {
+          return (v/this.options.snap).round()*this.options.snap }.bind(this));
+      }
+    }}
+
+    var style = this.element.style;
+    if((!this.options.constraint) || (this.options.constraint=='horizontal'))
+      style.left = p[0] + "px";
+    if((!this.options.constraint) || (this.options.constraint=='vertical'))
+      style.top  = p[1] + "px";
+
+    if(style.visibility=="hidden") style.visibility = ""; // fix gecko rendering
+  },
+
+  stopScrolling: function() {
+    if(this.scrollInterval) {
+      clearInterval(this.scrollInterval);
+      this.scrollInterval = null;
+      Draggables._lastScrollPointer = null;
+    }
+  },
+
+  startScrolling: function(speed) {
+    if(!(speed[0] || speed[1])) return;
+    this.scrollSpeed = [speed[0]*this.options.scrollSpeed,speed[1]*this.options.scrollSpeed];
+    this.lastScrolled = new Date();
+    this.scrollInterval = setInterval(this.scroll.bind(this), 10);
+  },
+
+  scroll: function() {
+    var current = new Date();
+    var delta = current - this.lastScrolled;
+    this.lastScrolled = current;
+    if(this.options.scroll == window) {
+      with (this._getWindowScroll(this.options.scroll)) {
+        if (this.scrollSpeed[0] || this.scrollSpeed[1]) {
+          var d = delta / 1000;
+          this.options.scroll.scrollTo( left + d*this.scrollSpeed[0], top + d*this.scrollSpeed[1] );
+        }
+      }
+    } else {
+      this.options.scroll.scrollLeft += this.scrollSpeed[0] * delta / 1000;
+      this.options.scroll.scrollTop  += this.scrollSpeed[1] * delta / 1000;
+    }
+
+    Position.prepare();
+    Droppables.show(Draggables._lastPointer, this.element);
