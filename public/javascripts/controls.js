@@ -896,3 +896,71 @@ Object.extend(Ajax.InPlaceEditor, {
     size: 0,
     stripLoadedTextTags: false,
     submitOnBlur: false,
+    textAfterControls: '',
+    textBeforeControls: '',
+    textBetweenControls: ''
+  },
+  DefaultCallbacks: {
+    callback: function(form) {
+      return Form.serialize(form);
+    },
+    onComplete: function(transport, element) {
+      // For backward compatibility, this one is bound to the IPE, and passes
+      // the element directly.  It was too often customized, so we don't break it.
+      new Effect.Highlight(element, {
+        startcolor: this.options.highlightColor, keepBackgroundImage: true });
+    },
+    onEnterEditMode: null,
+    onEnterHover: function(ipe) {
+      ipe.element.style.backgroundColor = ipe.options.highlightColor;
+      if (ipe._effect)
+        ipe._effect.cancel();
+    },
+    onFailure: function(transport, ipe) {
+      alert('Error communication with the server: ' + transport.responseText.stripTags());
+    },
+    onFormCustomization: null, // Takes the IPE and its generated form, after editor, before controls.
+    onLeaveEditMode: null,
+    onLeaveHover: function(ipe) {
+      ipe._effect = new Effect.Highlight(ipe.element, {
+        startcolor: ipe.options.highlightColor, endcolor: ipe.options.highlightEndColor,
+        restorecolor: ipe._originalBackground, keepBackgroundImage: true
+      });
+    }
+  },
+  Listeners: {
+    click: 'enterEditMode',
+    keydown: 'checkForEscapeOrReturn',
+    mouseover: 'enterHover',
+    mouseout: 'leaveHover'
+  }
+});
+
+Ajax.InPlaceCollectionEditor.DefaultOptions = {
+  loadingCollectionText: 'Loading options...'
+};
+
+// Delayed observer, like Form.Element.Observer,
+// but waits for delay after last key input
+// Ideal for live-search fields
+
+Form.Element.DelayedObserver = Class.create({
+  initialize: function(element, delay, callback) {
+    this.delay     = delay || 0.5;
+    this.element   = $(element);
+    this.callback  = callback;
+    this.timer     = null;
+    this.lastValue = $F(this.element);
+    Event.observe(this.element,'keyup',this.delayedListener.bindAsEventListener(this));
+  },
+  delayedListener: function(event) {
+    if(this.lastValue == $F(this.element)) return;
+    if(this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(this.onTimerEvent.bind(this), this.delay * 1000);
+    this.lastValue = $F(this.element);
+  },
+  onTimerEvent: function() {
+    this.timer = null;
+    this.callback(this.element, $F(this.element));
+  }
+});
