@@ -103,3 +103,67 @@ var Droppables = {
       Position.within(drop.element, point[0], point[1]);
       if(drop.onHover)
         drop.onHover(element, drop.element, Position.overlap(drop.overlap, drop.element));
+
+      if (drop != this.last_active) Droppables.activate(drop);
+    }
+  },
+
+  fire: function(event, element) {
+    if(!this.last_active) return;
+    Position.prepare();
+
+    if (this.isAffected([Event.pointerX(event), Event.pointerY(event)], element, this.last_active))
+      if (this.last_active.onDrop) {
+        this.last_active.onDrop(element, this.last_active.element, event);
+        return true;
+      }
+  },
+
+  reset: function() {
+    if(this.last_active)
+      this.deactivate(this.last_active);
+  }
+};
+
+var Draggables = {
+  drags: [],
+  observers: [],
+
+  register: function(draggable) {
+    if(this.drags.length == 0) {
+      this.eventMouseUp   = this.endDrag.bindAsEventListener(this);
+      this.eventMouseMove = this.updateDrag.bindAsEventListener(this);
+      this.eventKeypress  = this.keyPress.bindAsEventListener(this);
+
+      Event.observe(document, "mouseup", this.eventMouseUp);
+      Event.observe(document, "mousemove", this.eventMouseMove);
+      Event.observe(document, "keypress", this.eventKeypress);
+    }
+    this.drags.push(draggable);
+  },
+
+  unregister: function(draggable) {
+    this.drags = this.drags.reject(function(d) { return d==draggable });
+    if(this.drags.length == 0) {
+      Event.stopObserving(document, "mouseup", this.eventMouseUp);
+      Event.stopObserving(document, "mousemove", this.eventMouseMove);
+      Event.stopObserving(document, "keypress", this.eventKeypress);
+    }
+  },
+
+  activate: function(draggable) {
+    if(draggable.options.delay) {
+      this._timeout = setTimeout(function() {
+        Draggables._timeout = null;
+        window.focus();
+        Draggables.activeDraggable = draggable;
+      }.bind(this), draggable.options.delay);
+    } else {
+      window.focus(); // allows keypress events if window isn't currently focused, fails for Safari
+      this.activeDraggable = draggable;
+    }
+  },
+
+  deactivate: function() {
+    this.activeDraggable = null;
+  },
