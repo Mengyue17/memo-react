@@ -265,3 +265,97 @@ var Draggable = Class.create({
     var options = Object.extend(defaults, arguments[1] || { });
 
     this.element = $(element);
+
+    if(options.handle && Object.isString(options.handle))
+      this.handle = this.element.down('.'+options.handle, 0);
+
+    if(!this.handle) this.handle = $(options.handle);
+    if(!this.handle) this.handle = this.element;
+
+    if(options.scroll && !options.scroll.scrollTo && !options.scroll.outerHTML) {
+      options.scroll = $(options.scroll);
+      this._isScrollChild = Element.childOf(this.element, options.scroll);
+    }
+
+    Element.makePositioned(this.element); // fix IE
+
+    this.options  = options;
+    this.dragging = false;
+
+    this.eventMouseDown = this.initDrag.bindAsEventListener(this);
+    Event.observe(this.handle, "mousedown", this.eventMouseDown);
+
+    Draggables.register(this);
+  },
+
+  destroy: function() {
+    Event.stopObserving(this.handle, "mousedown", this.eventMouseDown);
+    Draggables.unregister(this);
+  },
+
+  currentDelta: function() {
+    return([
+      parseInt(Element.getStyle(this.element,'left') || '0'),
+      parseInt(Element.getStyle(this.element,'top') || '0')]);
+  },
+
+  initDrag: function(event) {
+    if(!Object.isUndefined(Draggable._dragging[this.element]) &&
+      Draggable._dragging[this.element]) return;
+    if(Event.isLeftClick(event)) {
+      // abort on form elements, fixes a Firefox issue
+      var src = Event.element(event);
+      if((tag_name = src.tagName.toUpperCase()) && (
+        tag_name=='INPUT' ||
+        tag_name=='SELECT' ||
+        tag_name=='OPTION' ||
+        tag_name=='BUTTON' ||
+        tag_name=='TEXTAREA')) return;
+
+      var pointer = [Event.pointerX(event), Event.pointerY(event)];
+      var pos     = this.element.cumulativeOffset();
+      this.offset = [0,1].map( function(i) { return (pointer[i] - pos[i]) });
+
+      Draggables.activate(this);
+      Event.stop(event);
+    }
+  },
+
+  startDrag: function(event) {
+    this.dragging = true;
+    if(!this.delta)
+      this.delta = this.currentDelta();
+
+    if(this.options.zindex) {
+      this.originalZ = parseInt(Element.getStyle(this.element,'z-index') || 0);
+      this.element.style.zIndex = this.options.zindex;
+    }
+
+    if(this.options.ghosting) {
+      this._clone = this.element.cloneNode(true);
+      this._originallyAbsolute = (this.element.getStyle('position') == 'absolute');
+      if (!this._originallyAbsolute)
+        Position.absolutize(this.element);
+      this.element.parentNode.insertBefore(this._clone, this.element);
+    }
+
+    if(this.options.scroll) {
+      if (this.options.scroll == window) {
+        var where = this._getWindowScroll(this.options.scroll);
+        this.originalScrollLeft = where.left;
+        this.originalScrollTop = where.top;
+      } else {
+        this.originalScrollLeft = this.options.scroll.scrollLeft;
+        this.originalScrollTop = this.options.scroll.scrollTop;
+      }
+    }
+
+    Draggables.notify('onStart', this, event);
+
+    if(this.options.starteffect) this.options.starteffect(this.element);
+  },
+
+  updateDrag: function(event, pointer) {
+    if(!this.dragging) this.startDrag(event);
+
+    if(!this.options.quiet){
