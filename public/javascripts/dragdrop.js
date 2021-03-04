@@ -167,3 +167,101 @@ var Draggables = {
   deactivate: function() {
     this.activeDraggable = null;
   },
+
+  updateDrag: function(event) {
+    if(!this.activeDraggable) return;
+    var pointer = [Event.pointerX(event), Event.pointerY(event)];
+    // Mozilla-based browsers fire successive mousemove events with
+    // the same coordinates, prevent needless redrawing (moz bug?)
+    if(this._lastPointer && (this._lastPointer.inspect() == pointer.inspect())) return;
+    this._lastPointer = pointer;
+
+    this.activeDraggable.updateDrag(event, pointer);
+  },
+
+  endDrag: function(event) {
+    if(this._timeout) {
+      clearTimeout(this._timeout);
+      this._timeout = null;
+    }
+    if(!this.activeDraggable) return;
+    this._lastPointer = null;
+    this.activeDraggable.endDrag(event);
+    this.activeDraggable = null;
+  },
+
+  keyPress: function(event) {
+    if(this.activeDraggable)
+      this.activeDraggable.keyPress(event);
+  },
+
+  addObserver: function(observer) {
+    this.observers.push(observer);
+    this._cacheObserverCallbacks();
+  },
+
+  removeObserver: function(element) {  // element instead of observer fixes mem leaks
+    this.observers = this.observers.reject( function(o) { return o.element==element });
+    this._cacheObserverCallbacks();
+  },
+
+  notify: function(eventName, draggable, event) {  // 'onStart', 'onEnd', 'onDrag'
+    if(this[eventName+'Count'] > 0)
+      this.observers.each( function(o) {
+        if(o[eventName]) o[eventName](eventName, draggable, event);
+      });
+    if(draggable.options[eventName]) draggable.options[eventName](draggable, event);
+  },
+
+  _cacheObserverCallbacks: function() {
+    ['onStart','onEnd','onDrag'].each( function(eventName) {
+      Draggables[eventName+'Count'] = Draggables.observers.select(
+        function(o) { return o[eventName]; }
+      ).length;
+    });
+  }
+};
+
+/*--------------------------------------------------------------------------*/
+
+var Draggable = Class.create({
+  initialize: function(element) {
+    var defaults = {
+      handle: false,
+      reverteffect: function(element, top_offset, left_offset) {
+        var dur = Math.sqrt(Math.abs(top_offset^2)+Math.abs(left_offset^2))*0.02;
+        new Effect.Move(element, { x: -left_offset, y: -top_offset, duration: dur,
+          queue: {scope:'_draggable', position:'end'}
+        });
+      },
+      endeffect: function(element) {
+        var toOpacity = Object.isNumber(element._opacity) ? element._opacity : 1.0;
+        new Effect.Opacity(element, {duration:0.2, from:0.7, to:toOpacity,
+          queue: {scope:'_draggable', position:'end'},
+          afterFinish: function(){
+            Draggable._dragging[element] = false
+          }
+        });
+      },
+      zindex: 1000,
+      revert: false,
+      quiet: false,
+      scroll: false,
+      scrollSensitivity: 20,
+      scrollSpeed: 15,
+      snap: false,  // false, or xy or [x,y] or function(x,y){ return [x,y] }
+      delay: 0
+    };
+
+    if(!arguments[1] || Object.isUndefined(arguments[1].endeffect))
+      Object.extend(defaults, {
+        starteffect: function(element) {
+          element._opacity = Element.getOpacity(element);
+          Draggable._dragging[element] = true;
+          new Effect.Opacity(element, {duration:0.2, from:element._opacity, to:0.7});
+        }
+      });
+
+    var options = Object.extend(defaults, arguments[1] || { });
+
+    this.element = $(element);
