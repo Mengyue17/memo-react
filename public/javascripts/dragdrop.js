@@ -612,3 +612,94 @@ var Sortable = {
   destroy: function(element){
     element = $(element);
     var s = Sortable.sortables[element.id];
+
+    if(s) {
+      Draggables.removeObserver(s.element);
+      s.droppables.each(function(d){ Droppables.remove(d) });
+      s.draggables.invoke('destroy');
+
+      delete Sortable.sortables[s.element.id];
+    }
+  },
+
+  create: function(element) {
+    element = $(element);
+    var options = Object.extend({
+      element:     element,
+      tag:         'li',       // assumes li children, override with tag: 'tagname'
+      dropOnEmpty: false,
+      tree:        false,
+      treeTag:     'ul',
+      overlap:     'vertical', // one of 'vertical', 'horizontal'
+      constraint:  'vertical', // one of 'vertical', 'horizontal', false
+      containment: element,    // also takes array of elements (or id's); or false
+      handle:      false,      // or a CSS class
+      only:        false,
+      delay:       0,
+      hoverclass:  null,
+      ghosting:    false,
+      quiet:       false,
+      scroll:      false,
+      scrollSensitivity: 20,
+      scrollSpeed: 15,
+      format:      this.SERIALIZE_RULE,
+
+      // these take arrays of elements or ids and can be
+      // used for better initialization performance
+      elements:    false,
+      handles:     false,
+
+      onChange:    Prototype.emptyFunction,
+      onUpdate:    Prototype.emptyFunction
+    }, arguments[1] || { });
+
+    // clear any old sortable with same element
+    this.destroy(element);
+
+    // build options for the draggables
+    var options_for_draggable = {
+      revert:      true,
+      quiet:       options.quiet,
+      scroll:      options.scroll,
+      scrollSpeed: options.scrollSpeed,
+      scrollSensitivity: options.scrollSensitivity,
+      delay:       options.delay,
+      ghosting:    options.ghosting,
+      constraint:  options.constraint,
+      handle:      options.handle };
+
+    if(options.starteffect)
+      options_for_draggable.starteffect = options.starteffect;
+
+    if(options.reverteffect)
+      options_for_draggable.reverteffect = options.reverteffect;
+    else
+      if(options.ghosting) options_for_draggable.reverteffect = function(element) {
+        element.style.top  = 0;
+        element.style.left = 0;
+      };
+
+    if(options.endeffect)
+      options_for_draggable.endeffect = options.endeffect;
+
+    if(options.zindex)
+      options_for_draggable.zindex = options.zindex;
+
+    // build options for the droppables
+    var options_for_droppable = {
+      overlap:     options.overlap,
+      containment: options.containment,
+      tree:        options.tree,
+      hoverclass:  options.hoverclass,
+      onHover:     Sortable.onHover
+    };
+
+    var options_for_tree = {
+      onHover:      Sortable.onEmptyHover,
+      overlap:      options.overlap,
+      containment:  options.containment,
+      hoverclass:   options.hoverclass
+    };
+
+    // fix for gecko engine
+    Element.cleanWhitespace(element);
