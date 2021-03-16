@@ -6,4 +6,5 @@
 //  Mark Pilgrim (http://diveintomark.org/)
 //  Martin Bialasinki
 //
-// script.aculo.us is freely distributable under the terms o
+// script.aculo.us is freely distributable under the terms of an MIT-style license.
+// For details, see the script.aculo.us web si
