@@ -806,3 +806,97 @@ var Sortable = {
       }
 
       dropon.insertBefore(element, child);
+
+      Sortable.options(oldParentNode).onChange(element);
+      droponOptions.onChange(element);
+    }
+  },
+
+  unmark: function() {
+    if(Sortable._marker) Sortable._marker.hide();
+  },
+
+  mark: function(dropon, position) {
+    // mark on ghosting only
+    var sortable = Sortable.options(dropon.parentNode);
+    if(sortable && !sortable.ghosting) return;
+
+    if(!Sortable._marker) {
+      Sortable._marker =
+        ($('dropmarker') || Element.extend(document.createElement('DIV'))).
+          hide().addClassName('dropmarker').setStyle({position:'absolute'});
+      document.getElementsByTagName("body").item(0).appendChild(Sortable._marker);
+    }
+    var offsets = dropon.cumulativeOffset();
+    Sortable._marker.setStyle({left: offsets[0]+'px', top: offsets[1] + 'px'});
+
+    if(position=='after')
+      if(sortable.overlap == 'horizontal')
+        Sortable._marker.setStyle({left: (offsets[0]+dropon.clientWidth) + 'px'});
+      else
+        Sortable._marker.setStyle({top: (offsets[1]+dropon.clientHeight) + 'px'});
+
+    Sortable._marker.show();
+  },
+
+  _tree: function(element, options, parent) {
+    var children = Sortable.findElements(element, options) || [];
+
+    for (var i = 0; i < children.length; ++i) {
+      var match = children[i].id.match(options.format);
+
+      if (!match) continue;
+
+      var child = {
+        id: encodeURIComponent(match ? match[1] : null),
+        element: element,
+        parent: parent,
+        children: [],
+        position: parent.children.length,
+        container: $(children[i]).down(options.treeTag)
+      };
+
+      /* Get the element containing the children and recurse over it */
+      if (child.container)
+        this._tree(child.container, options, child);
+
+      parent.children.push (child);
+    }
+
+    return parent;
+  },
+
+  tree: function(element) {
+    element = $(element);
+    var sortableOptions = this.options(element);
+    var options = Object.extend({
+      tag: sortableOptions.tag,
+      treeTag: sortableOptions.treeTag,
+      only: sortableOptions.only,
+      name: element.id,
+      format: sortableOptions.format
+    }, arguments[1] || { });
+
+    var root = {
+      id: null,
+      parent: null,
+      children: [],
+      container: element,
+      position: 0
+    };
+
+    return Sortable._tree(element, options, root);
+  },
+
+  /* Construct a [i] index for a particular node */
+  _constructIndex: function(node) {
+    var index = '';
+    do {
+      if (node.id) index = '[' + node.position + ']' + index;
+    } while ((node = node.parent) != null);
+    return index;
+  },
+
+  sequence: function(element) {
+    element = $(element);
+    var options = Object.extend(this.options(element), arguments[1] || { });
