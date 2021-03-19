@@ -10,4 +10,5 @@
 // For details, see the script.aculo.us web site: http://script.aculo.us/
 
 // converts rgb() and #xxx to #xxxxxx format,
-// retur
+// returns self (or first argument) if not convertable
+String.prototype.parseColor = function() {
