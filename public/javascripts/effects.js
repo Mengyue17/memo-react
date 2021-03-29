@@ -14,4 +14,6 @@
 String.prototype.parseColor = function() {
   var color = '#';
   if (this.slice(0,4) == 'rgb(') {
-    var cols = this.slice(4,this.length-1).sp
+    var cols = this.slice(4,this.length-1).split(',');
+    var i=0; do { color += parseInt(cols[i]).toColorPart() } while (++i<3);
+  } 
