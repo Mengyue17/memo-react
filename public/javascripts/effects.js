@@ -12,3 +12,6 @@
 // converts rgb() and #xxx to #xxxxxx format,
 // returns self (or first argument) if not convertable
 String.prototype.parseColor = function() {
+  var color = '#';
+  if (this.slice(0,4) == 'rgb(') {
+    var cols = this.slice(4,this.length-1).sp
