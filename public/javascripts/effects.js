@@ -19,4 +19,10 @@ String.prototype.parseColor = function() {
   } else {
     if (this.slice(0,1) == '#') {
       if (this.length==4) for(var i=1;i<4;i++) color += (this.charAt(i) + this.charAt(i)).toLowerCase();
-      if (this.length==7) color = this.toLo
+      if (this.length==7) color = this.toLowerCase();
+    }
+  }
+  return (color.length==7 ? color : (arguments[0] || this));
+};
+
+/*----
