@@ -18,4 +18,5 @@ String.prototype.parseColor = function() {
     var i=0; do { color += parseInt(cols[i]).toColorPart() } while (++i<3);
   } else {
     if (this.slice(0,1) == '#') {
-      if (this.length==4) for(var i=1;i<4;i++) color += (this.charAt(
+      if (this.length==4) for(var i=1;i<4;i++) color += (this.charAt(i) + this.charAt(i)).toLowerCase();
+      if (this.length==7) color = this.toLo
