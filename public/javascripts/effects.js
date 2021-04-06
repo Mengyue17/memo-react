@@ -25,4 +25,6 @@ String.prototype.parseColor = function() {
   return (color.length==7 ? color : (arguments[0] || this));
 };
 
-/*----
+/*--------------------------------------------------------------------------*/
+
+Element.col
