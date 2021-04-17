@@ -28,4 +28,6 @@ String.prototype.parseColor = function() {
 /*--------------------------------------------------------------------------*/
 
 Element.collectTextNodes = function(element) {
-  return $A($(element).childNodes).collect(
+  return $A($(element).childNodes).collect( function(node) {
+    return (node.nodeType==3 ? node.nodeValue :
+      (node.hasCh
