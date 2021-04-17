@@ -27,4 +27,5 @@ String.prototype.parseColor = function() {
 
 /*--------------------------------------------------------------------------*/
 
-Element.col
+Element.collectTextNodes = function(element) {
+  return $A($(element).childNodes).collect(
