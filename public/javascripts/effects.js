@@ -35,4 +35,6 @@ Element.collectTextNodes = function(element) {
 };
 
 Element.collectTextNodesIgnoreClass = function(element, className) {
-  return $A($(element).childN
+  return $A($(element).childNodes).collect( function(node) {
+    return (node.nodeType==3 ? node.nodeValue :
+     
