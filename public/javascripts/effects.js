@@ -42,4 +42,6 @@ Element.collectTextNodesIgnoreClass = function(element, className) {
   }).flatten().join('');
 };
 
-Element.setContentZoom = func
+Element.setContentZoom = function(element, percent) {
+  element = $(element);
+  element.setStyle({fontSize: (percent/100) + 'em'}
