@@ -44,4 +44,9 @@ Element.collectTextNodesIgnoreClass = function(element, className) {
 
 Element.setContentZoom = function(element, percent) {
   element = $(element);
-  element.setStyle({fontSize: (percent/100) + 'em'}
+  element.setStyle({fontSize: (percent/100) + 'em'});
+  if (Prototype.Browser.WebKit) window.scrollBy(0,0);
+  return element;
+};
+
+Element
