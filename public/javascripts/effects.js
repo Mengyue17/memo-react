@@ -51,3 +51,9 @@ Element.setContentZoom = function(element, percent) {
 
 Element.getInlineOpacity = function(element){
   return $(element).style.opacity || '';
+};
+
+Element.forceRerendering = function(element) {
+  try {
+    element = $(element);
+  
