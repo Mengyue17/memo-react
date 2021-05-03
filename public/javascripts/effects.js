@@ -49,4 +49,5 @@ Element.setContentZoom = function(element, percent) {
   return element;
 };
 
-Element
+Element.getInlineOpacity = function(element){
+  return $(element).style.opacity || '';
