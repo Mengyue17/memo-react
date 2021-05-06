@@ -66,4 +66,5 @@ Element.forceRerendering = function(element) {
 
 var Effect = {
   _elementDoesNotExistError: {
-    name: 'Elemen
+    name: 'ElementDoesNotExistError',
+    message: 'The specified DOM element does not exis
