@@ -62,4 +62,8 @@ Element.forceRerendering = function(element) {
   } catch(e) { }
 };
 
-/*---------------------------------------------------------
+/*--------------------------------------------------------------------------*/
+
+var Effect = {
+  _elementDoesNotExistError: {
+    name: 'Elemen
