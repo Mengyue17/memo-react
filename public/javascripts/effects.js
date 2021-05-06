@@ -58,4 +58,8 @@ Element.forceRerendering = function(element) {
     element = $(element);
     var n = document.createTextNode(' ');
     element.appendChild(n);
-    element.removeCh
+    element.removeChild(n);
+  } catch(e) { }
+};
+
+/*---------------------------------------------------------
