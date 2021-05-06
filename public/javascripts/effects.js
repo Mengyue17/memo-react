@@ -56,4 +56,6 @@ Element.getInlineOpacity = function(element){
 Element.forceRerendering = function(element) {
   try {
     element = $(element);
-  
+    var n = document.createTextNode(' ');
+    element.appendChild(n);
+    element.removeCh
