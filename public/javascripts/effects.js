@@ -67,4 +67,8 @@ Element.forceRerendering = function(element) {
 var Effect = {
   _elementDoesNotExistError: {
     name: 'ElementDoesNotExistError',
-    message: 'The specified DOM element does not exis
+    message: 'The specified DOM element does not exist, but is required for this effect to operate'
+  },
+  Transitions: {
+    linear: Prototype.K,
+    sinoi
