@@ -71,4 +71,7 @@ var Effect = {
   },
   Transitions: {
     linear: Prototype.K,
-    sinoi
+    sinoidal: function(pos) {
+      return (-Math.cos(pos*Math.PI)/2) + .5;
+    },
+ 
