@@ -74,4 +74,7 @@ var Effect = {
     sinoidal: function(pos) {
       return (-Math.cos(pos*Math.PI)/2) + .5;
     },
- 
+    reverse: function(pos) {
+      return 1-pos;
+    },
+    flicker: function(pos) 
