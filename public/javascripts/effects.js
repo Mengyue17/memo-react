@@ -77,4 +77,6 @@ var Effect = {
     reverse: function(pos) {
       return 1-pos;
     },
-    flicker: function(pos) 
+    flicker: function(pos) {
+      var pos = ((-Math.cos(pos*Math.PI)/4) + .75) + Math.random()/4;
+      retu
