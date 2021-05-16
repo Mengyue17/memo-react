@@ -82,4 +82,7 @@ var Effect = {
       return pos > 1 ? 1 : pos;
     },
     wobble: function(pos) {
-      return (-Math.cos(pos
+      return (-Math.cos(pos*Math.PI*(9*pos))/2) + .5;
+    },
+    pulse: function(pos, pulses) {
+      return (
