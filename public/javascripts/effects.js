@@ -88,4 +88,6 @@ var Effect = {
       return (-Math.cos((pos*((pulses||5)-.5)*2)*Math.PI)/2) + .5;
     },
     spring: function(pos) {
-   
+      return 1 - (Math.cos(pos * 4.5 * Math.PI) * Math.exp(-pos * 6));
+    },
+    none: functi
