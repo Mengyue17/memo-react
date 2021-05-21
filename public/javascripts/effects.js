@@ -97,4 +97,7 @@ var Effect = {
       return 1;
     }
   },
-  Defaul
+  DefaultOptions: {
+    duration:   1.0,   // seconds
+    fps:        100,   // 100= assume 66fps max.
+    
