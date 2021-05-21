@@ -90,4 +90,11 @@ var Effect = {
     spring: function(pos) {
       return 1 - (Math.cos(pos * 4.5 * Math.PI) * Math.exp(-pos * 6));
     },
-    none: functi
+    none: function(pos) {
+      return 0;
+    },
+    full: function(pos) {
+      return 1;
+    }
+  },
+  Defaul
