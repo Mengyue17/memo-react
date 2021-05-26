@@ -100,4 +100,6 @@ var Effect = {
   DefaultOptions: {
     duration:   1.0,   // seconds
     fps:        100,   // 100= assume 66fps max.
-    
+    sync:       false, // true for combining
+    from:       0.0,
+    to:         
