@@ -106,4 +106,6 @@ var Effect = {
     delay:      0.0,
     queue:      'parallel'
   },
-  tagifyText: func
+  tagifyText: function(element) {
+    var tagifyStyle = 'position:relative';
+    if (Prototy
