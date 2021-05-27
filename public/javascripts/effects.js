@@ -102,4 +102,8 @@ var Effect = {
     fps:        100,   // 100= assume 66fps max.
     sync:       false, // true for combining
     from:       0.0,
-    to:         
+    to:         1.0,
+    delay:      0.0,
+    queue:      'parallel'
+  },
+  tagifyText: func
