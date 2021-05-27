@@ -108,4 +108,7 @@ var Effect = {
   },
   tagifyText: function(element) {
     var tagifyStyle = 'position:relative';
-    if (Prototy
+    if (Prototype.Browser.IE) tagifyStyle += ';zoom:1';
+
+    element = $(element);
+    $A(element.childNodes).each( f
