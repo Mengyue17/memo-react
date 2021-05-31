@@ -115,4 +115,6 @@ var Effect = {
       if (child.nodeType==3) {
         child.nodeValue.toArray().each( function(character) {
           element.insertBefore(
-            new Element('span', {style: tagifyS
+            new Element('span', {style: tagifyStyle}).update(
+              character == ' ' ? String.fromCharCode(160) : character),
+          
