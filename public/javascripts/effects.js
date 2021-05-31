@@ -111,4 +111,6 @@ var Effect = {
     if (Prototype.Browser.IE) tagifyStyle += ';zoom:1';
 
     element = $(element);
-    $A(element.childNodes).each( f
+    $A(element.childNodes).each( function(child) {
+      if (child.nodeType==3) {
+        child.nodeValue.toArray().each( function(char
