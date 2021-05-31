@@ -113,4 +113,6 @@ var Effect = {
     element = $(element);
     $A(element.childNodes).each( function(child) {
       if (child.nodeType==3) {
-        child.nodeValue.toArray().each( function(char
+        child.nodeValue.toArray().each( function(character) {
+          element.insertBefore(
+            new Element('span', {style: tagifyS
