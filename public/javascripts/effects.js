@@ -130,4 +130,7 @@ var Effect = {
        (element.length))
       elements = element;
     else
- 
+      elements = $(element).childNodes;
+
+    var options = Object.extend({
+   
