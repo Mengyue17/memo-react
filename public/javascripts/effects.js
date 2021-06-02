@@ -123,4 +123,7 @@ var Effect = {
       }
     });
   },
-  multiple: funct
+  multiple: function(element, effect) {
+    var elements;
+    if (((typeof element == 'object') ||
+    
