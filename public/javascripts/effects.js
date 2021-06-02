@@ -117,4 +117,10 @@ var Effect = {
           element.insertBefore(
             new Element('span', {style: tagifyStyle}).update(
               character == ' ' ? String.fromCharCode(160) : character),
-          
+              child);
+        });
+        Element.remove(child);
+      }
+    });
+  },
+  multiple: funct
