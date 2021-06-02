@@ -126,4 +126,8 @@ var Effect = {
   multiple: function(element, effect) {
     var elements;
     if (((typeof element == 'object') ||
-    
+        Object.isFunction(element)) &&
+       (element.length))
+      elements = element;
+    else
+ 
