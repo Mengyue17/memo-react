@@ -136,4 +136,7 @@ var Effect = {
       speed: 0.1,
       delay: 0.0
     }, arguments[2] || { });
-    var master
+    var masterDelay = options.delay;
+
+    $A(elements).each( function(element, index) {
+  
