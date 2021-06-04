@@ -133,4 +133,7 @@ var Effect = {
       elements = $(element).childNodes;
 
     var options = Object.extend({
-   
+      speed: 0.1,
+      delay: 0.0
+    }, arguments[2] || { });
+    var master
