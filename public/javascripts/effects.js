@@ -139,4 +139,9 @@ var Effect = {
     var masterDelay = options.delay;
 
     $A(elements).each( function(element, index) {
-      new effect(element, Object.extend(options, { delay: index * options.speed + masterDela
+      new effect(element, Object.extend(options, { delay: index * options.speed + masterDelay }));
+    });
+  },
+  PAIRS: {
+    'slide':  ['SlideDown','SlideUp'],
+    'blind':  ['Blind
