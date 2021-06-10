@@ -149,4 +149,6 @@ var Effect = {
   },
   toggle: function(element, effect, options) {
     element = $(element);
-    effect  = (effect || 'appear').toL
+    effect  = (effect || 'appear').toLowerCase();
+
+    return Effect[ Effect.PAIRS[ effect ][ element.visible() ? 1 : 0 
