@@ -144,4 +144,7 @@ var Effect = {
   },
   PAIRS: {
     'slide':  ['SlideDown','SlideUp'],
-    'blind':  ['Blind
+    'blind':  ['BlindDown','BlindUp'],
+    'appear': ['Appear','Fade']
+  },
+  toggle: funct
