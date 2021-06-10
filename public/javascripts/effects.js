@@ -147,4 +147,6 @@ var Effect = {
     'blind':  ['BlindDown','BlindUp'],
     'appear': ['Appear','Fade']
   },
-  toggle: funct
+  toggle: function(element, effect, options) {
+    element = $(element);
+    effect  = (effect || 'appear').toL
