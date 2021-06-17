@@ -152,4 +152,9 @@ var Effect = {
     effect  = (effect || 'appear').toLowerCase();
 
     return Effect[ Effect.PAIRS[ effect ][ element.visible() ? 1 : 0 ] ](element, Object.extend({
-      queue: { position:'end', scope:(element.id || 'global'),
+      queue: { position:'end', scope:(element.id || 'global'), limit: 1 }
+    }, options || {}));
+  }
+};
+
+Effect.DefaultOptions.transition = Effect.Tra
