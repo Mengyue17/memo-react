@@ -151,4 +151,5 @@ var Effect = {
     element = $(element);
     effect  = (effect || 'appear').toLowerCase();
 
-    return Effect[ Effect.PAIRS[ effect ][ element.visible() ? 1 : 0 
+    return Effect[ Effect.PAIRS[ effect ][ element.visible() ? 1 : 0 ] ](element, Object.extend({
+      queue: { position:'end', scope:(element.id || 'global'),
