@@ -157,4 +157,8 @@ var Effect = {
   }
 };
 
-Effect.DefaultOptions.transition = Effect.Tra
+Effect.DefaultOptions.transition = Effect.Transitions.sinoidal;
+
+/* ------------- core effects ------------- */
+
+Eff
