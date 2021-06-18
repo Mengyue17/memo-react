@@ -161,4 +161,6 @@ Effect.DefaultOptions.transition = Effect.Transitions.sinoidal;
 
 /* ------------- core effects ------------- */
 
-Eff
+Effect.ScopedQueue = Class.create(Enumerable, {
+  initialize: function() {
+    this.effects  = []
