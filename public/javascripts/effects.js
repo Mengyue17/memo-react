@@ -163,4 +163,8 @@ Effect.DefaultOptions.transition = Effect.Transitions.sinoidal;
 
 Effect.ScopedQueue = Class.create(Enumerable, {
   initialize: function() {
-    this.effects  = []
+    this.effects  = [];
+    this.interval = null;
+  },
+  _each: function(iterator) {
+    this.effects._each(ite
