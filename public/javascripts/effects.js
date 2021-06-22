@@ -167,4 +167,9 @@ Effect.ScopedQueue = Class.create(Enumerable, {
     this.interval = null;
   },
   _each: function(iterator) {
-    this.effects._each(ite
+    this.effects._each(iterator);
+  },
+  add: function(effect) {
+    var timestamp = new Date().getTime();
+
+    var po
