@@ -172,4 +172,5 @@ Effect.ScopedQueue = Class.create(Enumerable, {
   add: function(effect) {
     var timestamp = new Date().getTime();
 
-    var po
+    var position = Object.isString(effect.options.queue) ?
+      effect.options.queue : effect.options.queue.po
