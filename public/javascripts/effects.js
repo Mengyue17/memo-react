@@ -173,4 +173,8 @@ Effect.ScopedQueue = Class.create(Enumerable, {
     var timestamp = new Date().getTime();
 
     var position = Object.isString(effect.options.queue) ?
-      effect.options.queue : effect.options.queue.po
+      effect.options.queue : effect.options.queue.position;
+
+    switch(position) {
+      case 'front':
+        // move unst
