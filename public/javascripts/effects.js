@@ -178,4 +178,6 @@ Effect.ScopedQueue = Class.create(Enumerable, {
     switch(position) {
       case 'front':
         // move unstarted effects after this effect
-        this.effects.findAll(function(e){
+        this.effects.findAll(function(e){ return e.state=='idle' }).each( function(e) {
+            e.startOn  += effect.finishOn;
+    
