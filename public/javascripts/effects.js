@@ -180,4 +180,7 @@ Effect.ScopedQueue = Class.create(Enumerable, {
         // move unstarted effects after this effect
         this.effects.findAll(function(e){ return e.state=='idle' }).each( function(e) {
             e.startOn  += effect.finishOn;
-    
+            e.finishOn += effect.finishOn;
+          });
+        break;
+      case 'with-last'
