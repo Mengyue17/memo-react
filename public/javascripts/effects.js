@@ -177,4 +177,5 @@ Effect.ScopedQueue = Class.create(Enumerable, {
 
     switch(position) {
       case 'front':
-        // move unst
+        // move unstarted effects after this effect
+        this.effects.findAll(function(e){
