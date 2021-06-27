@@ -186,4 +186,6 @@ Effect.ScopedQueue = Class.create(Enumerable, {
       case 'with-last':
         timestamp = this.effects.pluck('startOn').max() || timestamp;
         break;
-      case '
+      case 'end':
+        // start effect after last queued effect has finished
+        timestamp = this.effects.pluck('f
