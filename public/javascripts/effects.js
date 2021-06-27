@@ -192,4 +192,7 @@ Effect.ScopedQueue = Class.create(Enumerable, {
         break;
     }
 
-    effect.startOn  += timesta
+    effect.startOn  += timestamp;
+    effect.finishOn += timestamp;
+
+    if (!effect.options.queue.limit || (t
