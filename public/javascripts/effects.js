@@ -198,3 +198,7 @@ Effect.ScopedQueue = Class.create(Enumerable, {
     if (!effect.options.queue.limit || (this.effects.length < effect.options.queue.limit))
       this.effects.push(effect);
 
+    if (!this.interval)
+      this.interval = setInterval(this.loop.bind(this), 15);
+  },
+  remove: functio
