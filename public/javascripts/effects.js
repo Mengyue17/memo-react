@@ -205,4 +205,8 @@ Effect.ScopedQueue = Class.create(Enumerable, {
     this.effects = this.effects.reject(function(e) { return e==effect });
     if (this.effects.length == 0) {
       clearInterval(this.interval);
-      this.
+      this.interval = null;
+    }
+  },
+  loop: function() {
+    var timePos = new Date().getTime();
