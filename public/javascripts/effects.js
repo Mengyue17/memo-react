@@ -211,4 +211,11 @@ Effect.ScopedQueue = Class.create(Enumerable, {
   loop: function() {
     var timePos = new Date().getTime();
     for(var i=0, len=this.effects.length;i<len;i++)
-      this.effects[i] && this.effects[i].loop(t
+      this.effects[i] && this.effects[i].loop(timePos);
+  }
+});
+
+Effect.Queues = {
+  instances: $H(),
+  get: function(queueName) {
+    i
