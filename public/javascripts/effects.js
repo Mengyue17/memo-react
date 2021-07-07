@@ -218,4 +218,6 @@ Effect.ScopedQueue = Class.create(Enumerable, {
 Effect.Queues = {
   instances: $H(),
   get: function(queueName) {
-    i
+    if (!Object.isString(queueName)) return queueName;
+
+    return this.instances.get(queu
