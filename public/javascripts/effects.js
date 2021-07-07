@@ -224,4 +224,8 @@ Effect.Queues = {
       this.instances.set(queueName, new Effect.ScopedQueue());
   }
 };
-Effec
+Effect.Queue = Effect.Queues.get('global');
+
+Effect.Base = Class.create({
+  position: null,
+  start: func
