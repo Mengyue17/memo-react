@@ -220,4 +220,8 @@ Effect.Queues = {
   get: function(queueName) {
     if (!Object.isString(queueName)) return queueName;
 
-    return this.instances.get(queu
+    return this.instances.get(queueName) ||
+      this.instances.set(queueName, new Effect.ScopedQueue());
+  }
+};
+Effec
