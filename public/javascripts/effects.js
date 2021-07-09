@@ -228,4 +228,5 @@ Effect.Queue = Effect.Queues.get('global');
 
 Effect.Base = Class.create({
   position: null,
-  start: func
+  start: function(options) {
+    if (options && options.transition === false) options.transition = Effe
