@@ -229,4 +229,5 @@ Effect.Queue = Effect.Queues.get('global');
 Effect.Base = Class.create({
   position: null,
   start: function(options) {
-    if (options && options.transition === false) options.transition = Effe
+    if (options && options.transition === false) options.transition = Effect.Transitions.linear;
+    this.options      = Object.extend(Object.extend({ },Effect
