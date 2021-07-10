@@ -230,4 +230,6 @@ Effect.Base = Class.create({
   position: null,
   start: function(options) {
     if (options && options.transition === false) options.transition = Effect.Transitions.linear;
-    this.options      = Object.extend(Object.extend({ },Effect
+    this.options      = Object.extend(Object.extend({ },Effect.DefaultOptions), options || { });
+    this.currentFrame = 0;
+    this.state      
