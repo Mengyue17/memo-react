@@ -232,4 +232,6 @@ Effect.Base = Class.create({
     if (options && options.transition === false) options.transition = Effect.Transitions.linear;
     this.options      = Object.extend(Object.extend({ },Effect.DefaultOptions), options || { });
     this.currentFrame = 0;
-    this.state      
+    this.state        = 'idle';
+    this.startOn      = this.options.delay*1000;
+    this.finishOn     = t
