@@ -235,4 +235,6 @@ Effect.Base = Class.create({
     this.state        = 'idle';
     this.startOn      = this.options.delay*1000;
     this.finishOn     = this.startOn+(this.options.duration*1000);
-    this.fromToDelta  = this.options.to-this.options.from
+    this.fromToDelta  = this.options.to-this.options.from;
+    this.totalTime    = this.finishOn-this.startOn;
+    this.totalFrames  = this.options.fps*t
