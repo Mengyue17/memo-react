@@ -240,4 +240,6 @@ Effect.Base = Class.create({
     this.totalFrames  = this.options.fps*this.options.duration;
 
     this.render = (function() {
-      function dispatch(effect, eve
+      function dispatch(effect, eventName) {
+        if (effect.options[eventName + 'Internal'])
+          effect.options[eventN
