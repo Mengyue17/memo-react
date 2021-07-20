@@ -244,4 +244,8 @@ Effect.Base = Class.create({
         if (effect.options[eventName + 'Internal'])
           effect.options[eventName + 'Internal'](effect);
         if (effect.options[eventName])
-          effect.op
+          effect.options[eventName](effect);
+      }
+
+      return function(pos) {
+        if (this.state ==
