@@ -237,4 +237,7 @@ Effect.Base = Class.create({
     this.finishOn     = this.startOn+(this.options.duration*1000);
     this.fromToDelta  = this.options.to-this.options.from;
     this.totalTime    = this.finishOn-this.startOn;
-    this.totalFrames  = this.options.fps*t
+    this.totalFrames  = this.options.fps*this.options.duration;
+
+    this.render = (function() {
+      function dispatch(effect, eve
