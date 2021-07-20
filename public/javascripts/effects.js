@@ -242,4 +242,6 @@ Effect.Base = Class.create({
     this.render = (function() {
       function dispatch(effect, eventName) {
         if (effect.options[eventName + 'Internal'])
-          effect.options[eventN
+          effect.options[eventName + 'Internal'](effect);
+        if (effect.options[eventName])
+          effect.op
