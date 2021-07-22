@@ -251,4 +251,7 @@ Effect.Base = Class.create({
         if (this.state === "idle") {
           this.state = "running";
           dispatch(this, 'beforeSetup');
-          if (thi
+          if (this.setup) this.setup();
+          dispatch(this, 'afterSetup');
+        }
+        if (this.state
