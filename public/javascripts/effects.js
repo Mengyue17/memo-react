@@ -248,4 +248,7 @@ Effect.Base = Class.create({
       }
 
       return function(pos) {
-        if (this.state ==
+        if (this.state === "idle") {
+          this.state = "running";
+          dispatch(this, 'beforeSetup');
+          if (thi
