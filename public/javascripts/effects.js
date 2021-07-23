@@ -255,4 +255,7 @@ Effect.Base = Class.create({
           dispatch(this, 'afterSetup');
         }
         if (this.state === "running") {
-          pos = (this.options.transition(pos) * this.fromToDelta) + this
+          pos = (this.options.transition(pos) * this.fromToDelta) + this.options.from;
+          this.position = pos;
+          dispatch(this, 'beforeUpdate');
+        
