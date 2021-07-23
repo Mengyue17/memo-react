@@ -258,4 +258,6 @@ Effect.Base = Class.create({
           pos = (this.options.transition(pos) * this.fromToDelta) + this.options.from;
           this.position = pos;
           dispatch(this, 'beforeUpdate');
-        
+          if (this.update) this.update(pos);
+          dispatch(this, 'afterUpdate');
+ 
