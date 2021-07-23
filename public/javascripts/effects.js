@@ -260,4 +260,10 @@ Effect.Base = Class.create({
           dispatch(this, 'beforeUpdate');
           if (this.update) this.update(pos);
           dispatch(this, 'afterUpdate');
- 
+        }
+      };
+    })();
+
+    this.event('beforeStart');
+    if (!this.options.sync)
+  
