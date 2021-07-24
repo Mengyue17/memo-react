@@ -266,4 +266,5 @@ Effect.Base = Class.create({
 
     this.event('beforeStart');
     if (!this.options.sync)
-  
+      Effect.Queues.get(Object.isString(this.options.queue) ?
+        'global' : this.options.queue
