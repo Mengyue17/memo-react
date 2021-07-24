@@ -267,4 +267,8 @@ Effect.Base = Class.create({
     this.event('beforeStart');
     if (!this.options.sync)
       Effect.Queues.get(Object.isString(this.options.queue) ?
-        'global' : this.options.queue
+        'global' : this.options.queue.scope).add(this);
+  },
+  loop: function(timePos) {
+    if (timePos >= this.startOn) {
+      if (timePos >= th
