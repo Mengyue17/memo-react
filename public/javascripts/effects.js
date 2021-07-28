@@ -275,4 +275,6 @@ Effect.Base = Class.create({
         this.render(1.0);
         this.cancel();
         this.event('beforeFinish');
-        if
+        if (this.finish) this.finish();
+        this.event('afterFinish');
+        return
