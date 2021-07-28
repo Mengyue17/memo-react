@@ -271,4 +271,8 @@ Effect.Base = Class.create({
   },
   loop: function(timePos) {
     if (timePos >= this.startOn) {
-      if (timePos >= th
+      if (timePos >= this.finishOn) {
+        this.render(1.0);
+        this.cancel();
+        this.event('beforeFinish');
+        if
