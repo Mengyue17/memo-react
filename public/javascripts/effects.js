@@ -277,4 +277,7 @@ Effect.Base = Class.create({
         this.event('beforeFinish');
         if (this.finish) this.finish();
         this.event('afterFinish');
-        return
+        return;
+      }
+      var pos   = (timePos - this.startOn) / this.totalTime,
+          frame = (pos * this.totalFrames).ro
