@@ -288,4 +288,6 @@ Effect.Base = Class.create({
     }
   },
   cancel: function() {
-    if (!this.options.syn
+    if (!this.options.sync)
+      Effect.Queues.get(Object.isString(this.options.queue) ?
+        'global' : this.opti
