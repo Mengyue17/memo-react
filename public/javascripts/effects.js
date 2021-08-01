@@ -290,4 +290,7 @@ Effect.Base = Class.create({
   cancel: function() {
     if (!this.options.sync)
       Effect.Queues.get(Object.isString(this.options.queue) ?
-        'global' : this.opti
+        'global' : this.options.queue.scope).remove(this);
+    this.state = 'finished';
+  },
+  event: function(event
