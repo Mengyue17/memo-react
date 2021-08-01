@@ -280,4 +280,7 @@ Effect.Base = Class.create({
         return;
       }
       var pos   = (timePos - this.startOn) / this.totalTime,
-          frame = (pos * this.totalFrames).ro
+          frame = (pos * this.totalFrames).round();
+      if (frame > this.currentFrame) {
+        this.render(pos);
+        this.currentFra
