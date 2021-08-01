@@ -283,4 +283,9 @@ Effect.Base = Class.create({
           frame = (pos * this.totalFrames).round();
       if (frame > this.currentFrame) {
         this.render(pos);
-        this.currentFra
+        this.currentFrame = frame;
+      }
+    }
+  },
+  cancel: function() {
+    if (!this.options.syn
