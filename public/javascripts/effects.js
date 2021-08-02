@@ -294,4 +294,6 @@ Effect.Base = Class.create({
     this.state = 'finished';
   },
   event: function(eventName) {
-    if (this.options[eventName + 'Internal']) this.options[eventName + 'Intern
+    if (this.options[eventName + 'Internal']) this.options[eventName + 'Internal'](this);
+    if (this.options[eventName]) this.options[eventName](this);
+ 
