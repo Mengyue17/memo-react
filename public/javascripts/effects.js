@@ -293,4 +293,5 @@ Effect.Base = Class.create({
         'global' : this.options.queue.scope).remove(this);
     this.state = 'finished';
   },
-  event: function(event
+  event: function(eventName) {
+    if (this.options[eventName + 'Internal']) this.options[eventName + 'Intern
