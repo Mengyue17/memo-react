@@ -296,4 +296,8 @@ Effect.Base = Class.create({
   event: function(eventName) {
     if (this.options[eventName + 'Internal']) this.options[eventName + 'Internal'](this);
     if (this.options[eventName]) this.options[eventName](this);
- 
+  },
+  inspect: function() {
+    var data = $H();
+    for(property in this)
+      if
