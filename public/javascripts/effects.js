@@ -300,4 +300,5 @@ Effect.Base = Class.create({
   inspect: function() {
     var data = $H();
     for(property in this)
-      if
+      if (!Object.isFunction(this[property])) data.set(property, this[property]);
+    return '#<Effect:'
