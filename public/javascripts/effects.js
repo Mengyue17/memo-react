@@ -301,4 +301,8 @@ Effect.Base = Class.create({
     var data = $H();
     for(property in this)
       if (!Object.isFunction(this[property])) data.set(property, this[property]);
-    return '#<Effect:'
+    return '#<Effect:' + data.inspect() + ',options:' + $H(this.options).inspect() + '>';
+  }
+});
+
+Effe
