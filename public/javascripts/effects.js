@@ -305,4 +305,6 @@ Effect.Base = Class.create({
   }
 });
 
-Effe
+Effect.Parallel = Class.create(Effect.Base, {
+  initialize: function(effects) {
+    this.effects =
