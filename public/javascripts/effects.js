@@ -317,4 +317,6 @@ Effect.Parallel = Class.create(Effect.Base, {
     this.effects.each( function(effect) {
       effect.render(1.0);
       effect.cancel();
-      effect.ev
+      effect.event('beforeFinish');
+      if (effect.finish) effect.finish(position);
+      ef
