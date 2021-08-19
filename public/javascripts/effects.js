@@ -319,4 +319,10 @@ Effect.Parallel = Class.create(Effect.Base, {
       effect.cancel();
       effect.event('beforeFinish');
       if (effect.finish) effect.finish(position);
-      ef
+      effect.event('afterFinish');
+    });
+  }
+});
+
+Effect.Tween = Class.create(Effect.Base, {
+  initi
