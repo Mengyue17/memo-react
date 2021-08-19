@@ -311,4 +311,7 @@ Effect.Parallel = Class.create(Effect.Base, {
     this.start(arguments[1]);
   },
   update: function(position) {
-  
+    this.effects.invoke('render', position);
+  },
+  finish: function(position) {
+    this.effects.e
