@@ -325,4 +325,5 @@ Effect.Parallel = Class.create(Effect.Base, {
 });
 
 Effect.Tween = Class.create(Effect.Base, {
-  initi
+  initialize: function(object, from, to) {
+    object = Object.isString(object) ? $(object)
