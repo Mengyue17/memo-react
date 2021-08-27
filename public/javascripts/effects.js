@@ -330,4 +330,5 @@ Effect.Tween = Class.create(Effect.Base, {
     var args = $A(arguments), method = args.last(),
       options = args.length == 5 ? args[3] : null;
     this.method = Object.isFunction(method) ? method.bind(object) :
-     
+      Object.isFunction(object[method]) ? object[method].bind(object) :
+   
