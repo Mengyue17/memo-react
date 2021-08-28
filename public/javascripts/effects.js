@@ -332,4 +332,8 @@ Effect.Tween = Class.create(Effect.Base, {
     this.method = Object.isFunction(method) ? method.bind(object) :
       Object.isFunction(object[method]) ? object[method].bind(object) :
       function(value) { object[method] = value };
-    this.start(Object.extend({ from: from, to: 
+    this.start(Object.extend({ from: from, to: to }, options || { }));
+  },
+  update: function(position) {
+    this.method(position);
+  }
