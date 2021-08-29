@@ -337,3 +337,8 @@ Effect.Tween = Class.create(Effect.Base, {
   update: function(position) {
     this.method(position);
   }
+});
+
+Effect.Event = Class.create(Effect.Base, {
+  initialize: function() {
+    this.start(Object.exte
