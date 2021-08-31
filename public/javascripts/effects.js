@@ -348,4 +348,5 @@ Effect.Event = Class.create(Effect.Base, {
 
 Effect.Opacity = Class.create(Effect.Base, {
   initialize: function(element) {
-    this.elemen
+    this.element = $(element);
+    if (!this.element) throw(Effect._elementDoesNotExistErro
