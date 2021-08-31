@@ -341,4 +341,9 @@ Effect.Tween = Class.create(Effect.Base, {
 
 Effect.Event = Class.create(Effect.Base, {
   initialize: function() {
-    this.start(Object.exte
+    this.start(Object.extend({ duration: 0 }, arguments[0] || { }));
+  },
+  update: Prototype.emptyFunction
+});
+
+Effect.Opac
