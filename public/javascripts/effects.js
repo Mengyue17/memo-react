@@ -346,4 +346,6 @@ Effect.Event = Class.create(Effect.Base, {
   update: Prototype.emptyFunction
 });
 
-Effect.Opac
+Effect.Opacity = Class.create(Effect.Base, {
+  initialize: function(element) {
+    this.elemen
