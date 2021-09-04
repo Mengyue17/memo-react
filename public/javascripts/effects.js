@@ -357,3 +357,11 @@ Effect.Opacity = Class.create(Effect.Base, {
       from: this.element.getOpacity() || 0.0,
       to:   1.0
     }, arguments[1] || { });
+    this.start(options);
+  },
+  update: function(position) {
+    this.element.setOpacity(position);
+  }
+});
+
+Ef
