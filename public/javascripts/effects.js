@@ -349,4 +349,6 @@ Effect.Event = Class.create(Effect.Base, {
 Effect.Opacity = Class.create(Effect.Base, {
   initialize: function(element) {
     this.element = $(element);
-    if (!this.element) throw(Effect._elementDoesNotExistErro
+    if (!this.element) throw(Effect._elementDoesNotExistError);
+    // make this work on IE on elements without 'layout'
+    if (Prototype.Browser.IE && (!th
