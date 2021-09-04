@@ -351,4 +351,6 @@ Effect.Opacity = Class.create(Effect.Base, {
     this.element = $(element);
     if (!this.element) throw(Effect._elementDoesNotExistError);
     // make this work on IE on elements without 'layout'
-    if (Prototype.Browser.IE && (!th
+    if (Prototype.Browser.IE && (!this.element.currentStyle.hasLayout))
+      this.element.setStyle({zoom: 1});
+    var option
