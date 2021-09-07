@@ -366,4 +366,6 @@ Effect.Opacity = Class.create(Effect.Base, {
 
 Effect.Move = Class.create(Effect.Base, {
   initialize: function(element) {
-    this.element = $(eleme
+    this.element = $(element);
+    if (!this.element) throw(Effect._elementDoesNotExistError);
+    var options = Object.extend(
