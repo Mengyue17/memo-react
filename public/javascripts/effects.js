@@ -364,4 +364,6 @@ Effect.Opacity = Class.create(Effect.Base, {
   }
 });
 
-Ef
+Effect.Move = Class.create(Effect.Base, {
+  initialize: function(element) {
+    this.element = $(eleme
