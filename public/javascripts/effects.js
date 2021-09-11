@@ -368,4 +368,9 @@ Effect.Move = Class.create(Effect.Base, {
   initialize: function(element) {
     this.element = $(element);
     if (!this.element) throw(Effect._elementDoesNotExistError);
-    var options = Object.extend(
+    var options = Object.extend({
+      x:    0,
+      y:    0,
+      mode: 'relative'
+    }, arguments[1] || { });
+    this.start
