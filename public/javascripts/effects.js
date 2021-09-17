@@ -373,4 +373,8 @@ Effect.Move = Class.create(Effect.Base, {
       y:    0,
       mode: 'relative'
     }, arguments[1] || { });
-    this.start
+    this.start(options);
+  },
+  setup: function() {
+    this.element.makePositioned();
+    this.originalLe
