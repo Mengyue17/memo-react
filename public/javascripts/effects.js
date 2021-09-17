@@ -378,4 +378,6 @@ Effect.Move = Class.create(Effect.Base, {
   setup: function() {
     this.element.makePositioned();
     this.originalLeft = parseFloat(this.element.getStyle('left') || '0');
-    this.originalTop  = parseFloa
+    this.originalTop  = parseFloat(this.element.getStyle('top')  || '0');
+    if (this.options.mode == 'absolute') {
+      th
