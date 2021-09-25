@@ -380,4 +380,5 @@ Effect.Move = Class.create(Effect.Base, {
     this.originalLeft = parseFloat(this.element.getStyle('left') || '0');
     this.originalTop  = parseFloat(this.element.getStyle('top')  || '0');
     if (this.options.mode == 'absolute') {
-      th
+      this.options.x = this.options.x - this.originalLeft;
+      this.options.y = this.options.y -
