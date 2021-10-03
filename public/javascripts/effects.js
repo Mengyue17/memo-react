@@ -387,4 +387,9 @@ Effect.Move = Class.create(Effect.Base, {
   update: function(position) {
     this.element.setStyle({
       left: (this.options.x  * position + this.originalLeft).round() + 'px',
-      top:  (th
+      top:  (this.options.y  * position + this.originalTop).round()  + 'px'
+    });
+  }
+});
+
+// for back
