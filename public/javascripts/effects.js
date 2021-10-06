@@ -392,4 +392,6 @@ Effect.Move = Class.create(Effect.Base, {
   }
 });
 
-// for back
+// for backwards compatibility
+Effect.MoveBy = function(element, toTop, toLeft) {
+  ret
