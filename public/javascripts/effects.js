@@ -394,4 +394,6 @@ Effect.Move = Class.create(Effect.Base, {
 
 // for backwards compatibility
 Effect.MoveBy = function(element, toTop, toLeft) {
-  ret
+  return new Effect.Move(element,
+    Object.extend({ x: toLeft, y: toTop }, arguments[3] || { }));
+}
