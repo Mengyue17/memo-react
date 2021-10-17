@@ -406,4 +406,5 @@ Effect.Scale = Class.create(Effect.Base, {
       scaleX: true,
       scaleY: true,
       scaleContent: true,
-      scaleF
+      scaleFromCenter: false,
+      scaleMode: 'box',        // 'box' or 'contents' or { } 
