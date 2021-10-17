@@ -396,4 +396,8 @@ Effect.Move = Class.create(Effect.Base, {
 Effect.MoveBy = function(element, toTop, toLeft) {
   return new Effect.Move(element,
     Object.extend({ x: toLeft, y: toTop }, arguments[3] || { }));
-}
+};
+
+Effect.Scale = Class.create(Effect.Base, {
+  initialize: function(element, percent) {
+    this.element
