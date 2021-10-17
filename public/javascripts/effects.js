@@ -400,4 +400,6 @@ Effect.MoveBy = function(element, toTop, toLeft) {
 
 Effect.Scale = Class.create(Effect.Base, {
   initialize: function(element, percent) {
-    this.element
+    this.element = $(element);
+    if (!this.element) throw(Effect._elementDoesNotExistError);
+    var optio
