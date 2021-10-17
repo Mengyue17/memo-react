@@ -402,4 +402,8 @@ Effect.Scale = Class.create(Effect.Base, {
   initialize: function(element, percent) {
     this.element = $(element);
     if (!this.element) throw(Effect._elementDoesNotExistError);
-    var optio
+    var options = Object.extend({
+      scaleX: true,
+      scaleY: true,
+      scaleContent: true,
+      scaleF
