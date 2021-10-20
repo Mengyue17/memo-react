@@ -407,4 +407,7 @@ Effect.Scale = Class.create(Effect.Base, {
       scaleY: true,
       scaleContent: true,
       scaleFromCenter: false,
-      scaleMode: 'box',        // 'box' or 'contents' or { } 
+      scaleMode: 'box',        // 'box' or 'contents' or { } with provided values
+      scaleFrom: 100.0,
+      scaleTo:   percent
+    }, arguments[2] || { 
