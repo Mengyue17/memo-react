@@ -414,4 +414,5 @@ Effect.Scale = Class.create(Effect.Base, {
     this.start(options);
   },
   setup: function() {
-    this.restoreAfte
+    this.restoreAfterFinish = this.options.restoreAfterFinish || false;
+    this.elementPositioning = this.element.getStyle
