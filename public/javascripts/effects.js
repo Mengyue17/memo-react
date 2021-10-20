@@ -410,4 +410,8 @@ Effect.Scale = Class.create(Effect.Base, {
       scaleMode: 'box',        // 'box' or 'contents' or { } with provided values
       scaleFrom: 100.0,
       scaleTo:   percent
-    }, arguments[2] || { 
+    }, arguments[2] || { });
+    this.start(options);
+  },
+  setup: function() {
+    this.restoreAfte
