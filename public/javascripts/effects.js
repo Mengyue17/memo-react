@@ -422,3 +422,5 @@ Effect.Scale = Class.create(Effect.Base, {
       this.originalStyle[k] = this.element.style[k];
     }.bind(this));
 
+    this.originalTop  = this.element.offsetTop;
+    this.originalLeft = this.element.o
