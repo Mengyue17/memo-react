@@ -418,4 +418,7 @@ Effect.Scale = Class.create(Effect.Base, {
     this.elementPositioning = this.element.getStyle('position');
 
     this.originalStyle = { };
-    ['top','left','width','height','fontSize']
+    ['top','left','width','height','fontSize'].each( function(k) {
+      this.originalStyle[k] = this.element.style[k];
+    }.bind(this));
+
