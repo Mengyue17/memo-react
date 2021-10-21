@@ -423,4 +423,6 @@ Effect.Scale = Class.create(Effect.Base, {
     }.bind(this));
 
     this.originalTop  = this.element.offsetTop;
-    this.originalLeft = this.element.o
+    this.originalLeft = this.element.offsetLeft;
+
+    var fontSize = this.element.getStyle('font-size') || '10
