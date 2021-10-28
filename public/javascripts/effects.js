@@ -427,4 +427,7 @@ Effect.Scale = Class.create(Effect.Base, {
 
     var fontSize = this.element.getStyle('font-size') || '100%';
     ['em','px','%','pt'].each( function(fontSizeType) {
-      if (fontSize.indexOf(fontSizeType)>0) 
+      if (fontSize.indexOf(fontSizeType)>0) {
+        this.fontSize     = parseFloat(fontSize);
+        this.fontSizeType = fontSizeType;
+      }
