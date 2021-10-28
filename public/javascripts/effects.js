@@ -431,3 +431,8 @@ Effect.Scale = Class.create(Effect.Base, {
         this.fontSize     = parseFloat(fontSize);
         this.fontSizeType = fontSizeType;
       }
+    }.bind(this));
+
+    this.factor = (this.options.scaleTo - this.options.scaleFrom)/100;
+
+    this
