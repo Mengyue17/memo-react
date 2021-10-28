@@ -435,4 +435,6 @@ Effect.Scale = Class.create(Effect.Base, {
 
     this.factor = (this.options.scaleTo - this.options.scaleFrom)/100;
 
-    this
+    this.dims = null;
+    if (this.options.scaleMode=='box')
+      this.dims = [this.element.of
