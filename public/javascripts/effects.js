@@ -437,4 +437,5 @@ Effect.Scale = Class.create(Effect.Base, {
 
     this.dims = null;
     if (this.options.scaleMode=='box')
-      this.dims = [this.element.of
+      this.dims = [this.element.offsetHeight, this.element.offsetWidth];
+    if (/^content/.test(this.options.scale
