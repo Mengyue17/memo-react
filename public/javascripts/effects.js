@@ -438,4 +438,6 @@ Effect.Scale = Class.create(Effect.Base, {
     this.dims = null;
     if (this.options.scaleMode=='box')
       this.dims = [this.element.offsetHeight, this.element.offsetWidth];
-    if (/^content/.test(this.options.scale
+    if (/^content/.test(this.options.scaleMode))
+      this.dims = [this.element.scrollHeight, this.element.scrollWidth];
+    if (!this.d
