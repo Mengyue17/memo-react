@@ -442,4 +442,6 @@ Effect.Scale = Class.create(Effect.Base, {
       this.dims = [this.element.scrollHeight, this.element.scrollWidth];
     if (!this.dims)
       this.dims = [this.options.scaleMode.originalHeight,
-               
+                   this.options.scaleMode.originalWidth];
+  },
+  update: function(position) {
