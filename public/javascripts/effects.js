@@ -446,4 +446,5 @@ Effect.Scale = Class.create(Effect.Base, {
   },
   update: function(position) {
     var currentScale = (this.options.scaleFrom/100.0) + (this.factor * position);
-    if (this.op
+    if (this.options.scaleContent && this.fontSize)
+      this.element.setStyle({fontSize: this.font
