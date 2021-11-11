@@ -445,3 +445,5 @@ Effect.Scale = Class.create(Effect.Base, {
                    this.options.scaleMode.originalWidth];
   },
   update: function(position) {
+    var currentScale = (this.options.scaleFrom/100.0) + (this.factor * position);
+    if (this.op
