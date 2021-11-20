@@ -451,3 +451,4 @@ Effect.Scale = Class.create(Effect.Base, {
     this.setDimensions(this.dims[0] * currentScale, this.dims[1] * currentScale);
   },
   finish: function(position) {
+    if (this.restoreAfterFinish) this.element.setStyle(this.originalStyle);
