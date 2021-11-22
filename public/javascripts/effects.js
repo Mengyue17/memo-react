@@ -455,4 +455,5 @@ Effect.Scale = Class.create(Effect.Base, {
   },
   setDimensions: function(height, width) {
     var d = { };
-    if (this.opti
+    if (this.options.scaleX) d.width = width.round() + 'px';
+    if (this.options.scaleY) d.height = height.round
