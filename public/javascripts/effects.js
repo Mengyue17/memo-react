@@ -456,4 +456,6 @@ Effect.Scale = Class.create(Effect.Base, {
   setDimensions: function(height, width) {
     var d = { };
     if (this.options.scaleX) d.width = width.round() + 'px';
-    if (this.options.scaleY) d.height = height.round
+    if (this.options.scaleY) d.height = height.round() + 'px';
+    if (this.options.scaleFromCenter) {
+      var topd  = (height - this.di
