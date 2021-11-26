@@ -458,4 +458,6 @@ Effect.Scale = Class.create(Effect.Base, {
     if (this.options.scaleX) d.width = width.round() + 'px';
     if (this.options.scaleY) d.height = height.round() + 'px';
     if (this.options.scaleFromCenter) {
-      var topd  = (height - this.di
+      var topd  = (height - this.dims[0])/2;
+      var leftd = (width  - this.dims[1])/2;
+      if (this.elementPositioning
