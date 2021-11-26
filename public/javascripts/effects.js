@@ -460,4 +460,6 @@ Effect.Scale = Class.create(Effect.Base, {
     if (this.options.scaleFromCenter) {
       var topd  = (height - this.dims[0])/2;
       var leftd = (width  - this.dims[1])/2;
-      if (this.elementPositioning
+      if (this.elementPositioning == 'absolute') {
+        if (this.options.scaleY) d.top = this.originalTop-topd + 'px';
+ 
