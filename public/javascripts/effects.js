@@ -465,4 +465,8 @@ Effect.Scale = Class.create(Effect.Base, {
         if (this.options.scaleX) d.left = this.originalLeft-leftd + 'px';
       } else {
         if (this.options.scaleY) d.top = -topd + 'px';
-        if (this.options.sca
+        if (this.options.scaleX) d.left = -leftd + 'px';
+      }
+    }
+    this.element.setStyle(d);
+  
