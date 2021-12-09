@@ -469,4 +469,9 @@ Effect.Scale = Class.create(Effect.Base, {
       }
     }
     this.element.setStyle(d);
-  
+  }
+});
+
+Effect.Highlight = Class.create(Effect.Base, {
+  initialize: function(element) {
+    this.elemen
