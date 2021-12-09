@@ -474,4 +474,6 @@ Effect.Scale = Class.create(Effect.Base, {
 
 Effect.Highlight = Class.create(Effect.Base, {
   initialize: function(element) {
-    this.elemen
+    this.element = $(element);
+    if (!this.element) throw(Effect._elementDoesNotExistError);
+    var options = Object.extend({ startc
