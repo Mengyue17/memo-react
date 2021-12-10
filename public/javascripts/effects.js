@@ -480,4 +480,5 @@ Effect.Highlight = Class.create(Effect.Base, {
     this.start(options);
   },
   setup: function() {
- 
+    // Prevent executing on elements not in the layout flow
+    if (this
