@@ -484,4 +484,5 @@ Effect.Highlight = Class.create(Effect.Base, {
     if (this.element.getStyle('display')=='none') { this.cancel(); return; }
     // Disable background image during the effect
     this.oldStyle = { };
-    if (!
+    if (!this.options.keepBackgroundImage) {
+      this.oldStyle.backgroundImage = this.elem
