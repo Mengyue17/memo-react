@@ -481,4 +481,5 @@ Effect.Highlight = Class.create(Effect.Base, {
   },
   setup: function() {
     // Prevent executing on elements not in the layout flow
-    if (this
+    if (this.element.getStyle('display')=='none') { this.cancel(); return; }
+    // Di
