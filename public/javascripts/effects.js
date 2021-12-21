@@ -486,4 +486,7 @@ Effect.Highlight = Class.create(Effect.Base, {
     this.oldStyle = { };
     if (!this.options.keepBackgroundImage) {
       this.oldStyle.backgroundImage = this.element.getStyle('background-image');
-      this.element.setStyle({backgroundImage: 'n
+      this.element.setStyle({backgroundImage: 'none'});
+    }
+    if (!this.options.endcolor)
+      this.options.endcolor = this.ele
