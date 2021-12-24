@@ -492,4 +492,5 @@ Effect.Highlight = Class.create(Effect.Base, {
       this.options.endcolor = this.element.getStyle('background-color').parseColor('#ffffff');
     if (!this.options.restorecolor)
       this.options.restorecolor = this.element.getStyle('background-color');
-    // init
+    // init color calculations
+    this._base  = $R(0,2).map(function(i){ return parseInt(this.options.
