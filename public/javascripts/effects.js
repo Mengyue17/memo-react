@@ -501,4 +501,7 @@ Effect.Highlight = Class.create(Effect.Base, {
       return m+((this._base[i]+(this._delta[i]*position)).round().toColorPart()); }.bind(this)) });
   },
   finish: function() {
-    this.element.setStyle(O
+    this.element.setStyle(Object.extend(this.oldStyle, {
+      backgroundColor: this.options.restorecolor
+    }));
+ 
