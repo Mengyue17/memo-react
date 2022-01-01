@@ -498,4 +498,7 @@ Effect.Highlight = Class.create(Effect.Base, {
   },
   update: function(position) {
     this.element.setStyle({backgroundColor: $R(0,2).inject('#',function(m,v,i){
-      return m+((this._base[i]+(this._delta[i]*position)).round
+      return m+((this._base[i]+(this._delta[i]*position)).round().toColorPart()); }.bind(this)) });
+  },
+  finish: function() {
+    this.element.setStyle(O
