@@ -510,4 +510,7 @@ Effect.Highlight = Class.create(Effect.Base, {
 Effect.ScrollTo = function(element) {
   var options = arguments[1] || { },
   scrollOffsets = document.viewport.getScrollOffsets(),
-  elementOffsets = $(element
+  elementOffsets = $(element).cumulativeOffset();
+
+  if (options.offset) elementOffsets[1] += options.offset;
+
