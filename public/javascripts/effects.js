@@ -504,4 +504,9 @@ Effect.Highlight = Class.create(Effect.Base, {
     this.element.setStyle(Object.extend(this.oldStyle, {
       backgroundColor: this.options.restorecolor
     }));
- 
+  }
+});
+
+Effect.ScrollTo = function(element) {
+  var options = arguments[1] || { },
+  scrollOffs
