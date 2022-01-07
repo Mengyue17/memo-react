@@ -514,3 +514,8 @@ Effect.ScrollTo = function(element) {
 
   if (options.offset) elementOffsets[1] += options.offset;
 
+  return new Effect.Tween(null,
+    scrollOffsets.top,
+    elementOffsets[1],
+    options,
+    funct
