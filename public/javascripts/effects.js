@@ -518,4 +518,8 @@ Effect.ScrollTo = function(element) {
     scrollOffsets.top,
     elementOffsets[1],
     options,
-    funct
+    function(p){ scrollTo(scrollOffsets.left, p.round()); }
+  );
+};
+
+/* ------------- combinatio
