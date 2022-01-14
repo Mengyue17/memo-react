@@ -526,4 +526,6 @@ Effect.ScrollTo = function(element) {
 
 Effect.Fade = function(element) {
   element = $(element);
-  var oldO
+  var oldOpacity = element.getInlineOpacity();
+  var options = Object.extend({
+    from: element.getOpacit
