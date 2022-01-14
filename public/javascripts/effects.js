@@ -528,4 +528,7 @@ Effect.Fade = function(element) {
   element = $(element);
   var oldOpacity = element.getInlineOpacity();
   var options = Object.extend({
-    from: element.getOpacit
+    from: element.getOpacity() || 1.0,
+    to:   0.0,
+    afterFinishInternal: function(effect) {
+      if (effect.op
