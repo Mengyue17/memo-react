@@ -522,4 +522,8 @@ Effect.ScrollTo = function(element) {
   );
 };
 
-/* ------------- combinatio
+/* ------------- combination effects ------------- */
+
+Effect.Fade = function(element) {
+  element = $(element);
+  var oldO
