@@ -531,4 +531,5 @@ Effect.Fade = function(element) {
     from: element.getOpacity() || 1.0,
     to:   0.0,
     afterFinishInternal: function(effect) {
-      if (effect.op
+      if (effect.options.to!=0) return;
+      effect.element.hide().setStyle({opacity: oldOpacity});
