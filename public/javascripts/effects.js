@@ -535,4 +535,9 @@ Effect.Fade = function(element) {
       effect.element.hide().setStyle({opacity: oldOpacity});
     }
   }, arguments[1] || { });
-  return new Effect.Opacity(element,options)
+  return new Effect.Opacity(element,options);
+};
+
+Effect.Appear = function(element) {
+  element = $(element);
+  var options = Obj
