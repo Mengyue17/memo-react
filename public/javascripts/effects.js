@@ -540,4 +540,5 @@ Effect.Fade = function(element) {
 
 Effect.Appear = function(element) {
   element = $(element);
-  var options = Obj
+  var options = Object.extend({
+  from: (element.getStyle('display') == 'none' ? 0.0 : element.getOpacity() || 0.0),
