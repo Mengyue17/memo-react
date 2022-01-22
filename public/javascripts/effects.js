@@ -549,4 +549,8 @@ Effect.Appear = function(element) {
   },
   beforeSetup: function(effect) {
     effect.element.setOpacity(effect.options.from).show();
-  }}, arguments[
+  }}, arguments[1] || { });
+  return new Effect.Opacity(element,options);
+};
+
+Effect.Puff = functi
