@@ -547,4 +547,6 @@ Effect.Appear = function(element) {
   afterFinishInternal: function(effect) {
     effect.element.forceRerendering();
   },
-  beforeSetup: function
+  beforeSetup: function(effect) {
+    effect.element.setOpacity(effect.options.from).show();
+  }}, arguments[
