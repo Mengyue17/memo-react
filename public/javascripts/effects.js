@@ -553,4 +553,7 @@ Effect.Appear = function(element) {
   return new Effect.Opacity(element,options);
 };
 
-Effect.Puff = functi
+Effect.Puff = function(element) {
+  element = $(element);
+  var oldStyle = {
+    op
