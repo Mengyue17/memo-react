@@ -556,4 +556,6 @@ Effect.Appear = function(element) {
 Effect.Puff = function(element) {
   element = $(element);
   var oldStyle = {
-    op
+    opacity: element.getInlineOpacity(),
+    position: element.getStyle('position'),
+    top:
