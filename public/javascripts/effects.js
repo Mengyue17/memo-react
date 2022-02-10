@@ -558,4 +558,7 @@ Effect.Puff = function(element) {
   var oldStyle = {
     opacity: element.getInlineOpacity(),
     position: element.getStyle('position'),
-    top:
+    top:  element.style.top,
+    left: element.style.left,
+    width: element.style.width,
+    height: 
