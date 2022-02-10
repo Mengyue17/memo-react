@@ -561,4 +561,8 @@ Effect.Puff = function(element) {
     top:  element.style.top,
     left: element.style.left,
     width: element.style.width,
-    height: 
+    height: element.style.height
+  };
+  return new Effect.Parallel(
+   [ new Effect.Scale(element, 200,
+      {
