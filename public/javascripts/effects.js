@@ -571,4 +571,5 @@ Effect.Puff = function(element) {
       beforeSetupInternal: function(effect) {
         Position.absolutize(effect.effects[0].element);
       },
-      aft
+      afterFinishInternal: function(effect) {
+         effect.effects[0].element.hide().setSty
