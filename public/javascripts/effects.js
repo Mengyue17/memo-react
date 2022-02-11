@@ -566,4 +566,6 @@ Effect.Puff = function(element) {
   return new Effect.Parallel(
    [ new Effect.Scale(element, 200,
       { sync: true, scaleFromCenter: true, scaleContent: true, restoreAfterFinish: true }),
-     new Effect.Opacity(elem
+     new Effect.Opacity(element, { sync: true, to: 0.0 } ) ],
+     Object.extend({ duration: 1.0,
+      beforeSetupInter
