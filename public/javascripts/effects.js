@@ -568,4 +568,7 @@ Effect.Puff = function(element) {
       { sync: true, scaleFromCenter: true, scaleContent: true, restoreAfterFinish: true }),
      new Effect.Opacity(element, { sync: true, to: 0.0 } ) ],
      Object.extend({ duration: 1.0,
-      beforeSetupInter
+      beforeSetupInternal: function(effect) {
+        Position.absolutize(effect.effects[0].element);
+      },
+      aft
