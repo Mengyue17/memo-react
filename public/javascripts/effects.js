@@ -572,4 +572,9 @@ Effect.Puff = function(element) {
         Position.absolutize(effect.effects[0].element);
       },
       afterFinishInternal: function(effect) {
-         effect.effects[0].element.hide().setSty
+         effect.effects[0].element.hide().setStyle(oldStyle); }
+     }, arguments[1] || { })
+   );
+};
+
+Effect.BlindUp = function(element) {
