@@ -578,3 +578,7 @@ Effect.Puff = function(element) {
 };
 
 Effect.BlindUp = function(element) {
+  element = $(element);
+  element.makeClipping();
+  return new Effect.Scale(element, 0,
+    Object
