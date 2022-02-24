@@ -584,4 +584,7 @@ Effect.BlindUp = function(element) {
     Object.extend({ scaleContent: false,
       scaleX: false,
       restoreAfterFinish: true,
-    
+      afterFinishInternal: function(effect) {
+        effect.element.hide().undoClipping();
+      }
+   
