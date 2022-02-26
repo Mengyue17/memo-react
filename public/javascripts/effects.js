@@ -593,4 +593,5 @@ Effect.BlindUp = function(element) {
 
 Effect.BlindDown = function(element) {
   element = $(element);
-  var e
+  var elementDimensions = element.getDimensions();
+  return new Effect.Scale(element, 100, Object.ext
