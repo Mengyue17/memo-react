@@ -598,4 +598,5 @@ Effect.BlindDown = function(element) {
     scaleContent: false,
     scaleX: false,
     scaleFrom: 0,
-    scaleMode: {originalHeight
+    scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
+    restoreAfterFin
