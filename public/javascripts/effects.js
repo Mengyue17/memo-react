@@ -587,4 +587,10 @@ Effect.BlindUp = function(element) {
       afterFinishInternal: function(effect) {
         effect.element.hide().undoClipping();
       }
-   
+    }, arguments[1] || { })
+  );
+};
+
+Effect.BlindDown = function(element) {
+  element = $(element);
+  var e
