@@ -601,4 +601,6 @@ Effect.BlindDown = function(element) {
     scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
     restoreAfterFinish: true,
     afterSetup: function(effect) {
-      effect.element.makeClippi
+      effect.element.makeClipping().setStyle({height: '0px'}).show();
+    },
+    afterFinishInternal: function(effect)
