@@ -599,4 +599,6 @@ Effect.BlindDown = function(element) {
     scaleX: false,
     scaleFrom: 0,
     scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
-    restoreAfterFin
+    restoreAfterFinish: true,
+    afterSetup: function(effect) {
+      effect.element.makeClippi
