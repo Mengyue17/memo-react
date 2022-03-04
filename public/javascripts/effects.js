@@ -603,4 +603,7 @@ Effect.BlindDown = function(element) {
     afterSetup: function(effect) {
       effect.element.makeClipping().setStyle({height: '0px'}).show();
     },
-    afterFinishInternal: function(effect)
+    afterFinishInternal: function(effect) {
+      effect.element.undoClipping();
+    }
+  }, arguments[1] || 
