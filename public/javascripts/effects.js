@@ -611,4 +611,6 @@ Effect.BlindDown = function(element) {
 
 Effect.SwitchOff = function(element) {
   element = $(element);
-  var oldOpaci
+  var oldOpacity = element.getInlineOpacity();
+  return new Effect.Appear(element, Object.extend({
+    durat
