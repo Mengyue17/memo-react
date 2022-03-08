@@ -606,4 +606,9 @@ Effect.BlindDown = function(element) {
     afterFinishInternal: function(effect) {
       effect.element.undoClipping();
     }
-  }, arguments[1] || 
+  }, arguments[1] || { }));
+};
+
+Effect.SwitchOff = function(element) {
+  element = $(element);
+  var oldOpaci
