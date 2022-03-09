@@ -618,4 +618,5 @@ Effect.SwitchOff = function(element) {
     transition: Effect.Transitions.flicker,
     afterFinishInternal: function(effect) {
       new Effect.Scale(effect.element, 1, {
-        duration: 0.3, scaleF
+        duration: 0.3, scaleFromCenter: true,
+        scaleX: false, scaleContent: false, restoreAfterFinish: true
