@@ -619,4 +619,6 @@ Effect.SwitchOff = function(element) {
     afterFinishInternal: function(effect) {
       new Effect.Scale(effect.element, 1, {
         duration: 0.3, scaleFromCenter: true,
-        scaleX: false, scaleContent: false, restoreAfterFinish: true
+        scaleX: false, scaleContent: false, restoreAfterFinish: true,
+        beforeSetup: function(effect) {
+          effect.element.makePositioned().makeClippi
