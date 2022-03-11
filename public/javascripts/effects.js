@@ -625,4 +625,11 @@ Effect.SwitchOff = function(element) {
         },
         afterFinishInternal: function(effect) {
           effect.element.hide().undoClipping().undoPositioned().setStyle({opacity: oldOpacity});
-       
+        }
+      });
+    }
+  }, arguments[1] || { }));
+};
+
+Effect.DropOut = function(element) {
+  element = $
