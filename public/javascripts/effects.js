@@ -621,4 +621,7 @@ Effect.SwitchOff = function(element) {
         duration: 0.3, scaleFromCenter: true,
         scaleX: false, scaleContent: false, restoreAfterFinish: true,
         beforeSetup: function(effect) {
-          effect.element.makePositioned().makeClippi
+          effect.element.makePositioned().makeClipping();
+        },
+        afterFinishInternal: function(effect) {
+     
