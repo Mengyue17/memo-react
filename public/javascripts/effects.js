@@ -624,4 +624,5 @@ Effect.SwitchOff = function(element) {
           effect.element.makePositioned().makeClipping();
         },
         afterFinishInternal: function(effect) {
-     
+          effect.element.hide().undoClipping().undoPositioned().setStyle({opacity: oldOpacity});
+       
