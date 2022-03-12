@@ -635,4 +635,6 @@ Effect.DropOut = function(element) {
   element = $(element);
   var oldStyle = {
     top: element.getStyle('top'),
-    lef
+    left: element.getStyle('left'),
+    opacity: element.getInlineOpacity() };
+ 
