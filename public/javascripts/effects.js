@@ -632,4 +632,7 @@ Effect.SwitchOff = function(element) {
 };
 
 Effect.DropOut = function(element) {
-  element = $
+  element = $(element);
+  var oldStyle = {
+    top: element.getStyle('top'),
+    lef
