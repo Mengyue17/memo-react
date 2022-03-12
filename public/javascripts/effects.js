@@ -637,4 +637,5 @@ Effect.DropOut = function(element) {
     top: element.getStyle('top'),
     left: element.getStyle('left'),
     opacity: element.getInlineOpacity() };
- 
+  return new Effect.Parallel(
+    [ new Effect.Move(element, {x: 0, y: 100, sync: true }),
