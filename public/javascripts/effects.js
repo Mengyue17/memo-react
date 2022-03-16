@@ -641,4 +641,6 @@ Effect.DropOut = function(element) {
     [ new Effect.Move(element, {x: 0, y: 100, sync: true }),
       new Effect.Opacity(element, { sync: true, to: 0.0 }) ],
     Object.extend(
-    
+      { duration: 0.5,
+        beforeSetup: function(effect) {
+          effect.effe
