@@ -645,4 +645,5 @@ Effect.DropOut = function(element) {
         beforeSetup: function(effect) {
           effect.effects[0].element.makePositioned();
         },
-        afterFinishInternal: functi
+        afterFinishInternal: function(effect) {
+          effect.effects[0].element.hide().undoPositioned().setStyle(old
