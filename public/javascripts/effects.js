@@ -643,4 +643,6 @@ Effect.DropOut = function(element) {
     Object.extend(
       { duration: 0.5,
         beforeSetup: function(effect) {
-          effect.effe
+          effect.effects[0].element.makePositioned();
+        },
+        afterFinishInternal: functi
