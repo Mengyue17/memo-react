@@ -646,4 +646,9 @@ Effect.DropOut = function(element) {
           effect.effects[0].element.makePositioned();
         },
         afterFinishInternal: function(effect) {
-          effect.effects[0].element.hide().undoPositioned().setStyle(old
+          effect.effects[0].element.hide().undoPositioned().setStyle(oldStyle);
+        }
+      }, arguments[1] || { }));
+};
+
+Effect.Shake = function(element
