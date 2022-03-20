@@ -651,4 +651,8 @@ Effect.DropOut = function(element) {
       }, arguments[1] || { }));
 };
 
-Effect.Shake = function(element
+Effect.Shake = function(element) {
+  element = $(element);
+  var options = Object.extend({
+    distance: 20,
+    duration: 0.5
