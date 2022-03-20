@@ -656,3 +656,6 @@ Effect.Shake = function(element) {
   var options = Object.extend({
     distance: 20,
     duration: 0.5
+  }, arguments[1] || {});
+  var distance = parseFloat(options.distance);
+  var spl
