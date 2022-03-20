@@ -658,4 +658,7 @@ Effect.Shake = function(element) {
     duration: 0.5
   }, arguments[1] || {});
   var distance = parseFloat(options.distance);
-  var spl
+  var split = parseFloat(options.duration) / 10.0;
+  var oldStyle = {
+    top: element.getStyle('top'),
+    l
