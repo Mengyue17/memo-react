@@ -661,4 +661,6 @@ Effect.Shake = function(element) {
   var split = parseFloat(options.duration) / 10.0;
   var oldStyle = {
     top: element.getStyle('top'),
-    l
+    left: element.getStyle('left') };
+    return new Effect.Move(element,
+      { x:  distance, y: 0, dura
