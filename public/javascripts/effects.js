@@ -665,4 +665,6 @@ Effect.Shake = function(element) {
     return new Effect.Move(element,
       { x:  distance, y: 0, duration: split, afterFinishInternal: function(effect) {
     new Effect.Move(effect.element,
-      { x: -distance*2, y: 0, duration: split*2,  afterFinishInternal: f
+      { x: -distance*2, y: 0, duration: split*2,  afterFinishInternal: function(effect) {
+    new Effect.Move(effect.element,
+      { x:  distance*2, y: 0,
