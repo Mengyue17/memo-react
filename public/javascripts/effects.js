@@ -673,4 +673,9 @@ Effect.Shake = function(element) {
     new Effect.Move(effect.element,
       { x:  distance*2, y: 0, duration: split*2,  afterFinishInternal: function(effect) {
     new Effect.Move(effect.element,
-      { x: -distance, y: 0, duration: split, afterFinishInternal: function(effe
+      { x: -distance, y: 0, duration: split, afterFinishInternal: function(effect) {
+        effect.element.undoPositioned().setStyle(oldStyle);
+  }}); }}); }}); }}); }}); }});
+};
+
+Effect
