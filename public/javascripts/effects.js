@@ -678,4 +678,6 @@ Effect.Shake = function(element) {
   }}); }}); }}); }}); }}); }});
 };
 
-Effect
+Effect.SlideDown = function(element) {
+  element = $(element).cleanWhitespace();
+  // SlideDown need to h
