@@ -689,3 +689,6 @@ Effect.SlideDown = function(element) {
     scaleFrom: window.opera ? 0 : 1,
     scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
     restoreAfterFinish: true,
+    afterSetup: function(effect) {
+      effect.element.makePositioned();
+      e
