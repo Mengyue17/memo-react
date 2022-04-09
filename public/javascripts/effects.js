@@ -687,4 +687,5 @@ Effect.SlideDown = function(element) {
     scaleContent: false,
     scaleX: false,
     scaleFrom: window.opera ? 0 : 1,
-    scaleMode: {originalHeight: elementD
+    scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
+    restoreAfterFinish: true,
