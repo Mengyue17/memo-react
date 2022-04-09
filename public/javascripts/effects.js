@@ -691,4 +691,5 @@ Effect.SlideDown = function(element) {
     restoreAfterFinish: true,
     afterSetup: function(effect) {
       effect.element.makePositioned();
-      e
+      effect.element.down().makePositioned();
+      if (window.opera) effect.element.setStyle({top
