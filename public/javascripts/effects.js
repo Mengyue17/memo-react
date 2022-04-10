@@ -696,4 +696,6 @@ Effect.SlideDown = function(element) {
       effect.element.makeClipping().setStyle({height: '0px'}).show();
     },
     afterUpdateInternal: function(effect) {
-      effect.element.down().setStyle({bo
+      effect.element.down().setStyle({bottom:
+        (effect.dims[0] - effect.element.clientHeight) + 'px' });
+   
