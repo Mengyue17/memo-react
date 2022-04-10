@@ -693,4 +693,7 @@ Effect.SlideDown = function(element) {
       effect.element.makePositioned();
       effect.element.down().makePositioned();
       if (window.opera) effect.element.setStyle({top: ''});
-      effect.element.makeClipping().setStyle({height: '0px'}).sho
+      effect.element.makeClipping().setStyle({height: '0px'}).show();
+    },
+    afterUpdateInternal: function(effect) {
+      effect.element.down().setStyle({bo
