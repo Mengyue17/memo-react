@@ -707,4 +707,5 @@ Effect.SlideDown = function(element) {
 };
 
 Effect.SlideUp = function(element) {
-  elem
+  element = $(element).cleanWhitespace();
+  var oldInnerBottom = element.down().getStyl
