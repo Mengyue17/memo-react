@@ -701,4 +701,10 @@ Effect.SlideDown = function(element) {
     },
     afterFinishInternal: function(effect) {
       effect.element.undoClipping().undoPositioned();
-      effect.element.down().undoPositioned().setStyle({bottom: oldInnerBottom}
+      effect.element.down().undoPositioned().setStyle({bottom: oldInnerBottom}); }
+    }, arguments[1] || { })
+  );
+};
+
+Effect.SlideUp = function(element) {
+  elem
