@@ -700,4 +700,5 @@ Effect.SlideDown = function(element) {
         (effect.dims[0] - effect.element.clientHeight) + 'px' });
     },
     afterFinishInternal: function(effect) {
-      effect.element.undoClipping
+      effect.element.undoClipping().undoPositioned();
+      effect.element.down().undoPositioned().setStyle({bottom: oldInnerBottom}
