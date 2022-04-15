@@ -708,4 +708,6 @@ Effect.SlideDown = function(element) {
 
 Effect.SlideUp = function(element) {
   element = $(element).cleanWhitespace();
-  var oldInnerBottom = element.down().getStyl
+  var oldInnerBottom = element.down().getStyle('bottom');
+  var elementDimensions = element.getDimensions();
+  return new Effect.Scale(element
