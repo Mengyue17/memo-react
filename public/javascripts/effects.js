@@ -710,4 +710,6 @@ Effect.SlideUp = function(element) {
   element = $(element).cleanWhitespace();
   var oldInnerBottom = element.down().getStyle('bottom');
   var elementDimensions = element.getDimensions();
-  return new Effect.Scale(element
+  return new Effect.Scale(element, window.opera ? 0 : 1,
+   Object.extend({ scaleContent: false,
+    scaleX:
