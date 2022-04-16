@@ -719,4 +719,5 @@ Effect.SlideUp = function(element) {
     restoreAfterFinish: true,
     afterSetup: function(effect) {
       effect.element.makePositioned();
-      effect.e
+      effect.element.down().makePositioned();
+      if (window.opera) effect.element.setStyle({top: 
