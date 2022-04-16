@@ -720,4 +720,7 @@ Effect.SlideUp = function(element) {
     afterSetup: function(effect) {
       effect.element.makePositioned();
       effect.element.down().makePositioned();
-      if (window.opera) effect.element.setStyle({top: 
+      if (window.opera) effect.element.setStyle({top: ''});
+      effect.element.makeClipping().show();
+    },
+    afterUpdateIn
