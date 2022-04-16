@@ -715,4 +715,6 @@ Effect.SlideUp = function(element) {
     scaleX: false,
     scaleMode: 'box',
     scaleFrom: 100,
-    scaleMode: {originalHeight: elementDimensio
+    scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
+    restoreAfterFinish: true,
+    aft
