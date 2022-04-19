@@ -725,4 +725,6 @@ Effect.SlideUp = function(element) {
     },
     afterUpdateInternal: function(effect) {
       effect.element.down().setStyle({bottom:
-      
+        (effect.dims[0] - effect.element.clientHeight) + 'px' });
+    },
+    afterFinishIn
