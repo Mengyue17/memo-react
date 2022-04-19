@@ -723,4 +723,6 @@ Effect.SlideUp = function(element) {
       if (window.opera) effect.element.setStyle({top: ''});
       effect.element.makeClipping().show();
     },
-    afterUpdateIn
+    afterUpdateInternal: function(effect) {
+      effect.element.down().setStyle({bottom:
+      
