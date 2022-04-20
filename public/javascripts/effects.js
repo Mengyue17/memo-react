@@ -727,4 +727,6 @@ Effect.SlideUp = function(element) {
       effect.element.down().setStyle({bottom:
         (effect.dims[0] - effect.element.clientHeight) + 'px' });
     },
-    afterFinishIn
+    afterFinishInternal: function(effect) {
+      effect.element.hide().undoClipping().undoPositioned();
+     
