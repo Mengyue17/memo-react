@@ -735,4 +735,6 @@ Effect.SlideUp = function(element) {
   );
 };
 
-// Bug in opera makes the TD containing this element expand for a inst
+// Bug in opera makes the TD containing this element expand for a instance after finish
+Effect.Squish = function(element) {
+  return new Effect.Scale(element, window.opera ? 1 
