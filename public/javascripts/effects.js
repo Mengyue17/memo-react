@@ -729,4 +729,6 @@ Effect.SlideUp = function(element) {
     },
     afterFinishInternal: function(effect) {
       effect.element.hide().undoClipping().undoPositioned();
-     
+      effect.element.down().undoPositioned().setStyle({bottom: oldInnerBottom});
+    }
+   }, 
