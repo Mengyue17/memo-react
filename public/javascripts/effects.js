@@ -731,4 +731,8 @@ Effect.SlideUp = function(element) {
       effect.element.hide().undoClipping().undoPositioned();
       effect.element.down().undoPositioned().setStyle({bottom: oldInnerBottom});
     }
-   }, 
+   }, arguments[1] || { })
+  );
+};
+
+// Bug in opera makes the TD containing this element expand for a inst
