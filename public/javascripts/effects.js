@@ -740,4 +740,7 @@ Effect.Squish = function(element) {
   return new Effect.Scale(element, window.opera ? 1 : 0, {
     restoreAfterFinish: true,
     beforeSetup: function(effect) {
-      
+      effect.element.makeClipping();
+    },
+    afterFinishInternal: function(effect) {
+      effect.eleme
