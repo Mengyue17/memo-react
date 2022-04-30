@@ -743,4 +743,10 @@ Effect.Squish = function(element) {
       effect.element.makeClipping();
     },
     afterFinishInternal: function(effect) {
-      effect.eleme
+      effect.element.hide().undoClipping();
+    }
+  });
+};
+
+Effect.Grow = function(element) {
+  element = $(element);
