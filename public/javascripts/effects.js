@@ -750,3 +750,6 @@ Effect.Squish = function(element) {
 
 Effect.Grow = function(element) {
   element = $(element);
+  var options = Object.extend({
+    direction: 'center',
+    moveTransition: Effect.Transitions.sinoidal
