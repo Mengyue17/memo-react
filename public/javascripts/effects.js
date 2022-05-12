@@ -752,4 +752,7 @@ Effect.Grow = function(element) {
   element = $(element);
   var options = Object.extend({
     direction: 'center',
-    moveTransition: Effect.Transitions.sinoidal
+    moveTransition: Effect.Transitions.sinoidal,
+    scaleTransition: Effect.Transitions.sinoidal,
+    opacityTransition: Effect.Transitions.full
+  }, a
