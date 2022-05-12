@@ -755,4 +755,7 @@ Effect.Grow = function(element) {
     moveTransition: Effect.Transitions.sinoidal,
     scaleTransition: Effect.Transitions.sinoidal,
     opacityTransition: Effect.Transitions.full
-  }, a
+  }, arguments[1] || { });
+  var oldStyle = {
+    top: element.style.top,
+   
