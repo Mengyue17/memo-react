@@ -758,4 +758,7 @@ Effect.Grow = function(element) {
   }, arguments[1] || { });
   var oldStyle = {
     top: element.style.top,
-   
+    left: element.style.left,
+    height: element.style.height,
+    width: element.style.width,
+    o
