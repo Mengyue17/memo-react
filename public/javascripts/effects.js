@@ -764,4 +764,8 @@ Effect.Grow = function(element) {
     opacity: element.getInlineOpacity() };
 
   var dims = element.getDimensions();
-  var in
+  var initialMoveX, initialMoveY;
+  var moveX, moveY;
+
+  switch (options.direction) {
+    case 'top-left':
