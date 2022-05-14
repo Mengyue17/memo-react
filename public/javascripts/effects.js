@@ -769,3 +769,6 @@ Effect.Grow = function(element) {
 
   switch (options.direction) {
     case 'top-left':
+      initialMoveX = initialMoveY = moveX = moveY = 0;
+      break;
+    case 't
