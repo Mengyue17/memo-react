@@ -761,4 +761,7 @@ Effect.Grow = function(element) {
     left: element.style.left,
     height: element.style.height,
     width: element.style.width,
-    o
+    opacity: element.getInlineOpacity() };
+
+  var dims = element.getDimensions();
+  var in
