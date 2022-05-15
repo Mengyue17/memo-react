@@ -771,4 +771,7 @@ Effect.Grow = function(element) {
     case 'top-left':
       initialMoveX = initialMoveY = moveX = moveY = 0;
       break;
-    case 't
+    case 'top-right':
+      initialMoveX = dims.width;
+      initialMoveY = moveY = 0;
+      move
