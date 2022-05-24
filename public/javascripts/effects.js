@@ -777,4 +777,6 @@ Effect.Grow = function(element) {
       moveX = -dims.width;
       break;
     case 'bottom-left':
-      initialMoveX = moveX 
+      initialMoveX = moveX = 0;
+      initialMoveY = dims.height;
+      moveY = -dims.hei
