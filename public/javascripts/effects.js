@@ -790,4 +790,9 @@ Effect.Grow = function(element) {
     case 'center':
       initialMoveX = dims.width / 2;
       initialMoveY = dims.height / 2;
-      m
+      moveX = -dims.width / 2;
+      moveY = -dims.height / 2;
+      break;
+  }
+
+  return new Ef
