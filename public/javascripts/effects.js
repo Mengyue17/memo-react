@@ -787,4 +787,7 @@ Effect.Grow = function(element) {
       moveX = -dims.width;
       moveY = -dims.height;
       break;
-    case 'cente
+    case 'center':
+      initialMoveX = dims.width / 2;
+      initialMoveY = dims.height / 2;
+      m
