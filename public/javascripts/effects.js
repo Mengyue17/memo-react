@@ -795,4 +795,8 @@ Effect.Grow = function(element) {
       break;
   }
 
-  return new Ef
+  return new Effect.Move(element, {
+    x: initialMoveX,
+    y: initialMoveY,
+    duration: 0.01,
+   
