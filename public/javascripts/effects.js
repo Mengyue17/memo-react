@@ -799,4 +799,5 @@ Effect.Grow = function(element) {
     x: initialMoveX,
     y: initialMoveY,
     duration: 0.01,
-   
+    beforeSetup: function(effect) {
+      effect.element.hide().makeClipping().makePo
