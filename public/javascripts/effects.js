@@ -800,4 +800,7 @@ Effect.Grow = function(element) {
     y: initialMoveY,
     duration: 0.01,
     beforeSetup: function(effect) {
-      effect.element.hide().makeClipping().makePo
+      effect.element.hide().makeClipping().makePositioned();
+    },
+    afterFinishInternal: function(effect) {
+      new Effect.Parallel
