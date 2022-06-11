@@ -803,4 +803,5 @@ Effect.Grow = function(element) {
       effect.element.hide().makeClipping().makePositioned();
     },
     afterFinishInternal: function(effect) {
-      new Effect.Parallel
+      new Effect.Parallel(
+        [ new Effect.Opacity(effect.element, { sync: true, to: 1.0, from: 0.0, transition: options
