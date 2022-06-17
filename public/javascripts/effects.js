@@ -806,4 +806,6 @@ Effect.Grow = function(element) {
       new Effect.Parallel(
         [ new Effect.Opacity(effect.element, { sync: true, to: 1.0, from: 0.0, transition: options.opacityTransition }),
           new Effect.Move(effect.element, { x: moveX, y: moveY, sync: true, transition: options.moveTransition }),
-          new Effect.Scale(effect.element, 1
+          new Effect.Scale(effect.element, 100, {
+            scaleMode: { originalHeight: dims.height, originalWidth: dims.width },
+  
