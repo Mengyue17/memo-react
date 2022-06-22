@@ -808,4 +808,4 @@ Effect.Grow = function(element) {
           new Effect.Move(effect.element, { x: moveX, y: moveY, sync: true, transition: options.moveTransition }),
           new Effect.Scale(effect.element, 100, {
             scaleMode: { originalHeight: dims.height, originalWidth: dims.width },
-  
+            sync: true, scaleFrom: window.opera ? 1 : 0, transition: options.scaleTransition, re
