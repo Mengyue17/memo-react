@@ -811,4 +811,6 @@ Effect.Grow = function(element) {
             sync: true, scaleFrom: window.opera ? 1 : 0, transition: options.scaleTransition, restoreAfterFinish: true})
         ], Object.extend({
              beforeSetup: function(effect) {
-  
+               effect.effects[0].element.setStyle({height: '0px'}).show();
+             },
+       
