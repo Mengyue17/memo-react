@@ -813,4 +813,5 @@ Effect.Grow = function(element) {
              beforeSetup: function(effect) {
                effect.effects[0].element.setStyle({height: '0px'}).show();
              },
-       
+             afterFinishInternal: function(effect) {
+               effect.effects[0].element.undoClipping(
