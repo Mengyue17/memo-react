@@ -817,4 +817,10 @@ Effect.Grow = function(element) {
                effect.effects[0].element.undoClipping().undoPositioned().setStyle(oldStyle);
              }
            }, options)
- 
+      );
+    }
+  });
+};
+
+Effect.Shrink = function(element) {
+  element = $(element);
