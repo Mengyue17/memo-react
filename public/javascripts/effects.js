@@ -828,4 +828,7 @@ Effect.Shrink = function(element) {
     direction: 'center',
     moveTransition: Effect.Transitions.sinoidal,
     scaleTransition: Effect.Transitions.sinoidal,
-    opac
+    opacityTransition: Effect.Transitions.none
+  }, arguments[1] || { });
+  var oldStyle = {
+    top: element.s
