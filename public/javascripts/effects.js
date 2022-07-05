@@ -824,3 +824,6 @@ Effect.Grow = function(element) {
 
 Effect.Shrink = function(element) {
   element = $(element);
+  var options = Object.extend({
+    direction: 'center',
+    moveTransition: Eff
