@@ -826,4 +826,6 @@ Effect.Shrink = function(element) {
   element = $(element);
   var options = Object.extend({
     direction: 'center',
-    moveTransition: Eff
+    moveTransition: Effect.Transitions.sinoidal,
+    scaleTransition: Effect.Transitions.sinoidal,
+    opac
