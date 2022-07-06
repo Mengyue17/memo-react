@@ -834,4 +834,7 @@ Effect.Shrink = function(element) {
     top: element.style.top,
     left: element.style.left,
     height: element.style.height,
-    width: element
+    width: element.style.width,
+    opacity: element.getInlineOpacity() };
+
+  var dims = elem
