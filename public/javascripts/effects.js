@@ -831,4 +831,7 @@ Effect.Shrink = function(element) {
     opacityTransition: Effect.Transitions.none
   }, arguments[1] || { });
   var oldStyle = {
-    top: element.s
+    top: element.style.top,
+    left: element.style.left,
+    height: element.style.height,
+    width: element
