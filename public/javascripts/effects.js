@@ -850,4 +850,7 @@ Effect.Shrink = function(element) {
       break;
     case 'bottom-left':
       moveX = 0;
-      moveY = dims
+      moveY = dims.height;
+      break;
+    case 'bottom-right':
+      moveX = dims.
