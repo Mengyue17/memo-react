@@ -857,4 +857,10 @@ Effect.Shrink = function(element) {
       moveY = dims.height;
       break;
     case 'center':
-      moveX = dims.widt
+      moveX = dims.width / 2;
+      moveY = dims.height / 2;
+      break;
+  }
+
+  return new Effect.Parallel(
+  
