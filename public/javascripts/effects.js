@@ -863,4 +863,4 @@ Effect.Shrink = function(element) {
   }
 
   return new Effect.Parallel(
-  
+    [ new Effect.Opacity(element, { sync: true, to: 0.0, from: 1.0, transition: options
