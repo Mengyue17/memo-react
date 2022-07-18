@@ -864,4 +864,5 @@ Effect.Shrink = function(element) {
 
   return new Effect.Parallel(
     [ new Effect.Opacity(element, { sync: true, to: 0.0, from: 1.0, transition: options.opacityTransition }),
-      new Effect.Scale(element, window.opera ? 1 : 0,
+      new Effect.Scale(element, window.opera ? 1 : 0, { sync: true, transition: options.scaleTransition, restoreAfterFinish: true}),
+      new Effect.Move(element, 
