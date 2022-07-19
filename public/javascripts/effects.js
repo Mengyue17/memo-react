@@ -868,4 +868,7 @@ Effect.Shrink = function(element) {
       new Effect.Move(element, { x: moveX, y: moveY, sync: true, transition: options.moveTransition })
     ], Object.extend({
          beforeStartInternal: function(effect) {
-           effect.effects[0].element.makePositioned
+           effect.effects[0].element.makePositioned().makeClipping();
+         },
+         afterFinishInternal: function(effect) {
+           effect
