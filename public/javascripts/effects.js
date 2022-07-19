@@ -867,3 +867,5 @@ Effect.Shrink = function(element) {
       new Effect.Scale(element, window.opera ? 1 : 0, { sync: true, transition: options.scaleTransition, restoreAfterFinish: true}),
       new Effect.Move(element, { x: moveX, y: moveY, sync: true, transition: options.moveTransition })
     ], Object.extend({
+         beforeStartInternal: function(effect) {
+           effect.effects[0].element.makePositioned
