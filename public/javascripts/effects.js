@@ -871,4 +871,5 @@ Effect.Shrink = function(element) {
            effect.effects[0].element.makePositioned().makeClipping();
          },
          afterFinishInternal: function(effect) {
-           effect
+           effect.effects[0].element.hide().undoClipping().undoPositioned().setStyle(oldStyle); }
+       }
