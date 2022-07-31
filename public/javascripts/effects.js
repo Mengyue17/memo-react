@@ -878,4 +878,5 @@ Effect.Shrink = function(element) {
 
 Effect.Pulsate = function(element) {
   element = $(element);
-  var 
+  var options    = arguments[1] || { },
+    oldOpacity = element.getInline
