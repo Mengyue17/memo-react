@@ -872,4 +872,10 @@ Effect.Shrink = function(element) {
          },
          afterFinishInternal: function(effect) {
            effect.effects[0].element.hide().undoClipping().undoPositioned().setStyle(oldStyle); }
-       }
+       }, options)
+  );
+};
+
+Effect.Pulsate = function(element) {
+  element = $(element);
+  var 
