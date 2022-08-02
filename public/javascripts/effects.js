@@ -881,4 +881,5 @@ Effect.Pulsate = function(element) {
   var options    = arguments[1] || { },
     oldOpacity = element.getInlineOpacity(),
     transition = options.transition || Effect.Transitions.linear,
-   
+    reverser   = function(pos){
+      return 1 - transition((-Math.cos((pos*(options.pulses||5)*2)*Math.P
