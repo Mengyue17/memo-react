@@ -886,4 +886,5 @@ Effect.Pulsate = function(element) {
     };
 
   return new Effect.Opacity(element,
-    Obj
+    Object.extend(Object.extend({  duration: 2.0, from: 0,
+      afterFinishInternal: function(effec
