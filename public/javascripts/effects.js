@@ -897,4 +897,7 @@ Effect.Fold = function(element) {
     top: element.style.top,
     left: element.style.left,
     width: element.style.width,
-    height: element.style.h
+    height: element.style.height };
+  element.makeClipping();
+  return new Effect.Scale(element, 5, Object.extend({
+    sca
