@@ -894,4 +894,7 @@ Effect.Pulsate = function(element) {
 Effect.Fold = function(element) {
   element = $(element);
   var oldStyle = {
-    top: el
+    top: element.style.top,
+    left: element.style.left,
+    width: element.style.width,
+    height: element.style.h
