@@ -900,4 +900,6 @@ Effect.Fold = function(element) {
     height: element.style.height };
   element.makeClipping();
   return new Effect.Scale(element, 5, Object.extend({
-    sca
+    scaleContent: false,
+    scaleX: false,
+    afterFinishInternal: function(effe
