@@ -902,4 +902,7 @@ Effect.Fold = function(element) {
   return new Effect.Scale(element, 5, Object.extend({
     scaleContent: false,
     scaleX: false,
-    afterFinishInternal: function(effe
+    afterFinishInternal: function(effect) {
+    new Effect.Scale(element, 1, {
+      scaleContent: false,
+      scaleY: false,
