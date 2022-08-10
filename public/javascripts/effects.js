@@ -906,3 +906,5 @@ Effect.Fold = function(element) {
     new Effect.Scale(element, 1, {
       scaleContent: false,
       scaleY: false,
+      afterFinishInternal: function(effect) {
+        effect.element.hide().undoClipping().setStyle(oldS
