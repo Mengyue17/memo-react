@@ -907,4 +907,10 @@ Effect.Fold = function(element) {
       scaleContent: false,
       scaleY: false,
       afterFinishInternal: function(effect) {
-        effect.element.hide().undoClipping().setStyle(oldS
+        effect.element.hide().undoClipping().setStyle(oldStyle);
+      } });
+  }}, arguments[1] || { }));
+};
+
+Effect.Morph = Class.create(Effect.Base, {
+ 
