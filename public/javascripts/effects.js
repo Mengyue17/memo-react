@@ -913,4 +913,6 @@ Effect.Fold = function(element) {
 };
 
 Effect.Morph = Class.create(Effect.Base, {
- 
+  initialize: function(element) {
+    this.element = $(element);
+    if (!this.element) throw(Effec
