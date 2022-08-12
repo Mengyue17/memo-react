@@ -918,4 +918,6 @@ Effect.Morph = Class.create(Effect.Base, {
     if (!this.element) throw(Effect._elementDoesNotExistError);
     var options = Object.extend({
       style: { }
-    }, argum
+    }, arguments[1] || { });
+
+    if (!Object.isString(options.style)) this.style = $H(option
