@@ -923,4 +923,7 @@ Effect.Morph = Class.create(Effect.Base, {
     if (!Object.isString(options.style)) this.style = $H(options.style);
     else {
       if (options.style.include(':'))
-        this.style = options.style.
+        this.style = options.style.parseStyle();
+      else {
+        this.element.addClassName(options.style);
+        th
