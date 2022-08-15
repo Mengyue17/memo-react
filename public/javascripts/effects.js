@@ -927,4 +927,6 @@ Effect.Morph = Class.create(Effect.Base, {
       else {
         this.element.addClassName(options.style);
         this.style = $H(this.element.getStyles());
-        this.element.removeClas
+        this.element.removeClassName(options.style);
+        var css = this.element.getStyles();
+        this.style = this.style.reject(functio
