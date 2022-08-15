@@ -929,4 +929,7 @@ Effect.Morph = Class.create(Effect.Base, {
         this.style = $H(this.element.getStyles());
         this.element.removeClassName(options.style);
         var css = this.element.getStyles();
-        this.style = this.style.reject(functio
+        this.style = this.style.reject(function(style) {
+          return style.value == css[style.key];
+        });
+        options.afte
