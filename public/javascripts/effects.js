@@ -933,4 +933,6 @@ Effect.Morph = Class.create(Effect.Base, {
           return style.value == css[style.key];
         });
         options.afterFinishInternal = function(effect) {
-          effect.element.addClassName(effect.options
+          effect.element.addClassName(effect.options.style);
+          effect.transforms.each(function(transform) {
+            effect.element.style[transfo
