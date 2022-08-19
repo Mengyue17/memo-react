@@ -935,4 +935,10 @@ Effect.Morph = Class.create(Effect.Base, {
         options.afterFinishInternal = function(effect) {
           effect.element.addClassName(effect.options.style);
           effect.transforms.each(function(transform) {
-            effect.element.style[transfo
+            effect.element.style[transform.style] = '';
+          });
+        };
+      }
+    }
+    this.start(options);
+  }
