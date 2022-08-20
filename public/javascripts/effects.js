@@ -941,4 +941,8 @@ Effect.Morph = Class.create(Effect.Base, {
       }
     }
     this.start(options);
-  }
+  },
+
+  setup: function(){
+    function parseColor(color){
+      if (!color || ['rgba(0, 0, 0,
