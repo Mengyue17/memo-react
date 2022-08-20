@@ -945,4 +945,6 @@ Effect.Morph = Class.create(Effect.Base, {
 
   setup: function(){
     function parseColor(color){
-      if (!color || ['rgba(0, 0, 0,
+      if (!color || ['rgba(0, 0, 0, 0)','transparent'].include(color)) color = '#ffffff';
+      color = color.parseColor();
+      return 
