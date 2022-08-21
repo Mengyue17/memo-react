@@ -947,4 +947,7 @@ Effect.Morph = Class.create(Effect.Base, {
     function parseColor(color){
       if (!color || ['rgba(0, 0, 0, 0)','transparent'].include(color)) color = '#ffffff';
       color = color.parseColor();
-      return 
+      return $R(0,2).map(function(i){
+        return parseInt( color.slice(i*2+1,i*2+3), 16 );
+      });
+  
