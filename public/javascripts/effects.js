@@ -950,4 +950,6 @@ Effect.Morph = Class.create(Effect.Base, {
       return $R(0,2).map(function(i){
         return parseInt( color.slice(i*2+1,i*2+3), 16 );
       });
-  
+    }
+    this.transforms = this.style.map(function(pair){
+      var property = pair[0], value = pair[1]
