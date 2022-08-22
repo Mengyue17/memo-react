@@ -952,4 +952,7 @@ Effect.Morph = Class.create(Effect.Base, {
       });
     }
     this.transforms = this.style.map(function(pair){
-      var property = pair[0], value = pair[1]
+      var property = pair[0], value = pair[1], unit = null;
+
+      if (value.parseColor('#zzzzzz') != '#zzzzzz') {
+        value = value.parseCol
