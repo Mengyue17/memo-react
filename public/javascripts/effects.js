@@ -955,4 +955,7 @@ Effect.Morph = Class.create(Effect.Base, {
       var property = pair[0], value = pair[1], unit = null;
 
       if (value.parseColor('#zzzzzz') != '#zzzzzz') {
-        value = value.parseCol
+        value = value.parseColor();
+        unit  = 'color';
+      } else if (property == 'opacity') {
+        value = parseFloat(v
