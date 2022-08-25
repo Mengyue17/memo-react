@@ -958,4 +958,6 @@ Effect.Morph = Class.create(Effect.Base, {
         value = value.parseColor();
         unit  = 'color';
       } else if (property == 'opacity') {
-        value = parseFloat(v
+        value = parseFloat(value);
+        if (Prototype.Browser.IE && (!this.element.currentStyle.hasLayout))
+       
