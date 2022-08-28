@@ -962,4 +962,6 @@ Effect.Morph = Class.create(Effect.Base, {
         if (Prototype.Browser.IE && (!this.element.currentStyle.hasLayout))
           this.element.setStyle({zoom: 1});
       } else if (Element.CSS_LENGTH.test(value)) {
-          va
+          var components = value.match(/^([\+\-]?[0-9\.]+)(.*)$/);
+          value = parseFloat(components[1]);
+          u
