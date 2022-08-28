@@ -960,4 +960,6 @@ Effect.Morph = Class.create(Effect.Base, {
       } else if (property == 'opacity') {
         value = parseFloat(value);
         if (Prototype.Browser.IE && (!this.element.currentStyle.hasLayout))
-       
+          this.element.setStyle({zoom: 1});
+      } else if (Element.CSS_LENGTH.test(value)) {
+          va
