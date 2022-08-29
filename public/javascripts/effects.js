@@ -964,4 +964,7 @@ Effect.Morph = Class.create(Effect.Base, {
       } else if (Element.CSS_LENGTH.test(value)) {
           var components = value.match(/^([\+\-]?[0-9\.]+)(.*)$/);
           value = parseFloat(components[1]);
-          u
+          unit = (components.length == 3) ? components[2] : null;
+      }
+
+      var originalValue =
