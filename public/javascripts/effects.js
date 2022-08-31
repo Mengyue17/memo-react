@@ -967,4 +967,7 @@ Effect.Morph = Class.create(Effect.Base, {
           unit = (components.length == 3) ? components[2] : null;
       }
 
-      var originalValue =
+      var originalValue = this.element.getStyle(property);
+      return {
+        style: property.camelize(),
+        or
