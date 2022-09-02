@@ -970,4 +970,6 @@ Effect.Morph = Class.create(Effect.Base, {
       var originalValue = this.element.getStyle(property);
       return {
         style: property.camelize(),
-        originalValue: unit=='color' ? parseColor(originalValue) : parseFloat(originalValue |
+        originalValue: unit=='color' ? parseColor(originalValue) : parseFloat(originalValue || 0),
+        targetValue: unit=='color' ? parseColor(value) : value,
+    
