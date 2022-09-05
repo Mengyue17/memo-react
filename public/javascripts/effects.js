@@ -975,4 +975,7 @@ Effect.Morph = Class.create(Effect.Base, {
         unit: unit
       };
     }.bind(this)).reject(function(transform){
-      return 
+      return (
+        (transform.originalValue == transform.targetValue) ||
+        (
+         
