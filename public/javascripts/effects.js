@@ -978,4 +978,5 @@ Effect.Morph = Class.create(Effect.Base, {
       return (
         (transform.originalValue == transform.targetValue) ||
         (
-         
+          transform.unit != 'color' &&
+          (isNaN(transform.originalValue) || is
