@@ -979,4 +979,9 @@ Effect.Morph = Class.create(Effect.Base, {
         (transform.originalValue == transform.targetValue) ||
         (
           transform.unit != 'color' &&
-          (isNaN(transform.originalValue) || is
+          (isNaN(transform.originalValue) || isNaN(transform.targetValue))
+        )
+      );
+    });
+  },
+  update: function(pos
