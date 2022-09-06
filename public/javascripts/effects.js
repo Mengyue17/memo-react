@@ -984,4 +984,7 @@ Effect.Morph = Class.create(Effect.Base, {
       );
     });
   },
-  update: function(pos
+  update: function(position) {
+    var style = { }, transform, i = this.transforms.length;
+    while(i--)
+      sty
