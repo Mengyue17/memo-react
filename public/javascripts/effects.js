@@ -990,4 +990,5 @@ Effect.Morph = Class.create(Effect.Base, {
       style[(transform = this.transforms[i]).style] =
         transform.unit=='color' ? '#'+
           (Math.round(transform.originalValue[0]+
-            (tra
+            (transform.targetValue[0]-transform.originalValue[0])*position)).toColorPart() +
+          (Math.round(tra
