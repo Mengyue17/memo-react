@@ -996,4 +996,5 @@ Effect.Morph = Class.create(Effect.Base, {
           (Math.round(transform.originalValue[2]+
             (transform.targetValue[2]-transform.originalValue[2])*position)).toColorPart() :
         (transform.originalValue +
-          (transform.targetValue - transform.or
+          (transform.targetValue - transform.originalValue) * position).toFixed(3) +
+            (transform.unit === null ? '' : trans
