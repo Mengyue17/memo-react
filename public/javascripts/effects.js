@@ -997,4 +997,9 @@ Effect.Morph = Class.create(Effect.Base, {
             (transform.targetValue[2]-transform.originalValue[2])*position)).toColorPart() :
         (transform.originalValue +
           (transform.targetValue - transform.originalValue) * position).toFixed(3) +
-            (transform.unit === null ? '' : trans
+            (transform.unit === null ? '' : transform.unit);
+    this.element.setStyle(style, true);
+  }
+});
+
+Effect.Transform = Class.create({
