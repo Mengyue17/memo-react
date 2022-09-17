@@ -1005,4 +1005,8 @@ Effect.Morph = Class.create(Effect.Base, {
 Effect.Transform = Class.create({
   initialize: function(tracks){
     this.tracks  = [];
-    this.options = arguments[1]
+    this.options = arguments[1] || { };
+    this.addTracks(tracks);
+  },
+  addTracks: function(tracks){
+    t
