@@ -1009,4 +1009,6 @@ Effect.Transform = Class.create({
     this.addTracks(tracks);
   },
   addTracks: function(tracks){
-    t
+    tracks.each(function(track){
+      track = $H(track);
+    
