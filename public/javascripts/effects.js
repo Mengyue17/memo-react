@@ -1011,4 +1011,6 @@ Effect.Transform = Class.create({
   addTracks: function(tracks){
     tracks.each(function(track){
       track = $H(track);
-    
+      var data = track.values().first();
+      this.tracks.push($H({
+        ids:     track.keys().f
