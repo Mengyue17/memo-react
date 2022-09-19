@@ -1013,4 +1013,7 @@ Effect.Transform = Class.create({
       track = $H(track);
       var data = track.values().first();
       this.tracks.push($H({
-        ids:     track.keys().f
+        ids:     track.keys().first(),
+        effect:  Effect.Morph,
+        options: { style: data }
+      }));
