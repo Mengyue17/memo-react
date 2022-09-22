@@ -1017,3 +1017,8 @@ Effect.Transform = Class.create({
         effect:  Effect.Morph,
         options: { style: data }
       }));
+    }.bind(this));
+    return this;
+  },
+  play: function(){
+    return new Effect.Parallel
