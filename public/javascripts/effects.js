@@ -1023,4 +1023,5 @@ Effect.Transform = Class.create({
   play: function(){
     return new Effect.Parallel(
       this.tracks.map(function(track){
-        var ids = track.get('ids'), effect = track.get('effect'), 
+        var ids = track.get('ids'), effect = track.get('effect'), options = track.get('options');
+        var elements = [$(ids) || $$(ids)].flatten()
