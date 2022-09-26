@@ -1025,4 +1025,11 @@ Effect.Transform = Class.create({
       this.tracks.map(function(track){
         var ids = track.get('ids'), effect = track.get('effect'), options = track.get('options');
         var elements = [$(ids) || $$(ids)].flatten();
-        return elements.map(function(e){ return new effect(e, Object.extend({ sync:tru
+        return elements.map(function(e){ return new effect(e, Object.extend({ sync:true }, options)) });
+      }).flatten(),
+      this.options
+    );
+  }
+});
+
+Element.C
