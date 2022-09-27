@@ -1032,4 +1032,5 @@ Effect.Transform = Class.create({
   }
 });
 
-Element.C
+Element.CSS_PROPERTIES = $w(
+  'backgroundColor backgroundPosition borderBottomColor borderBot
