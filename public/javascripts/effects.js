@@ -1037,4 +1037,5 @@ Element.CSS_PROPERTIES = $w(
   'borderBottomWidth borderLeftColor borderLeftStyle borderLeftWidth ' +
   'borderRightColor borderRightStyle borderRightWidth borderSpacing ' +
   'borderTopColor borderTopStyle borderTopWidth bottom clip color ' +
-  'fontSize fontWeight height left letterSpacing
+  'fontSize fontWeight height left letterSpacing lineHeight ' +
+  'marginBottom marginLeft marginRight marginTop markerOffset ma
