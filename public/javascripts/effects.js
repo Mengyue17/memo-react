@@ -1040,3 +1040,5 @@ Element.CSS_PROPERTIES = $w(
   'fontSize fontWeight height left letterSpacing lineHeight ' +
   'marginBottom marginLeft marginRight marginTop markerOffset maxHeight '+
   'maxWidth minHeight minWidth opacity outlineColor outlineOffset ' +
+  'outlineWidth paddingBottom paddingLeft paddingRight paddingTop ' +
+  'right textIndent top widt
