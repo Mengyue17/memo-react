@@ -1041,4 +1041,6 @@ Element.CSS_PROPERTIES = $w(
   'marginBottom marginLeft marginRight marginTop markerOffset maxHeight '+
   'maxWidth minHeight minWidth opacity outlineColor outlineOffset ' +
   'outlineWidth paddingBottom paddingLeft paddingRight paddingTop ' +
-  'right textIndent top widt
+  'right textIndent top width wordSpacing zIndex');
+
+Element.CSS_LENGTH = /^(([\+\-]?[0-9\.]+)(em|ex|px|in|cm|mm|pt|pc|\%))
