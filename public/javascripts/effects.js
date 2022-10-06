@@ -1051,4 +1051,5 @@ String.prototype.parseStyle = function(){
   if (Prototype.Browser.WebKit)
     style = new Element('div',{style:this}).style;
   else {
-    String.__parseStyleEl
+    String.__parseStyleElement.innerHTML = '<div style="' + this + '"></div>';
+    styl
