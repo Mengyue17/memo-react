@@ -1049,4 +1049,6 @@ String.__parseStyleElement = document.createElement('div');
 String.prototype.parseStyle = function(){
   var style, styleRules = $H();
   if (Prototype.Browser.WebKit)
-    sty
+    style = new Element('div',{style:this}).style;
+  else {
+    String.__parseStyleEl
