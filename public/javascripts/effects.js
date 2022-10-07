@@ -1052,4 +1052,7 @@ String.prototype.parseStyle = function(){
     style = new Element('div',{style:this}).style;
   else {
     String.__parseStyleElement.innerHTML = '<div style="' + this + '"></div>';
-    styl
+    style = String.__parseStyleElement.childNodes[0].style;
+  }
+
+  Element.CSS_PROPERTIES.e
