@@ -1055,4 +1055,6 @@ String.prototype.parseStyle = function(){
     style = String.__parseStyleElement.childNodes[0].style;
   }
 
-  Element.CSS_PROPERTIES.e
+  Element.CSS_PROPERTIES.each(function(property){
+    if (style[property]) styleRules.set(property, style[property]);
+  });
