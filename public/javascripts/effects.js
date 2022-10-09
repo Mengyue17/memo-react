@@ -1058,3 +1058,6 @@ String.prototype.parseStyle = function(){
   Element.CSS_PROPERTIES.each(function(property){
     if (style[property]) styleRules.set(property, style[property]);
   });
+
+  if (Prototype.Browser.IE && this.include('opacity'))
+    styleRules.set('opacity', this
