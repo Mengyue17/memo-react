@@ -1060,4 +1060,9 @@ String.prototype.parseStyle = function(){
   });
 
   if (Prototype.Browser.IE && this.include('opacity'))
-    styleRules.set('opacity', this
+    styleRules.set('opacity', this.match(/opacity:\s*((?:0|1)?(?:\.\d*)?)/)[1]);
+
+  return styleRules;
+};
+
+if (document.default
