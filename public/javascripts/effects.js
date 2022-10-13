@@ -1065,4 +1065,6 @@ String.prototype.parseStyle = function(){
   return styleRules;
 };
 
-if (document.default
+if (document.defaultView && document.defaultView.getComputedStyle) {
+  Element.getStyles = function(element) {
+    va
