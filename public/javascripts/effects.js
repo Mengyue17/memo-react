@@ -1068,4 +1068,5 @@ String.prototype.parseStyle = function(){
 if (document.defaultView && document.defaultView.getComputedStyle) {
   Element.getStyles = function(element) {
     var css = document.defaultView.getComputedStyle($(element), null);
-    return Element.CSS_PRO
+    return Element.CSS_PROPERTIES.inject({ }, function(styles, property) {
+      styles[property] = css[property
