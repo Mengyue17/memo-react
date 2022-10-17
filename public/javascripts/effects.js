@@ -1075,4 +1075,6 @@ if (document.defaultView && document.defaultView.getComputedStyle) {
   };
 } else {
   Element.getStyles = function(element) {
-    e
+    element = $(element);
+    var css = element.currentStyle, styles;
+    styles = Element.CSS_PRO
