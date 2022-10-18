@@ -1078,4 +1078,7 @@ if (document.defaultView && document.defaultView.getComputedStyle) {
     element = $(element);
     var css = element.currentStyle, styles;
     styles = Element.CSS_PROPERTIES.inject({ }, function(results, property) {
-      results[property] = css[prope
+      results[property] = css[property];
+      return results;
+    });
+    if (!styles.opacity) styles.opacity
