@@ -1077,4 +1077,5 @@ if (document.defaultView && document.defaultView.getComputedStyle) {
   Element.getStyles = function(element) {
     element = $(element);
     var css = element.currentStyle, styles;
-    styles = Element.CSS_PRO
+    styles = Element.CSS_PROPERTIES.inject({ }, function(results, property) {
+      results[property] = css[prope
