@@ -1087,4 +1087,6 @@ if (document.defaultView && document.defaultView.getComputedStyle) {
 }
 
 Effect.Methods = {
-  morph: function
+  morph: function(element, style) {
+    element = $(element);
+    new Effect.Morph(element, Object.extend({ 
