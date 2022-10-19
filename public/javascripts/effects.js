@@ -1081,4 +1081,10 @@ if (document.defaultView && document.defaultView.getComputedStyle) {
       results[property] = css[property];
       return results;
     });
-    if (!styles.opacity) styles.opacity
+    if (!styles.opacity) styles.opacity = element.getOpacity();
+    return styles;
+  };
+}
+
+Effect.Methods = {
+  morph: function
