@@ -1092,4 +1092,6 @@ Effect.Methods = {
     new Effect.Morph(element, Object.extend({ style: style }, arguments[2] || { }));
     return element;
   },
-  visualEffect: fun
+  visualEffect: function(element, effect, options) {
+    element = $(element);
+    var s = effect.dasheri
