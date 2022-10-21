@@ -1089,4 +1089,7 @@ if (document.defaultView && document.defaultView.getComputedStyle) {
 Effect.Methods = {
   morph: function(element, style) {
     element = $(element);
-    new Effect.Morph(element, Object.extend({ 
+    new Effect.Morph(element, Object.extend({ style: style }, arguments[2] || { }));
+    return element;
+  },
+  visualEffect: fun
