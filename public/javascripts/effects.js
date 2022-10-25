@@ -1099,4 +1099,10 @@ Effect.Methods = {
     return element;
   },
   highlight: function(element, options) {
-    e
+    element = $(element);
+    new Effect.Highlight(element, options);
+    return element;
+  }
+};
+
+$
