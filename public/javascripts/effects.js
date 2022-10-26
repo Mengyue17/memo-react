@@ -1105,4 +1105,5 @@ Effect.Methods = {
   }
 };
 
-$
+$w('fade appear grow shrink fold blindUp blindDown slideUp slideDown '+
+  'pulsate shake puff squish switc
