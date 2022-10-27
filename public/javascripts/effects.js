@@ -1106,4 +1106,6 @@ Effect.Methods = {
 };
 
 $w('fade appear grow shrink fold blindUp blindDown slideUp slideDown '+
-  'pulsate shake puff squish switc
+  'pulsate shake puff squish switchOff dropOut').each(
+  function(effect) {
+    Effect.Methods[effect] = function(ele
