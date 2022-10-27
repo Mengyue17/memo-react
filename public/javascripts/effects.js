@@ -1108,4 +1108,6 @@ Effect.Methods = {
 $w('fade appear grow shrink fold blindUp blindDown slideUp slideDown '+
   'pulsate shake puff squish switchOff dropOut').each(
   function(effect) {
-    Effect.Methods[effect] = function(ele
+    Effect.Methods[effect] = function(element, options){
+      element = $(element);
+      Effect[effect.char
