@@ -1110,4 +1110,8 @@ $w('fade appear grow shrink fold blindUp blindDown slideUp slideDown '+
   function(effect) {
     Effect.Methods[effect] = function(element, options){
       element = $(element);
-      Effect[effect.char
+      Effect[effect.charAt(0).toUpperCase() + effect.substring(1)](element, options);
+      return element;
+    };
+  }
+);
