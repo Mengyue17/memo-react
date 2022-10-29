@@ -1115,3 +1115,5 @@ $w('fade appear grow shrink fold blindUp blindDown slideUp slideDown '+
     };
   }
 );
+
+$w('getInlineOpacity forceRerendering setContentZoom collectText
