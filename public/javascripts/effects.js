@@ -1117,4 +1117,7 @@ $w('fade appear grow shrink fold blindUp blindDown slideUp slideDown '+
 );
 
 $w('getInlineOpacity forceRerendering setContentZoom collectTextNodes collectTextNodesIgnoreClass getStyles').each(
-  function(f) { Effect.Methods
+  function(f) { Effect.Methods[f] = Element[f]; }
+);
+
+Element.addMethods(Effect.Methods);
