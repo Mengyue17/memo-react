@@ -412,3 +412,101 @@ Object.extend(Function.prototype, (function() {
   }
 
   function defer() {
+    var args = update([0.01], arguments);
+    return this.delay.apply(this, args);
+  }
+
+  function wrap(wrapper) {
+    var __method = this;
+    return function() {
+      var a = update([__method.bind(this)], arguments);
+      return wrapper.apply(this, a);
+    }
+  }
+
+  function methodize() {
+    if (this._methodized) return this._methodized;
+    var __method = this;
+    return this._methodized = function() {
+      var a = update([this], arguments);
+      return __method.apply(null, a);
+    };
+  }
+
+  return {
+    argumentNames:       argumentNames,
+    bind:                bind,
+    bindAsEventListener: bindAsEventListener,
+    curry:               curry,
+    delay:               delay,
+    defer:               defer,
+    wrap:                wrap,
+    methodize:           methodize
+  }
+})());
+
+
+
+(function(proto) {
+
+
+  function toISOString() {
+    return this.getUTCFullYear() + '-' +
+      (this.getUTCMonth() + 1).toPaddedString(2) + '-' +
+      this.getUTCDate().toPaddedString(2) + 'T' +
+      this.getUTCHours().toPaddedString(2) + ':' +
+      this.getUTCMinutes().toPaddedString(2) + ':' +
+      this.getUTCSeconds().toPaddedString(2) + 'Z';
+  }
+
+
+  function toJSON() {
+    return this.toISOString();
+  }
+
+  if (!proto.toISOString) proto.toISOString = toISOString;
+  if (!proto.toJSON) proto.toJSON = toJSON;
+
+})(Date.prototype);
+
+
+RegExp.prototype.match = RegExp.prototype.test;
+
+RegExp.escape = function(str) {
+  return String(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+};
+var PeriodicalExecuter = Class.create({
+  initialize: function(callback, frequency) {
+    this.callback = callback;
+    this.frequency = frequency;
+    this.currentlyExecuting = false;
+
+    this.registerCallback();
+  },
+
+  registerCallback: function() {
+    this.timer = setInterval(this.onTimerEvent.bind(this), this.frequency * 1000);
+  },
+
+  execute: function() {
+    this.callback(this);
+  },
+
+  stop: function() {
+    if (!this.timer) return;
+    clearInterval(this.timer);
+    this.timer = null;
+  },
+
+  onTimerEvent: function() {
+    if (!this.currentlyExecuting) {
+      try {
+        this.currentlyExecuting = true;
+        this.execute();
+        this.currentlyExecuting = false;
+      } catch(e) {
+        this.currentlyExecuting = false;
+        throw e;
+      }
+    }
+  }
