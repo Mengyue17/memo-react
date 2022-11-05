@@ -588,3 +588,94 @@ Object.extend(String.prototype, (function() {
 
   function stripTags() {
     return this.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi, '');
+  }
+
+  function stripScripts() {
+    return this.replace(new RegExp(Prototype.ScriptFragment, 'img'), '');
+  }
+
+  function extractScripts() {
+    var matchAll = new RegExp(Prototype.ScriptFragment, 'img'),
+        matchOne = new RegExp(Prototype.ScriptFragment, 'im');
+    return (this.match(matchAll) || []).map(function(scriptTag) {
+      return (scriptTag.match(matchOne) || ['', ''])[1];
+    });
+  }
+
+  function evalScripts() {
+    return this.extractScripts().map(function(script) { return eval(script) });
+  }
+
+  function escapeHTML() {
+    return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function unescapeHTML() {
+    return this.stripTags().replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+  }
+
+
+  function toQueryParams(separator) {
+    var match = this.strip().match(/([^?#]*)(#.*)?$/);
+    if (!match) return { };
+
+    return match[1].split(separator || '&').inject({ }, function(hash, pair) {
+      if ((pair = pair.split('='))[0]) {
+        var key = decodeURIComponent(pair.shift()),
+            value = pair.length > 1 ? pair.join('=') : pair[0];
+
+        if (value != undefined) value = decodeURIComponent(value);
+
+        if (key in hash) {
+          if (!Object.isArray(hash[key])) hash[key] = [hash[key]];
+          hash[key].push(value);
+        }
+        else hash[key] = value;
+      }
+      return hash;
+    });
+  }
+
+  function toArray() {
+    return this.split('');
+  }
+
+  function succ() {
+    return this.slice(0, this.length - 1) +
+      String.fromCharCode(this.charCodeAt(this.length - 1) + 1);
+  }
+
+  function times(count) {
+    return count < 1 ? '' : new Array(count + 1).join(this);
+  }
+
+  function camelize() {
+    return this.replace(/-+(.)?/g, function(match, chr) {
+      return chr ? chr.toUpperCase() : '';
+    });
+  }
+
+  function capitalize() {
+    return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
+  }
+
+  function underscore() {
+    return this.replace(/::/g, '/')
+               .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+               .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+               .replace(/-/g, '_')
+               .toLowerCase();
+  }
+
+  function dasherize() {
+    return this.replace(/_/g, '-');
+  }
+
+  function inspect(useDoubleQuotes) {
+    var escapedString = this.replace(/[\x00-\x1f\\]/g, function(character) {
+      if (character in String.specialChar) {
+        return String.specialChar[character];
+      }
+      return '\\u00' + character.charCodeAt().toPaddedString(2, 16);
+    });
+    if (useDoubleQuotes) return '"' + escapedString.replace(/"/g, '\\"') + '"';
