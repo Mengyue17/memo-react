@@ -679,3 +679,82 @@ Object.extend(String.prototype, (function() {
       return '\\u00' + character.charCodeAt().toPaddedString(2, 16);
     });
     if (useDoubleQuotes) return '"' + escapedString.replace(/"/g, '\\"') + '"';
+    return "'" + escapedString.replace(/'/g, '\\\'') + "'";
+  }
+
+  function unfilterJSON(filter) {
+    return this.replace(filter || Prototype.JSONFilter, '$1');
+  }
+
+  function isJSON() {
+    var str = this;
+    if (str.blank()) return false;
+    str = str.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@');
+    str = str.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
+    str = str.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
+    return (/^[\],:{}\s]*$/).test(str);
+  }
+
+  function evalJSON(sanitize) {
+    var json = this.unfilterJSON(),
+        cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+    if (cx.test(json)) {
+      json = json.replace(cx, function (a) {
+        return '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+      });
+    }
+    try {
+      if (!sanitize || json.isJSON()) return eval('(' + json + ')');
+    } catch (e) { }
+    throw new SyntaxError('Badly formed JSON string: ' + this.inspect());
+  }
+
+  function parseJSON() {
+    var json = this.unfilterJSON();
+    return JSON.parse(json);
+  }
+
+  function include(pattern) {
+    return this.indexOf(pattern) > -1;
+  }
+
+  function startsWith(pattern) {
+    return this.lastIndexOf(pattern, 0) === 0;
+  }
+
+  function endsWith(pattern) {
+    var d = this.length - pattern.length;
+    return d >= 0 && this.indexOf(pattern, d) === d;
+  }
+
+  function empty() {
+    return this == '';
+  }
+
+  function blank() {
+    return /^\s*$/.test(this);
+  }
+
+  function interpolate(object, pattern) {
+    return new Template(this, pattern).evaluate(object);
+  }
+
+  return {
+    gsub:           gsub,
+    sub:            sub,
+    scan:           scan,
+    truncate:       truncate,
+    strip:          String.prototype.trim || strip,
+    stripTags:      stripTags,
+    stripScripts:   stripScripts,
+    extractScripts: extractScripts,
+    evalScripts:    evalScripts,
+    escapeHTML:     escapeHTML,
+    unescapeHTML:   unescapeHTML,
+    toQueryParams:  toQueryParams,
+    parseQuery:     toQueryParams,
+    toArray:        toArray,
+    succ:           succ,
+    times:          times,
+    camelize:       camelize,
+    capitalize:     capitalize,
