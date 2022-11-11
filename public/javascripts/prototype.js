@@ -1184,3 +1184,105 @@ Array.from = $A;
   Object.extend(arrayProto, Enumerable);
 
   if (!arrayProto._reverse)
+    arrayProto._reverse = arrayProto.reverse;
+
+  Object.extend(arrayProto, {
+    _each:     _each,
+    clear:     clear,
+    first:     first,
+    last:      last,
+    compact:   compact,
+    flatten:   flatten,
+    without:   without,
+    reverse:   reverse,
+    uniq:      uniq,
+    intersect: intersect,
+    clone:     clone,
+    toArray:   clone,
+    size:      size,
+    inspect:   inspect
+  });
+
+  var CONCAT_ARGUMENTS_BUGGY = (function() {
+    return [].concat(arguments)[0][0] !== 1;
+  })(1,2)
+
+  if (CONCAT_ARGUMENTS_BUGGY) arrayProto.concat = concat;
+
+  if (!arrayProto.indexOf) arrayProto.indexOf = indexOf;
+  if (!arrayProto.lastIndexOf) arrayProto.lastIndexOf = lastIndexOf;
+})();
+function $H(object) {
+  return new Hash(object);
+};
+
+var Hash = Class.create(Enumerable, (function() {
+  function initialize(object) {
+    this._object = Object.isHash(object) ? object.toObject() : Object.clone(object);
+  }
+
+
+  function _each(iterator) {
+    for (var key in this._object) {
+      var value = this._object[key], pair = [key, value];
+      pair.key = key;
+      pair.value = value;
+      iterator(pair);
+    }
+  }
+
+  function set(key, value) {
+    return this._object[key] = value;
+  }
+
+  function get(key) {
+    if (this._object[key] !== Object.prototype[key])
+      return this._object[key];
+  }
+
+  function unset(key) {
+    var value = this._object[key];
+    delete this._object[key];
+    return value;
+  }
+
+  function toObject() {
+    return Object.clone(this._object);
+  }
+
+
+
+  function keys() {
+    return this.pluck('key');
+  }
+
+  function values() {
+    return this.pluck('value');
+  }
+
+  function index(value) {
+    var match = this.detect(function(pair) {
+      return pair.value === value;
+    });
+    return match && match.key;
+  }
+
+  function merge(object) {
+    return this.clone().update(object);
+  }
+
+  function update(object) {
+    return new Hash(object).inject(this, function(result, pair) {
+      result.set(pair.key, pair.value);
+      return result;
+    });
+  }
+
+  function toQueryPair(key, value) {
+    if (Object.isUndefined(value)) return key;
+    return key + '=' + encodeURIComponent(String.interpret(value));
+  }
+
+  function toQueryString() {
+    return this.inject([], function(results, pair) {
+      var key = encodeURIComponent(pair.key), values = pair.value;
