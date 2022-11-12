@@ -1286,3 +1286,92 @@ var Hash = Class.create(Enumerable, (function() {
   function toQueryString() {
     return this.inject([], function(results, pair) {
       var key = encodeURIComponent(pair.key), values = pair.value;
+
+      if (values && typeof values == 'object') {
+        if (Object.isArray(values))
+          return results.concat(values.map(toQueryPair.curry(key)));
+      } else results.push(toQueryPair(key, values));
+      return results;
+    }).join('&');
+  }
+
+  function inspect() {
+    return '#<Hash:{' + this.map(function(pair) {
+      return pair.map(Object.inspect).join(': ');
+    }).join(', ') + '}>';
+  }
+
+  function clone() {
+    return new Hash(this);
+  }
+
+  return {
+    initialize:             initialize,
+    _each:                  _each,
+    set:                    set,
+    get:                    get,
+    unset:                  unset,
+    toObject:               toObject,
+    toTemplateReplacements: toObject,
+    keys:                   keys,
+    values:                 values,
+    index:                  index,
+    merge:                  merge,
+    update:                 update,
+    toQueryString:          toQueryString,
+    inspect:                inspect,
+    toJSON:                 toObject,
+    clone:                  clone
+  };
+})());
+
+Hash.from = $H;
+Object.extend(Number.prototype, (function() {
+  function toColorPart() {
+    return this.toPaddedString(2, 16);
+  }
+
+  function succ() {
+    return this + 1;
+  }
+
+  function times(iterator, context) {
+    $R(0, this, true).each(iterator, context);
+    return this;
+  }
+
+  function toPaddedString(length, radix) {
+    var string = this.toString(radix || 10);
+    return '0'.times(length - string.length) + string;
+  }
+
+  function abs() {
+    return Math.abs(this);
+  }
+
+  function round() {
+    return Math.round(this);
+  }
+
+  function ceil() {
+    return Math.ceil(this);
+  }
+
+  function floor() {
+    return Math.floor(this);
+  }
+
+  return {
+    toColorPart:    toColorPart,
+    succ:           succ,
+    times:          times,
+    toPaddedString: toPaddedString,
+    abs:            abs,
+    round:          round,
+    ceil:           ceil,
+    floor:          floor
+  };
+})());
+
+function $R(start, end, exclusive) {
+  return new ObjectRange(start, end, exclusive);
