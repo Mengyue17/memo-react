@@ -1466,3 +1466,97 @@ Ajax.Base = Class.create({
       evalJS:       true
     };
     Object.extend(this.options, options || { });
+
+    this.options.method = this.options.method.toLowerCase();
+
+    if (Object.isString(this.options.parameters))
+      this.options.parameters = this.options.parameters.toQueryParams();
+    else if (Object.isHash(this.options.parameters))
+      this.options.parameters = this.options.parameters.toObject();
+  }
+});
+Ajax.Request = Class.create(Ajax.Base, {
+  _complete: false,
+
+  initialize: function($super, url, options) {
+    $super(options);
+    this.transport = Ajax.getTransport();
+    this.request(url);
+  },
+
+  request: function(url) {
+    this.url = url;
+    this.method = this.options.method;
+    var params = Object.clone(this.options.parameters);
+
+    if (!['get', 'post'].include(this.method)) {
+      params['_method'] = this.method;
+      this.method = 'post';
+    }
+
+    this.parameters = params;
+
+    if (params = Object.toQueryString(params)) {
+      if (this.method == 'get')
+        this.url += (this.url.include('?') ? '&' : '?') + params;
+      else if (/Konqueror|Safari|KHTML/.test(navigator.userAgent))
+        params += '&_=';
+    }
+
+    try {
+      var response = new Ajax.Response(this);
+      if (this.options.onCreate) this.options.onCreate(response);
+      Ajax.Responders.dispatch('onCreate', this, response);
+
+      this.transport.open(this.method.toUpperCase(), this.url,
+        this.options.asynchronous);
+
+      if (this.options.asynchronous) this.respondToReadyState.bind(this).defer(1);
+
+      this.transport.onreadystatechange = this.onStateChange.bind(this);
+      this.setRequestHeaders();
+
+      this.body = this.method == 'post' ? (this.options.postBody || params) : null;
+      this.transport.send(this.body);
+
+      /* Force Firefox to handle ready state 4 for synchronous requests */
+      if (!this.options.asynchronous && this.transport.overrideMimeType)
+        this.onStateChange();
+
+    }
+    catch (e) {
+      this.dispatchException(e);
+    }
+  },
+
+  onStateChange: function() {
+    var readyState = this.transport.readyState;
+    if (readyState > 1 && !((readyState == 4) && this._complete))
+      this.respondToReadyState(this.transport.readyState);
+  },
+
+  setRequestHeaders: function() {
+    var headers = {
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-Prototype-Version': Prototype.Version,
+      'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+    };
+
+    if (this.method == 'post') {
+      headers['Content-type'] = this.options.contentType +
+        (this.options.encoding ? '; charset=' + this.options.encoding : '');
+
+      /* Force "Connection: close" for older Mozilla browsers to work
+       * around a bug where XMLHttpRequest sends an incorrect
+       * Content-length header. See Mozilla Bugzilla #246651.
+       */
+      if (this.transport.overrideMimeType &&
+          (navigator.userAgent.match(/Gecko\/(\d{4})/) || [0,2005])[1] < 2005)
+            headers['Connection'] = 'close';
+    }
+
+    if (typeof this.options.requestHeaders == 'object') {
+      var extras = this.options.requestHeaders;
+
+      if (Object.isFunction(extras.push))
+        for (var i = 0, length = extras.length; i < length; i += 2)
