@@ -1742,3 +1742,86 @@ Ajax.Updater = Class.create(Ajax.Request, {
 
     $super(url, options);
   },
+
+  updateContent: function(responseText) {
+    var receiver = this.container[this.success() ? 'success' : 'failure'],
+        options = this.options;
+
+    if (!options.evalScripts) responseText = responseText.stripScripts();
+
+    if (receiver = $(receiver)) {
+      if (options.insertion) {
+        if (Object.isString(options.insertion)) {
+          var insertion = { }; insertion[options.insertion] = responseText;
+          receiver.insert(insertion);
+        }
+        else options.insertion(receiver, responseText);
+      }
+      else receiver.update(responseText);
+    }
+  }
+});
+
+Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
+  initialize: function($super, container, url, options) {
+    $super(options);
+    this.onComplete = this.options.onComplete;
+
+    this.frequency = (this.options.frequency || 2);
+    this.decay = (this.options.decay || 1);
+
+    this.updater = { };
+    this.container = container;
+    this.url = url;
+
+    this.start();
+  },
+
+  start: function() {
+    this.options.onComplete = this.updateComplete.bind(this);
+    this.onTimerEvent();
+  },
+
+  stop: function() {
+    this.updater.options.onComplete = undefined;
+    clearTimeout(this.timer);
+    (this.onComplete || Prototype.emptyFunction).apply(this, arguments);
+  },
+
+  updateComplete: function(response) {
+    if (this.options.decay) {
+      this.decay = (response.responseText == this.lastText ?
+        this.decay * this.options.decay : 1);
+
+      this.lastText = response.responseText;
+    }
+    this.timer = this.onTimerEvent.bind(this).delay(this.decay * this.frequency);
+  },
+
+  onTimerEvent: function() {
+    this.updater = new Ajax.Updater(this.container, this.url, this.options);
+  }
+});
+
+
+function $(element) {
+  if (arguments.length > 1) {
+    for (var i = 0, elements = [], length = arguments.length; i < length; i++)
+      elements.push($(arguments[i]));
+    return elements;
+  }
+  if (Object.isString(element))
+    element = document.getElementById(element);
+  return Element.extend(element);
+}
+
+if (Prototype.BrowserFeatures.XPath) {
+  document._getElementsByXPath = function(expression, parentElement) {
+    var results = [];
+    var query = document.evaluate(expression, $(parentElement) || document,
+      null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    for (var i = 0, length = query.snapshotLength; i < length; i++)
+      results.push(Element.extend(query.snapshotItem(i)));
+    return results;
+  };
+}
