@@ -1825,3 +1825,101 @@ if (Prototype.BrowserFeatures.XPath) {
     return results;
   };
 }
+
+/*--------------------------------------------------------------------------*/
+
+if (!Node) var Node = { };
+
+if (!Node.ELEMENT_NODE) {
+  Object.extend(Node, {
+    ELEMENT_NODE: 1,
+    ATTRIBUTE_NODE: 2,
+    TEXT_NODE: 3,
+    CDATA_SECTION_NODE: 4,
+    ENTITY_REFERENCE_NODE: 5,
+    ENTITY_NODE: 6,
+    PROCESSING_INSTRUCTION_NODE: 7,
+    COMMENT_NODE: 8,
+    DOCUMENT_NODE: 9,
+    DOCUMENT_TYPE_NODE: 10,
+    DOCUMENT_FRAGMENT_NODE: 11,
+    NOTATION_NODE: 12
+  });
+}
+
+
+
+(function(global) {
+
+  var HAS_EXTENDED_CREATE_ELEMENT_SYNTAX = (function(){
+    try {
+      var el = document.createElement('<input name="x">');
+      return el.tagName.toLowerCase() === 'input' && el.name === 'x';
+    }
+    catch(err) {
+      return false;
+    }
+  })();
+
+  var element = global.Element;
+
+  global.Element = function(tagName, attributes) {
+    attributes = attributes || { };
+    tagName = tagName.toLowerCase();
+    var cache = Element.cache;
+    if (HAS_EXTENDED_CREATE_ELEMENT_SYNTAX && attributes.name) {
+      tagName = '<' + tagName + ' name="' + attributes.name + '">';
+      delete attributes.name;
+      return Element.writeAttribute(document.createElement(tagName), attributes);
+    }
+    if (!cache[tagName]) cache[tagName] = Element.extend(document.createElement(tagName));
+    return Element.writeAttribute(cache[tagName].cloneNode(false), attributes);
+  };
+
+  Object.extend(global.Element, element || { });
+  if (element) global.Element.prototype = element.prototype;
+
+})(this);
+
+Element.idCounter = 1;
+Element.cache = { };
+
+function purgeElement(element) {
+  var uid = element._prototypeUID;
+  if (uid) {
+    Element.stopObserving(element);
+    element._prototypeUID = void 0;
+    delete Element.Storage[uid];
+  }
+}
+
+Element.Methods = {
+  visible: function(element) {
+    return $(element).style.display != 'none';
+  },
+
+  toggle: function(element) {
+    element = $(element);
+    Element[Element.visible(element) ? 'hide' : 'show'](element);
+    return element;
+  },
+
+  hide: function(element) {
+    element = $(element);
+    element.style.display = 'none';
+    return element;
+  },
+
+  show: function(element) {
+    element = $(element);
+    element.style.display = '';
+    return element;
+  },
+
+  remove: function(element) {
+    element = $(element);
+    element.parentNode.removeChild(element);
+    return element;
+  },
+
+  update: (function(){
