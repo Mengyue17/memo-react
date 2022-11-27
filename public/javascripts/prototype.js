@@ -1923,3 +1923,94 @@ Element.Methods = {
   },
 
   update: (function(){
+
+    var SELECT_ELEMENT_INNERHTML_BUGGY = (function(){
+      var el = document.createElement("select"),
+          isBuggy = true;
+      el.innerHTML = "<option value=\"test\">test</option>";
+      if (el.options && el.options[0]) {
+        isBuggy = el.options[0].nodeName.toUpperCase() !== "OPTION";
+      }
+      el = null;
+      return isBuggy;
+    })();
+
+    var TABLE_ELEMENT_INNERHTML_BUGGY = (function(){
+      try {
+        var el = document.createElement("table");
+        if (el && el.tBodies) {
+          el.innerHTML = "<tbody><tr><td>test</td></tr></tbody>";
+          var isBuggy = typeof el.tBodies[0] == "undefined";
+          el = null;
+          return isBuggy;
+        }
+      } catch (e) {
+        return true;
+      }
+    })();
+
+    var SCRIPT_ELEMENT_REJECTS_TEXTNODE_APPENDING = (function () {
+      var s = document.createElement("script"),
+          isBuggy = false;
+      try {
+        s.appendChild(document.createTextNode(""));
+        isBuggy = !s.firstChild ||
+          s.firstChild && s.firstChild.nodeType !== 3;
+      } catch (e) {
+        isBuggy = true;
+      }
+      s = null;
+      return isBuggy;
+    })();
+
+    function update(element, content) {
+      element = $(element);
+
+      var descendants = element.getElementsByTagName('*'),
+       i = descendants.length;
+      while (i--) purgeElement(descendants[i]);
+
+      if (content && content.toElement)
+        content = content.toElement();
+
+      if (Object.isElement(content))
+        return element.update().insert(content);
+
+      content = Object.toHTML(content);
+
+      var tagName = element.tagName.toUpperCase();
+
+      if (tagName === 'SCRIPT' && SCRIPT_ELEMENT_REJECTS_TEXTNODE_APPENDING) {
+        element.text = content;
+        return element;
+      }
+
+      if (SELECT_ELEMENT_INNERHTML_BUGGY || TABLE_ELEMENT_INNERHTML_BUGGY) {
+        if (tagName in Element._insertionTranslations.tags) {
+          while (element.firstChild) {
+            element.removeChild(element.firstChild);
+          }
+          Element._getContentFromAnonymousElement(tagName, content.stripScripts())
+            .each(function(node) {
+              element.appendChild(node)
+            });
+        }
+        else {
+          element.innerHTML = content.stripScripts();
+        }
+      }
+      else {
+        element.innerHTML = content.stripScripts();
+      }
+
+      content.evalScripts.bind(content).defer();
+      return element;
+    }
+
+    return update;
+  })(),
+
+  replace: function(element, content) {
+    element = $(element);
+    if (content && content.toElement) content = content.toElement();
+    else if (!Object.isElement(content)) {
