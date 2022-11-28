@@ -2095,3 +2095,95 @@ Element.Methods = {
       if (elements.length == maximumLength)
         break;
     }
+
+    return elements;
+  },
+
+  ancestors: function(element) {
+    return Element.recursivelyCollect(element, 'parentNode');
+  },
+
+  descendants: function(element) {
+    return Element.select(element, "*");
+  },
+
+  firstDescendant: function(element) {
+    element = $(element).firstChild;
+    while (element && element.nodeType != 1) element = element.nextSibling;
+    return $(element);
+  },
+
+  immediateDescendants: function(element) {
+    var results = [], child = $(element).firstChild;
+    while (child) {
+      if (child.nodeType === 1) {
+        results.push(Element.extend(child));
+      }
+      child = child.nextSibling;
+    }
+    return results;
+  },
+
+  previousSiblings: function(element, maximumLength) {
+    return Element.recursivelyCollect(element, 'previousSibling');
+  },
+
+  nextSiblings: function(element) {
+    return Element.recursivelyCollect(element, 'nextSibling');
+  },
+
+  siblings: function(element) {
+    element = $(element);
+    return Element.previousSiblings(element).reverse()
+      .concat(Element.nextSiblings(element));
+  },
+
+  match: function(element, selector) {
+    element = $(element);
+    if (Object.isString(selector))
+      return Prototype.Selector.match(element, selector);
+    return selector.match(element);
+  },
+
+  up: function(element, expression, index) {
+    element = $(element);
+    if (arguments.length == 1) return $(element.parentNode);
+    var ancestors = Element.ancestors(element);
+    return Object.isNumber(expression) ? ancestors[expression] :
+      Prototype.Selector.find(ancestors, expression, index);
+  },
+
+  down: function(element, expression, index) {
+    element = $(element);
+    if (arguments.length == 1) return Element.firstDescendant(element);
+    return Object.isNumber(expression) ? Element.descendants(element)[expression] :
+      Element.select(element, expression)[index || 0];
+  },
+
+  previous: function(element, expression, index) {
+    element = $(element);
+    if (Object.isNumber(expression)) index = expression, expression = false;
+    if (!Object.isNumber(index)) index = 0;
+
+    if (expression) {
+      return Prototype.Selector.find(element.previousSiblings(), expression, index);
+    } else {
+      return element.recursivelyCollect("previousSibling", index + 1)[index];
+    }
+  },
+
+  next: function(element, expression, index) {
+    element = $(element);
+    if (Object.isNumber(expression)) index = expression, expression = false;
+    if (!Object.isNumber(index)) index = 0;
+
+    if (expression) {
+      return Prototype.Selector.find(element.nextSiblings(), expression, index);
+    } else {
+      var maximumLength = Object.isNumber(index) ? index + 1 : 1;
+      return element.recursivelyCollect("nextSibling", index + 1)[index];
+    }
+  },
+
+
+  select: function(element) {
