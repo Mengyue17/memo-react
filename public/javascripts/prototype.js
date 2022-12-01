@@ -2497,3 +2497,97 @@ Element.Methods = {
     do {
       valueT += element.offsetTop  || 0;
       valueL += element.offsetLeft || 0;
+
+      if (element.offsetParent == document.body &&
+        Element.getStyle(element, 'position') == 'absolute') break;
+
+    } while (element = element.offsetParent);
+
+    element = forElement;
+    do {
+      if (!Prototype.Browser.Opera || (element.tagName && (element.tagName.toUpperCase() == 'BODY'))) {
+        valueT -= element.scrollTop  || 0;
+        valueL -= element.scrollLeft || 0;
+      }
+    } while (element = element.parentNode);
+
+    return Element._returnOffset(valueL, valueT);
+  },
+
+  clonePosition: function(element, source) {
+    var options = Object.extend({
+      setLeft:    true,
+      setTop:     true,
+      setWidth:   true,
+      setHeight:  true,
+      offsetTop:  0,
+      offsetLeft: 0
+    }, arguments[2] || { });
+
+    source = $(source);
+    var p = Element.viewportOffset(source), delta = [0, 0], parent = null;
+
+    element = $(element);
+
+    if (Element.getStyle(element, 'position') == 'absolute') {
+      parent = Element.getOffsetParent(element);
+      delta = Element.viewportOffset(parent);
+    }
+
+    if (parent == document.body) {
+      delta[0] -= document.body.offsetLeft;
+      delta[1] -= document.body.offsetTop;
+    }
+
+    if (options.setLeft)   element.style.left  = (p[0] - delta[0] + options.offsetLeft) + 'px';
+    if (options.setTop)    element.style.top   = (p[1] - delta[1] + options.offsetTop) + 'px';
+    if (options.setWidth)  element.style.width = source.offsetWidth + 'px';
+    if (options.setHeight) element.style.height = source.offsetHeight + 'px';
+    return element;
+  }
+};
+
+Object.extend(Element.Methods, {
+  getElementsBySelector: Element.Methods.select,
+
+  childElements: Element.Methods.immediateDescendants
+});
+
+Element._attributeTranslations = {
+  write: {
+    names: {
+      className: 'class',
+      htmlFor:   'for'
+    },
+    values: { }
+  }
+};
+
+if (Prototype.Browser.Opera) {
+  Element.Methods.getStyle = Element.Methods.getStyle.wrap(
+    function(proceed, element, style) {
+      switch (style) {
+        case 'left': case 'top': case 'right': case 'bottom':
+          if (proceed(element, 'position') === 'static') return null;
+        case 'height': case 'width':
+          if (!Element.visible(element)) return null;
+
+          var dim = parseInt(proceed(element, style), 10);
+
+          if (dim !== element['offset' + style.capitalize()])
+            return dim + 'px';
+
+          var properties;
+          if (style === 'height') {
+            properties = ['border-top-width', 'padding-top',
+             'padding-bottom', 'border-bottom-width'];
+          }
+          else {
+            properties = ['border-left-width', 'padding-left',
+             'padding-right', 'border-right-width'];
+          }
+          return properties.inject(dim, function(memo, property) {
+            var val = proceed(element, property);
+            return val === null ? memo : memo - parseInt(val, 10);
+          }) + 'px';
+        default: return proceed(element, style);
