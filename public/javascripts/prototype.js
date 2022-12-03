@@ -2760,3 +2760,79 @@ else if (Prototype.Browser.IE) {
       }
     }
   })();
+
+  Element._attributeTranslations.write = {
+    names: Object.extend({
+      cellpadding: 'cellPadding',
+      cellspacing: 'cellSpacing'
+    }, Element._attributeTranslations.read.names),
+    values: {
+      checked: function(element, value) {
+        element.checked = !!value;
+      },
+
+      style: function(element, value) {
+        element.style.cssText = value ? value : '';
+      }
+    }
+  };
+
+  Element._attributeTranslations.has = {};
+
+  $w('colSpan rowSpan vAlign dateTime accessKey tabIndex ' +
+      'encType maxLength readOnly longDesc frameBorder').each(function(attr) {
+    Element._attributeTranslations.write.names[attr.toLowerCase()] = attr;
+    Element._attributeTranslations.has[attr.toLowerCase()] = attr;
+  });
+
+  (function(v) {
+    Object.extend(v, {
+      href:        v._getAttr2,
+      src:         v._getAttr2,
+      type:        v._getAttr,
+      action:      v._getAttrNode,
+      disabled:    v._flag,
+      checked:     v._flag,
+      readonly:    v._flag,
+      multiple:    v._flag,
+      onload:      v._getEv,
+      onunload:    v._getEv,
+      onclick:     v._getEv,
+      ondblclick:  v._getEv,
+      onmousedown: v._getEv,
+      onmouseup:   v._getEv,
+      onmouseover: v._getEv,
+      onmousemove: v._getEv,
+      onmouseout:  v._getEv,
+      onfocus:     v._getEv,
+      onblur:      v._getEv,
+      onkeypress:  v._getEv,
+      onkeydown:   v._getEv,
+      onkeyup:     v._getEv,
+      onsubmit:    v._getEv,
+      onreset:     v._getEv,
+      onselect:    v._getEv,
+      onchange:    v._getEv
+    });
+  })(Element._attributeTranslations.read.values);
+
+  if (Prototype.BrowserFeatures.ElementExtensions) {
+    (function() {
+      function _descendants(element) {
+        var nodes = element.getElementsByTagName('*'), results = [];
+        for (var i = 0, node; node = nodes[i]; i++)
+          if (node.tagName !== "!") // Filter out comment nodes.
+            results.push(node);
+        return results;
+      }
+
+      Element.Methods.down = function(element, expression, index) {
+        element = $(element);
+        if (arguments.length == 1) return element.firstDescendant();
+        return Object.isNumber(expression) ? _descendants(element)[expression] :
+          Element.select(element, expression)[index || 0];
+      }
+    })();
+  }
+
+}
