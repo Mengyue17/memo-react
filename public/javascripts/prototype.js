@@ -3077,3 +3077,111 @@ Element.addMethods = function(methods) {
     Object.extend(Element.Methods.ByTag, {
       "FORM":     Object.clone(Form.Methods),
       "INPUT":    Object.clone(Form.Element.Methods),
+      "SELECT":   Object.clone(Form.Element.Methods),
+      "TEXTAREA": Object.clone(Form.Element.Methods)
+    });
+  }
+
+  if (arguments.length == 2) {
+    var tagName = methods;
+    methods = arguments[1];
+  }
+
+  if (!tagName) Object.extend(Element.Methods, methods || { });
+  else {
+    if (Object.isArray(tagName)) tagName.each(extend);
+    else extend(tagName);
+  }
+
+  function extend(tagName) {
+    tagName = tagName.toUpperCase();
+    if (!Element.Methods.ByTag[tagName])
+      Element.Methods.ByTag[tagName] = { };
+    Object.extend(Element.Methods.ByTag[tagName], methods);
+  }
+
+  function copy(methods, destination, onlyIfAbsent) {
+    onlyIfAbsent = onlyIfAbsent || false;
+    for (var property in methods) {
+      var value = methods[property];
+      if (!Object.isFunction(value)) continue;
+      if (!onlyIfAbsent || !(property in destination))
+        destination[property] = value.methodize();
+    }
+  }
+
+  function findDOMClass(tagName) {
+    var klass;
+    var trans = {
+      "OPTGROUP": "OptGroup", "TEXTAREA": "TextArea", "P": "Paragraph",
+      "FIELDSET": "FieldSet", "UL": "UList", "OL": "OList", "DL": "DList",
+      "DIR": "Directory", "H1": "Heading", "H2": "Heading", "H3": "Heading",
+      "H4": "Heading", "H5": "Heading", "H6": "Heading", "Q": "Quote",
+      "INS": "Mod", "DEL": "Mod", "A": "Anchor", "IMG": "Image", "CAPTION":
+      "TableCaption", "COL": "TableCol", "COLGROUP": "TableCol", "THEAD":
+      "TableSection", "TFOOT": "TableSection", "TBODY": "TableSection", "TR":
+      "TableRow", "TH": "TableCell", "TD": "TableCell", "FRAMESET":
+      "FrameSet", "IFRAME": "IFrame"
+    };
+    if (trans[tagName]) klass = 'HTML' + trans[tagName] + 'Element';
+    if (window[klass]) return window[klass];
+    klass = 'HTML' + tagName + 'Element';
+    if (window[klass]) return window[klass];
+    klass = 'HTML' + tagName.capitalize() + 'Element';
+    if (window[klass]) return window[klass];
+
+    var element = document.createElement(tagName),
+        proto = element['__proto__'] || element.constructor.prototype;
+
+    element = null;
+    return proto;
+  }
+
+  var elementPrototype = window.HTMLElement ? HTMLElement.prototype :
+   Element.prototype;
+
+  if (F.ElementExtensions) {
+    copy(Element.Methods, elementPrototype);
+    copy(Element.Methods.Simulated, elementPrototype, true);
+  }
+
+  if (F.SpecificElementExtensions) {
+    for (var tag in Element.Methods.ByTag) {
+      var klass = findDOMClass(tag);
+      if (Object.isUndefined(klass)) continue;
+      copy(T[tag], klass.prototype);
+    }
+  }
+
+  Object.extend(Element, Element.Methods);
+  delete Element.ByTag;
+
+  if (Element.extend.refresh) Element.extend.refresh();
+  Element.cache = { };
+};
+
+
+document.viewport = {
+
+  getDimensions: function() {
+    return { width: this.getWidth(), height: this.getHeight() };
+  },
+
+  getScrollOffsets: function() {
+    return Element._returnOffset(
+      window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+      window.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop);
+  }
+};
+
+(function(viewport) {
+  var B = Prototype.Browser, doc = document, element, property = {};
+
+  function getRootElement() {
+    if (B.WebKit && !doc.evaluate)
+      return document;
+
+    if (B.Opera && window.parseFloat(window.opera.version()) < 9.5)
+      return document.body;
+
+    return document.documentElement;
