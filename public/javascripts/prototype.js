@@ -3006,3 +3006,74 @@ Element.extend = (function() {
   function extendElementWith(element, methods) {
     for (var property in methods) {
       var value = methods[property];
+      if (Object.isFunction(value) && !(property in element))
+        element[property] = value.methodize();
+    }
+  }
+
+  var HTMLOBJECTELEMENT_PROTOTYPE_BUGGY = checkDeficiency('object');
+
+  if (Prototype.BrowserFeatures.SpecificElementExtensions) {
+    if (HTMLOBJECTELEMENT_PROTOTYPE_BUGGY) {
+      return function(element) {
+        if (element && typeof element._extendedByPrototype == 'undefined') {
+          var t = element.tagName;
+          if (t && (/^(?:object|applet|embed)$/i.test(t))) {
+            extendElementWith(element, Element.Methods);
+            extendElementWith(element, Element.Methods.Simulated);
+            extendElementWith(element, Element.Methods.ByTag[t.toUpperCase()]);
+          }
+        }
+        return element;
+      }
+    }
+    return Prototype.K;
+  }
+
+  var Methods = { }, ByTag = Element.Methods.ByTag;
+
+  var extend = Object.extend(function(element) {
+    if (!element || typeof element._extendedByPrototype != 'undefined' ||
+        element.nodeType != 1 || element == window) return element;
+
+    var methods = Object.clone(Methods),
+        tagName = element.tagName.toUpperCase();
+
+    if (ByTag[tagName]) Object.extend(methods, ByTag[tagName]);
+
+    extendElementWith(element, methods);
+
+    element._extendedByPrototype = Prototype.emptyFunction;
+    return element;
+
+  }, {
+    refresh: function() {
+      if (!Prototype.BrowserFeatures.ElementExtensions) {
+        Object.extend(Methods, Element.Methods);
+        Object.extend(Methods, Element.Methods.Simulated);
+      }
+    }
+  });
+
+  extend.refresh();
+  return extend;
+})();
+
+if (document.documentElement.hasAttribute) {
+  Element.hasAttribute = function(element, attribute) {
+    return element.hasAttribute(attribute);
+  };
+}
+else {
+  Element.hasAttribute = Element.Methods.Simulated.hasAttribute;
+}
+
+Element.addMethods = function(methods) {
+  var F = Prototype.BrowserFeatures, T = Element.Methods.ByTag;
+
+  if (!methods) {
+    Object.extend(Form, Form.Methods);
+    Object.extend(Form.Element, Form.Element.Methods);
+    Object.extend(Element.Methods.ByTag, {
+      "FORM":     Object.clone(Form.Methods),
+      "INPUT":    Object.clone(Form.Element.Methods),
