@@ -3185,3 +3185,106 @@ document.viewport = {
       return document.body;
 
     return document.documentElement;
+  }
+
+  function define(D) {
+    if (!element) element = getRootElement();
+
+    property[D] = 'client' + D;
+
+    viewport['get' + D] = function() { return element[property[D]] };
+    return viewport['get' + D]();
+  }
+
+  viewport.getWidth  = define.curry('Width');
+
+  viewport.getHeight = define.curry('Height');
+})(document.viewport);
+
+
+Element.Storage = {
+  UID: 1
+};
+
+Element.addMethods({
+  getStorage: function(element) {
+    if (!(element = $(element))) return;
+
+    var uid;
+    if (element === window) {
+      uid = 0;
+    } else {
+      if (typeof element._prototypeUID === "undefined")
+        element._prototypeUID = Element.Storage.UID++;
+      uid = element._prototypeUID;
+    }
+
+    if (!Element.Storage[uid])
+      Element.Storage[uid] = $H();
+
+    return Element.Storage[uid];
+  },
+
+  store: function(element, key, value) {
+    if (!(element = $(element))) return;
+
+    if (arguments.length === 2) {
+      Element.getStorage(element).update(key);
+    } else {
+      Element.getStorage(element).set(key, value);
+    }
+
+    return element;
+  },
+
+  retrieve: function(element, key, defaultValue) {
+    if (!(element = $(element))) return;
+    var hash = Element.getStorage(element), value = hash.get(key);
+
+    if (Object.isUndefined(value)) {
+      hash.set(key, defaultValue);
+      value = defaultValue;
+    }
+
+    return value;
+  },
+
+  clone: function(element, deep) {
+    if (!(element = $(element))) return;
+    var clone = element.cloneNode(deep);
+    clone._prototypeUID = void 0;
+    if (deep) {
+      var descendants = Element.select(clone, '*'),
+          i = descendants.length;
+      while (i--) {
+        descendants[i]._prototypeUID = void 0;
+      }
+    }
+    return Element.extend(clone);
+  },
+
+  purge: function(element) {
+    if (!(element = $(element))) return;
+    purgeElement(element);
+
+    var descendants = element.getElementsByTagName('*'),
+     i = descendants.length;
+
+    while (i--) purgeElement(descendants[i]);
+
+    return null;
+  }
+});
+
+(function() {
+
+  function toDecimal(pctString) {
+    var match = pctString.match(/^(\d+)%?$/i);
+    if (!match) return null;
+    return (Number(match[1]) / 100);
+  }
+
+  function getPixelValue(value, property) {
+    if (Object.isElement(value)) {
+      element = value;
+      value = element.getStyle(property);
