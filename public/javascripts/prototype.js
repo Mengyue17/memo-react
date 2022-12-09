@@ -3380,3 +3380,88 @@ Element.addMethods({
     _set: function(property, value) {
       return Hash.prototype.set.call(this, property, value);
     },
+
+    set: function(property, value) {
+      throw "Properties of Element.Layout are read-only.";
+    },
+
+    get: function($super, property) {
+      var value = $super(property);
+      return value === null ? this._compute(property) : value;
+    },
+
+    _begin: function() {
+      if (this._prepared) return;
+
+      var element = this.element;
+      if (isDisplayed(element)) {
+        this._prepared = true;
+        return;
+      }
+
+      var originalStyles = {
+        position:   element.style.position   || '',
+        width:      element.style.width      || '',
+        visibility: element.style.visibility || '',
+        display:    element.style.display    || ''
+      };
+
+      element.store('prototype_original_styles', originalStyles);
+
+      var position = element.getStyle('position'),
+       width = element.getStyle('width');
+
+      element.setStyle({
+        position:   'absolute',
+        visibility: 'hidden',
+        display:    'block'
+      });
+
+      var positionedWidth = element.getStyle('width');
+
+      var newWidth;
+      if (width && (positionedWidth === width)) {
+        newWidth = getPixelValue(width);
+      } else if (width && (position === 'absolute' || position === 'fixed')) {
+        newWidth = getPixelValue(width);
+      } else {
+        var parent = element.parentNode, pLayout = $(parent).getLayout();
+
+        newWidth = pLayout.get('width') -
+         this.get('margin-left') -
+         this.get('border-left') -
+         this.get('padding-left') -
+         this.get('padding-right') -
+         this.get('border-right') -
+         this.get('margin-right');
+      }
+
+      element.setStyle({ width: newWidth + 'px' });
+
+      this._prepared = true;
+    },
+
+    _end: function() {
+      var element = this.element;
+      var originalStyles = element.retrieve('prototype_original_styles');
+      element.store('prototype_original_styles', null);
+      element.setStyle(originalStyles);
+      this._prepared = false;
+    },
+
+    _compute: function(property) {
+      var COMPUTATIONS = Element.Layout.COMPUTATIONS;
+      if (!(property in COMPUTATIONS)) {
+        throw "Property not found.";
+      }
+      return this._set(property, COMPUTATIONS[property].call(this, this.element));
+    },
+
+    toObject: function() {
+      var args = $A(arguments);
+      var keys = (args.length === 0) ? Element.Layout.PROPERTIES :
+       args.join(' ').split(' ');
+      var obj = {};
+      keys.each( function(key) {
+        if (!Element.Layout.PROPERTIES.include(key)) return;
+        var value = this.get(key);
