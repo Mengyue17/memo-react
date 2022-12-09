@@ -3288,3 +3288,95 @@ Element.addMethods({
     if (Object.isElement(value)) {
       element = value;
       value = element.getStyle(property);
+    }
+    if (value === null) {
+      return null;
+    }
+
+    if ((/^(?:-)?\d+(\.\d+)?(px)?$/i).test(value)) {
+      return window.parseFloat(value);
+    }
+
+    if (/\d/.test(value) && element.runtimeStyle) {
+      var style = element.style.left, rStyle = element.runtimeStyle.left;
+      element.runtimeStyle.left = element.currentStyle.left;
+      element.style.left = value || 0;
+      value = element.style.pixelLeft;
+      element.style.left = style;
+      element.runtimeStyle.left = rStyle;
+
+      return value;
+    }
+
+    if (value.include('%')) {
+      var decimal = toDecimal(value);
+      var whole;
+      if (property.include('left') || property.include('right') ||
+       property.include('width')) {
+        whole = $(element.parentNode).measure('width');
+      } else if (property.include('top') || property.include('bottom') ||
+       property.include('height')) {
+        whole = $(element.parentNode).measure('height');
+      }
+
+      return whole * decimal;
+    }
+
+    return 0;
+  }
+
+  function toCSSPixels(number) {
+    if (Object.isString(number) && number.endsWith('px')) {
+      return number;
+    }
+    return number + 'px';
+  }
+
+  function isDisplayed(element) {
+    var originalElement = element;
+    while (element && element.parentNode) {
+      var display = element.getStyle('display');
+      if (display === 'none') {
+        return false;
+      }
+      element = $(element.parentNode);
+    }
+    return true;
+  }
+
+  var hasLayout = Prototype.K;
+  if ('currentStyle' in document.documentElement) {
+    hasLayout = function(element) {
+      if (!element.currentStyle.hasLayout) {
+        element.style.zoom = 1;
+      }
+      return element;
+    };
+  }
+
+  function cssNameFor(key) {
+    if (key.include('border')) key = key + '-width';
+    return key.camelize();
+  }
+
+  Element.Layout = Class.create(Hash, {
+    initialize: function($super, element, preCompute) {
+      $super();
+      this.element = $(element);
+
+      Element.Layout.PROPERTIES.each( function(property) {
+        this._set(property, null);
+      }, this);
+
+      if (preCompute) {
+        this._preComputing = true;
+        this._begin();
+        Element.Layout.PROPERTIES.each( this._compute, this );
+        this._end();
+        this._preComputing = false;
+      }
+    },
+
+    _set: function(property, value) {
+      return Hash.prototype.set.call(this, property, value);
+    },
