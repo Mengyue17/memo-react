@@ -3465,3 +3465,84 @@ Element.addMethods({
       keys.each( function(key) {
         if (!Element.Layout.PROPERTIES.include(key)) return;
         var value = this.get(key);
+        if (value != null) obj[key] = value;
+      }, this);
+      return obj;
+    },
+
+    toHash: function() {
+      var obj = this.toObject.apply(this, arguments);
+      return new Hash(obj);
+    },
+
+    toCSS: function() {
+      var args = $A(arguments);
+      var keys = (args.length === 0) ? Element.Layout.PROPERTIES :
+       args.join(' ').split(' ');
+      var css = {};
+
+      keys.each( function(key) {
+        if (!Element.Layout.PROPERTIES.include(key)) return;
+        if (Element.Layout.COMPOSITE_PROPERTIES.include(key)) return;
+
+        var value = this.get(key);
+        if (value != null) css[cssNameFor(key)] = value + 'px';
+      }, this);
+      return css;
+    },
+
+    inspect: function() {
+      return "#<Element.Layout>";
+    }
+  });
+
+  Object.extend(Element.Layout, {
+    PROPERTIES: $w('height width top left right bottom border-left border-right border-top border-bottom padding-left padding-right padding-top padding-bottom margin-top margin-bottom margin-left margin-right padding-box-width padding-box-height border-box-width border-box-height margin-box-width margin-box-height'),
+
+    COMPOSITE_PROPERTIES: $w('padding-box-width padding-box-height margin-box-width margin-box-height border-box-width border-box-height'),
+
+    COMPUTATIONS: {
+      'height': function(element) {
+        if (!this._preComputing) this._begin();
+
+        var bHeight = this.get('border-box-height');
+        if (bHeight <= 0) return 0;
+
+        var bTop = this.get('border-top'),
+         bBottom = this.get('border-bottom');
+
+        var pTop = this.get('padding-top'),
+         pBottom = this.get('padding-bottom');
+
+        if (!this._preComputing) this._end();
+
+        return bHeight - bTop - bBottom - pTop - pBottom;
+      },
+
+      'width': function(element) {
+        if (!this._preComputing) this._begin();
+
+        var bWidth = this.get('border-box-width');
+        if (bWidth <= 0) return 0;
+
+        var bLeft = this.get('border-left'),
+         bRight = this.get('border-right');
+
+        var pLeft = this.get('padding-left'),
+         pRight = this.get('padding-right');
+
+        if (!this._preComputing) this._end();
+
+        return bWidth - bLeft - bRight - pLeft - pRight;
+      },
+
+      'padding-box-height': function(element) {
+        var height = this.get('height'),
+         pTop = this.get('padding-top'),
+         pBottom = this.get('padding-bottom');
+
+        return height + pTop + pBottom;
+      },
+
+      'padding-box-width': function(element) {
+        var width = this.get('width'),
