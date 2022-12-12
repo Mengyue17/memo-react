@@ -3639,3 +3639,78 @@ Element.addMethods({
       'border-left': function(element) {
         return Object.isNumber(element.clientLeft) ? element.clientLeft :
          getPixelValue(element, 'borderLeftWidth');
+      },
+
+      'border-right': function(element) {
+        return Object.isNumber(element.clientRight) ? element.clientRight :
+         getPixelValue(element, 'borderRightWidth');
+      },
+
+      'margin-top': function(element) {
+        return getPixelValue(element, 'marginTop');
+      },
+
+      'margin-bottom': function(element) {
+        return getPixelValue(element, 'marginBottom');
+      },
+
+      'margin-left': function(element) {
+        return getPixelValue(element, 'marginLeft');
+      },
+
+      'margin-right': function(element) {
+        return getPixelValue(element, 'marginRight');
+      }
+    }
+  });
+
+  if ('getBoundingClientRect' in document.documentElement) {
+    Object.extend(Element.Layout.COMPUTATIONS, {
+      'right': function(element) {
+        var parent = hasLayout(element.getOffsetParent());
+        var rect = element.getBoundingClientRect(),
+         pRect = parent.getBoundingClientRect();
+
+        return (pRect.right - rect.right).round();
+      },
+
+      'bottom': function(element) {
+        var parent = hasLayout(element.getOffsetParent());
+        var rect = element.getBoundingClientRect(),
+         pRect = parent.getBoundingClientRect();
+
+        return (pRect.bottom - rect.bottom).round();
+      }
+    });
+  }
+
+  Element.Offset = Class.create({
+    initialize: function(left, top) {
+      this.left = left.round();
+      this.top  = top.round();
+
+      this[0] = this.left;
+      this[1] = this.top;
+    },
+
+    relativeTo: function(offset) {
+      return new Element.Offset(
+        this.left - offset.left,
+        this.top  - offset.top
+      );
+    },
+
+    inspect: function() {
+      return "#<Element.Offset left: #{left} top: #{top}>".interpolate(this);
+    },
+
+    toString: function() {
+      return "[#{left}, #{top}]".interpolate(this);
+    },
+
+    toArray: function() {
+      return [this.left, this.top];
+    }
+  });
+
+  function getLayout(element, preCompute) {
