@@ -3714,3 +3714,93 @@ Element.addMethods({
   });
 
   function getLayout(element, preCompute) {
+    return new Element.Layout(element, preCompute);
+  }
+
+  function measure(element, property) {
+    return $(element).getLayout().get(property);
+  }
+
+  function getDimensions(element) {
+    var layout = $(element).getLayout();
+    return {
+      width:  layout.get('width'),
+      height: layout.get('height')
+    };
+  }
+
+  function getOffsetParent(element) {
+    if (isDetached(element)) return $(document.body);
+
+    var isInline = (Element.getStyle(element, 'display') === 'inline');
+    if (!isInline && element.offsetParent) return $(element.offsetParent);
+    if (element === document.body) return $(element);
+
+    while ((element = element.parentNode) && element !== document.body) {
+      if (Element.getStyle(element, 'position') !== 'static') {
+        return (element.nodeName === 'HTML') ? $(document.body) : $(element);
+      }
+    }
+
+    return $(document.body);
+  }
+
+
+  function cumulativeOffset(element) {
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+      element = element.offsetParent;
+    } while (element);
+    return new Element.Offset(valueL, valueT);
+  }
+
+  function positionedOffset(element) {
+    var layout = element.getLayout();
+
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+      element = element.offsetParent;
+      if (element) {
+        if (isBody(element)) break;
+        var p = Element.getStyle(element, 'position');
+        if (p !== 'static') break;
+      }
+    } while (element);
+
+    valueL -= layout.get('margin-top');
+    valueT -= layout.get('margin-left');
+
+    return new Element.Offset(valueL, valueT);
+  }
+
+  function cumulativeScrollOffset(element) {
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.scrollTop  || 0;
+      valueL += element.scrollLeft || 0;
+      element = element.parentNode;
+    } while (element);
+    return new Element.Offset(valueL, valueT);
+  }
+
+  function viewportOffset(forElement) {
+    var valueT = 0, valueL = 0, docBody = document.body;
+
+    var element = forElement;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+      if (element.offsetParent == docBody &&
+        Element.getStyle(element, 'position') == 'absolute') break;
+    } while (element = element.offsetParent);
+
+    element = forElement;
+    do {
+      if (element != docBody) {
+        valueT -= element.scrollTop  || 0;
+        valueL -= element.scrollLeft || 0;
+      }
