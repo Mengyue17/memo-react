@@ -3804,3 +3804,77 @@ Element.addMethods({
         valueT -= element.scrollTop  || 0;
         valueL -= element.scrollLeft || 0;
       }
+    } while (element = element.parentNode);
+    return new Element.Offset(valueL, valueT);
+  }
+
+  function absolutize(element) {
+    element = $(element);
+
+    if (Element.getStyle(element, 'position') === 'absolute') {
+      return element;
+    }
+
+    var offsetParent = getOffsetParent(element);
+    var eOffset = element.viewportOffset(),
+     pOffset = offsetParent.viewportOffset();
+
+    var offset = eOffset.relativeTo(pOffset);
+    var layout = element.getLayout();
+
+    element.store('prototype_absolutize_original_styles', {
+      left:   element.getStyle('left'),
+      top:    element.getStyle('top'),
+      width:  element.getStyle('width'),
+      height: element.getStyle('height')
+    });
+
+    element.setStyle({
+      position: 'absolute',
+      top:    offset.top + 'px',
+      left:   offset.left + 'px',
+      width:  layout.get('width') + 'px',
+      height: layout.get('height') + 'px'
+    });
+
+    return element;
+  }
+
+  function relativize(element) {
+    element = $(element);
+    if (Element.getStyle(element, 'position') === 'relative') {
+      return element;
+    }
+
+    var originalStyles =
+     element.retrieve('prototype_absolutize_original_styles');
+
+    if (originalStyles) element.setStyle(originalStyles);
+    return element;
+  }
+
+  Element.addMethods({
+    getLayout:              getLayout,
+    measure:                measure,
+    getDimensions:          getDimensions,
+    getOffsetParent:        getOffsetParent,
+    cumulativeOffset:       cumulativeOffset,
+    positionedOffset:       positionedOffset,
+    cumulativeScrollOffset: cumulativeScrollOffset,
+    viewportOffset:         viewportOffset,
+    absolutize:             absolutize,
+    relativize:             relativize
+  });
+
+  function isBody(element) {
+    return element.nodeName.toUpperCase() === 'BODY';
+  }
+
+  function isDetached(element) {
+    return element !== document.body &&
+     !Element.descendantOf(element, document.body);
+  }
+
+  if ('getBoundingClientRect' in document.documentElement) {
+    Element.addMethods({
+      viewportOffset: function(element) {
