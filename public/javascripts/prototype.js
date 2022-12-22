@@ -4876,3 +4876,85 @@ function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 				}
 
 				if ( elem.nodeType === 1 ) {
+					if ( !isXML ) {
+						elem.sizcache = doneName;
+						elem.sizset = i;
+					}
+					if ( typeof cur !== "string" ) {
+						if ( elem === cur ) {
+							match = true;
+							break;
+						}
+
+					} else if ( Sizzle.filter( cur, [elem] ).length > 0 ) {
+						match = elem;
+						break;
+					}
+				}
+
+				elem = elem[dir];
+			}
+
+			checkSet[i] = match;
+		}
+	}
+}
+
+var contains = document.compareDocumentPosition ?  function(a, b){
+	return a.compareDocumentPosition(b) & 16;
+} : function(a, b){
+	return a !== b && (a.contains ? a.contains(b) : true);
+};
+
+var isXML = function(elem){
+	return elem.nodeType === 9 && elem.documentElement.nodeName !== "HTML" ||
+		!!elem.ownerDocument && elem.ownerDocument.documentElement.nodeName !== "HTML";
+};
+
+var posProcess = function(selector, context){
+	var tmpSet = [], later = "", match,
+		root = context.nodeType ? [context] : context;
+
+	while ( (match = Expr.match.PSEUDO.exec( selector )) ) {
+		later += match[0];
+		selector = selector.replace( Expr.match.PSEUDO, "" );
+	}
+
+	selector = Expr.relative[selector] ? selector + "*" : selector;
+
+	for ( var i = 0, l = root.length; i < l; i++ ) {
+		Sizzle( selector, root[i], tmpSet );
+	}
+
+	return Sizzle.filter( later, tmpSet );
+};
+
+
+window.Sizzle = Sizzle;
+
+})();
+
+;(function(engine) {
+  var extendElements = Prototype.Selector.extendElements;
+
+  function select(selector, scope) {
+    return extendElements(engine(selector, scope || document));
+  }
+
+  function match(element, selector) {
+    return engine.matches(selector, [element]).length == 1;
+  }
+
+  Prototype.Selector.engine = engine;
+  Prototype.Selector.select = select;
+  Prototype.Selector.match = match;
+})(Sizzle);
+
+window.Sizzle = Prototype._original_property;
+delete Prototype._original_property;
+
+var Form = {
+  reset: function(form) {
+    form = $(form);
+    form.reset();
+    return form;
