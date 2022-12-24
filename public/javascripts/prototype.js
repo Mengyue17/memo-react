@@ -4958,3 +4958,92 @@ var Form = {
     form = $(form);
     form.reset();
     return form;
+  },
+
+  serializeElements: function(elements, options) {
+    if (typeof options != 'object') options = { hash: !!options };
+    else if (Object.isUndefined(options.hash)) options.hash = true;
+    var key, value, submitted = false, submit = options.submit;
+
+    var data = elements.inject({ }, function(result, element) {
+      if (!element.disabled && element.name) {
+        key = element.name; value = $(element).getValue();
+        if (value != null && element.type != 'file' && (element.type != 'submit' || (!submitted &&
+            submit !== false && (!submit || key == submit) && (submitted = true)))) {
+          if (key in result) {
+            if (!Object.isArray(result[key])) result[key] = [result[key]];
+            result[key].push(value);
+          }
+          else result[key] = value;
+        }
+      }
+      return result;
+    });
+
+    return options.hash ? data : Object.toQueryString(data);
+  }
+};
+
+Form.Methods = {
+  serialize: function(form, options) {
+    return Form.serializeElements(Form.getElements(form), options);
+  },
+
+  getElements: function(form) {
+    var elements = $(form).getElementsByTagName('*'),
+        element,
+        arr = [ ],
+        serializers = Form.Element.Serializers;
+    for (var i = 0; element = elements[i]; i++) {
+      arr.push(element);
+    }
+    return arr.inject([], function(elements, child) {
+      if (serializers[child.tagName.toLowerCase()])
+        elements.push(Element.extend(child));
+      return elements;
+    })
+  },
+
+  getInputs: function(form, typeName, name) {
+    form = $(form);
+    var inputs = form.getElementsByTagName('input');
+
+    if (!typeName && !name) return $A(inputs).map(Element.extend);
+
+    for (var i = 0, matchingInputs = [], length = inputs.length; i < length; i++) {
+      var input = inputs[i];
+      if ((typeName && input.type != typeName) || (name && input.name != name))
+        continue;
+      matchingInputs.push(Element.extend(input));
+    }
+
+    return matchingInputs;
+  },
+
+  disable: function(form) {
+    form = $(form);
+    Form.getElements(form).invoke('disable');
+    return form;
+  },
+
+  enable: function(form) {
+    form = $(form);
+    Form.getElements(form).invoke('enable');
+    return form;
+  },
+
+  findFirstElement: function(form) {
+    var elements = $(form).getElements().findAll(function(element) {
+      return 'hidden' != element.type && !element.disabled;
+    });
+    var firstByIndex = elements.findAll(function(element) {
+      return element.hasAttribute('tabIndex') && element.tabIndex >= 0;
+    }).sortBy(function(element) { return element.tabIndex }).first();
+
+    return firstByIndex ? firstByIndex : elements.find(function(element) {
+      return /^(?:input|select|textarea)$/i.test(element.tagName);
+    });
+  },
+
+  focusFirstElement: function(form) {
+    form = $(form);
