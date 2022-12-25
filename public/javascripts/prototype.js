@@ -5047,3 +5047,103 @@ Form.Methods = {
 
   focusFirstElement: function(form) {
     form = $(form);
+    form.findFirstElement().activate();
+    return form;
+  },
+
+  request: function(form, options) {
+    form = $(form), options = Object.clone(options || { });
+
+    var params = options.parameters, action = form.readAttribute('action') || '';
+    if (action.blank()) action = window.location.href;
+    options.parameters = form.serialize(true);
+
+    if (params) {
+      if (Object.isString(params)) params = params.toQueryParams();
+      Object.extend(options.parameters, params);
+    }
+
+    if (form.hasAttribute('method') && !options.method)
+      options.method = form.method;
+
+    return new Ajax.Request(action, options);
+  }
+};
+
+/*--------------------------------------------------------------------------*/
+
+
+Form.Element = {
+  focus: function(element) {
+    $(element).focus();
+    return element;
+  },
+
+  select: function(element) {
+    $(element).select();
+    return element;
+  }
+};
+
+Form.Element.Methods = {
+
+  serialize: function(element) {
+    element = $(element);
+    if (!element.disabled && element.name) {
+      var value = element.getValue();
+      if (value != undefined) {
+        var pair = { };
+        pair[element.name] = value;
+        return Object.toQueryString(pair);
+      }
+    }
+    return '';
+  },
+
+  getValue: function(element) {
+    element = $(element);
+    var method = element.tagName.toLowerCase();
+    return Form.Element.Serializers[method](element);
+  },
+
+  setValue: function(element, value) {
+    element = $(element);
+    var method = element.tagName.toLowerCase();
+    Form.Element.Serializers[method](element, value);
+    return element;
+  },
+
+  clear: function(element) {
+    $(element).value = '';
+    return element;
+  },
+
+  present: function(element) {
+    return $(element).value != '';
+  },
+
+  activate: function(element) {
+    element = $(element);
+    try {
+      element.focus();
+      if (element.select && (element.tagName.toLowerCase() != 'input' ||
+          !(/^(?:button|reset|submit)$/i.test(element.type))))
+        element.select();
+    } catch (e) { }
+    return element;
+  },
+
+  disable: function(element) {
+    element = $(element);
+    element.disabled = true;
+    return element;
+  },
+
+  enable: function(element) {
+    element = $(element);
+    element.disabled = false;
+    return element;
+  }
+};
+
+/*--------------------------------------------------------------------------*/
