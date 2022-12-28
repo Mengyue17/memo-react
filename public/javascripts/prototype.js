@@ -5343,3 +5343,87 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
     _isButton = function(event, code) {
       return event.which ? (event.which === code + 1) : (event.button === code);
     };
+  }
+
+  function isLeftClick(event)   { return _isButton(event, 0) }
+
+  function isMiddleClick(event) { return _isButton(event, 1) }
+
+  function isRightClick(event)  { return _isButton(event, 2) }
+
+  function element(event) {
+    event = Event.extend(event);
+
+    var node = event.target, type = event.type,
+     currentTarget = event.currentTarget;
+
+    if (currentTarget && currentTarget.tagName) {
+      if (type === 'load' || type === 'error' ||
+        (type === 'click' && currentTarget.tagName.toLowerCase() === 'input'
+          && currentTarget.type === 'radio'))
+            node = currentTarget;
+    }
+
+    if (node.nodeType == Node.TEXT_NODE)
+      node = node.parentNode;
+
+    return Element.extend(node);
+  }
+
+  function findElement(event, expression) {
+    var element = Event.element(event);
+    if (!expression) return element;
+    while (element) {
+      if (Object.isElement(element) && Prototype.Selector.match(element, expression)) {
+        return Element.extend(element);
+      }
+      element = element.parentNode;
+    }
+  }
+
+  function pointer(event) {
+    return { x: pointerX(event), y: pointerY(event) };
+  }
+
+  function pointerX(event) {
+    var docElement = document.documentElement,
+     body = document.body || { scrollLeft: 0 };
+
+    return event.pageX || (event.clientX +
+      (docElement.scrollLeft || body.scrollLeft) -
+      (docElement.clientLeft || 0));
+  }
+
+  function pointerY(event) {
+    var docElement = document.documentElement,
+     body = document.body || { scrollTop: 0 };
+
+    return  event.pageY || (event.clientY +
+       (docElement.scrollTop || body.scrollTop) -
+       (docElement.clientTop || 0));
+  }
+
+
+  function stop(event) {
+    Event.extend(event);
+    event.preventDefault();
+    event.stopPropagation();
+
+    event.stopped = true;
+  }
+
+  Event.Methods = {
+    isLeftClick: isLeftClick,
+    isMiddleClick: isMiddleClick,
+    isRightClick: isRightClick,
+
+    element: element,
+    findElement: findElement,
+
+    pointer: pointer,
+    pointerX: pointerX,
+    pointerY: pointerY,
+
+    stop: stop
+  };
+
