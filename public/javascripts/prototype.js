@@ -5427,3 +5427,81 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
     stop: stop
   };
 
+
+  var methods = Object.keys(Event.Methods).inject({ }, function(m, name) {
+    m[name] = Event.Methods[name].methodize();
+    return m;
+  });
+
+  if (Prototype.Browser.IE) {
+    function _relatedTarget(event) {
+      var element;
+      switch (event.type) {
+        case 'mouseover': element = event.fromElement; break;
+        case 'mouseout':  element = event.toElement;   break;
+        default: return null;
+      }
+      return Element.extend(element);
+    }
+
+    Object.extend(methods, {
+      stopPropagation: function() { this.cancelBubble = true },
+      preventDefault:  function() { this.returnValue = false },
+      inspect: function() { return '[object Event]' }
+    });
+
+    Event.extend = function(event, element) {
+      if (!event) return false;
+      if (event._extendedByPrototype) return event;
+
+      event._extendedByPrototype = Prototype.emptyFunction;
+      var pointer = Event.pointer(event);
+
+      Object.extend(event, {
+        target: event.srcElement || element,
+        relatedTarget: _relatedTarget(event),
+        pageX:  pointer.x,
+        pageY:  pointer.y
+      });
+
+      return Object.extend(event, methods);
+    };
+  } else {
+    Event.prototype = window.Event.prototype || document.createEvent('HTMLEvents').__proto__;
+    Object.extend(Event.prototype, methods);
+    Event.extend = Prototype.K;
+  }
+
+  function _createResponder(element, eventName, handler) {
+    var registry = Element.retrieve(element, 'prototype_event_registry');
+
+    if (Object.isUndefined(registry)) {
+      CACHE.push(element);
+      registry = Element.retrieve(element, 'prototype_event_registry', $H());
+    }
+
+    var respondersForEvent = registry.get(eventName);
+    if (Object.isUndefined(respondersForEvent)) {
+      respondersForEvent = [];
+      registry.set(eventName, respondersForEvent);
+    }
+
+    if (respondersForEvent.pluck('handler').include(handler)) return false;
+
+    var responder;
+    if (eventName.include(":")) {
+      responder = function(event) {
+        if (Object.isUndefined(event.eventName))
+          return false;
+
+        if (event.eventName !== eventName)
+          return false;
+
+        Event.extend(event, element);
+        handler.call(element, event);
+      };
+    } else {
+      if (!MOUSEENTER_MOUSELEAVE_EVENTS_SUPPORTED &&
+       (eventName === "mouseenter" || eventName === "mouseleave")) {
+        if (eventName === "mouseenter" || eventName === "mouseleave") {
+          responder = function(event) {
