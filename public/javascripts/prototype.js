@@ -5594,3 +5594,73 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
         stopObserving(element, eventName);
       });
       return element;
+    }
+
+    var responders = registry.get(eventName);
+    if (!responders) return element;
+
+    if (!handler) {
+      responders.each(function(r) {
+        stopObserving(element, eventName, r.handler);
+      });
+      return element;
+    }
+
+    var responder = responders.find( function(r) { return r.handler === handler; });
+    if (!responder) return element;
+
+    if (eventName.include(':')) {
+      if (element.removeEventListener)
+        element.removeEventListener("dataavailable", responder, false);
+      else {
+        element.detachEvent("ondataavailable", responder);
+        element.detachEvent("onfilterchange",  responder);
+      }
+    } else {
+      var actualEventName = _getDOMEventName(eventName);
+      if (element.removeEventListener)
+        element.removeEventListener(actualEventName, responder, false);
+      else
+        element.detachEvent('on' + actualEventName, responder);
+    }
+
+    registry.set(eventName, responders.without(responder));
+
+    return element;
+  }
+
+  function fire(element, eventName, memo, bubble) {
+    element = $(element);
+
+    if (Object.isUndefined(bubble))
+      bubble = true;
+
+    if (element == document && document.createEvent && !element.dispatchEvent)
+      element = document.documentElement;
+
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent('dataavailable', true, true);
+    } else {
+      event = document.createEventObject();
+      event.eventType = bubble ? 'ondataavailable' : 'onfilterchange';
+    }
+
+    event.eventName = eventName;
+    event.memo = memo || { };
+
+    if (document.createEvent)
+      element.dispatchEvent(event);
+    else
+      element.fireEvent(event.eventType, event);
+
+    return Event.extend(event);
+  }
+
+  Event.Handler = Class.create({
+    initialize: function(element, eventName, selector, callback) {
+      this.element   = $(element);
+      this.eventName = eventName;
+      this.selector  = selector;
+      this.callback  = callback;
