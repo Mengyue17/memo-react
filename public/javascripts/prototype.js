@@ -5664,3 +5664,88 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
       this.eventName = eventName;
       this.selector  = selector;
       this.callback  = callback;
+      this.handler   = this.handleEvent.bind(this);
+    },
+
+    start: function() {
+      Event.observe(this.element, this.eventName, this.handler);
+      return this;
+    },
+
+    stop: function() {
+      Event.stopObserving(this.element, this.eventName, this.handler);
+      return this;
+    },
+
+    handleEvent: function(event) {
+      var element = event.findElement(this.selector);
+      if (element) this.callback.call(this.element, event, element);
+    }
+  });
+
+  function on(element, eventName, selector, callback) {
+    element = $(element);
+    if (Object.isFunction(selector) && Object.isUndefined(callback)) {
+      callback = selector, selector = null;
+    }
+
+    return new Event.Handler(element, eventName, selector, callback).start();
+  }
+
+  Object.extend(Event, Event.Methods);
+
+  Object.extend(Event, {
+    fire:          fire,
+    observe:       observe,
+    stopObserving: stopObserving,
+    on:            on
+  });
+
+  Element.addMethods({
+    fire:          fire,
+
+    observe:       observe,
+
+    stopObserving: stopObserving,
+
+    on:            on
+  });
+
+  Object.extend(document, {
+    fire:          fire.methodize(),
+
+    observe:       observe.methodize(),
+
+    stopObserving: stopObserving.methodize(),
+
+    on:            on.methodize(),
+
+    loaded:        false
+  });
+
+  if (window.Event) Object.extend(window.Event, Event);
+  else window.Event = Event;
+})();
+
+(function() {
+  /* Support for the DOMContentLoaded event is based on work by Dan Webb,
+     Matthias Miller, Dean Edwards, John Resig, and Diego Perini. */
+
+  var timer;
+
+  function fireContentLoadedEvent() {
+    if (document.loaded) return;
+    if (timer) window.clearTimeout(timer);
+    document.loaded = true;
+    document.fire('dom:loaded');
+  }
+
+  function checkReadyState() {
+    if (document.readyState === 'complete') {
+      document.stopObserving('readystatechange', checkReadyState);
+      fireContentLoadedEvent();
+    }
+  }
+
+  function pollDoScroll() {
+    try { document.documentElement.doScroll('left'); }
