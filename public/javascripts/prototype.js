@@ -5849,3 +5849,95 @@ var Position = {
 
 
   cumulativeOffset: Element.Methods.cumulativeOffset,
+
+  positionedOffset: Element.Methods.positionedOffset,
+
+  absolutize: function(element) {
+    Position.prepare();
+    return Element.absolutize(element);
+  },
+
+  relativize: function(element) {
+    Position.prepare();
+    return Element.relativize(element);
+  },
+
+  realOffset: Element.Methods.cumulativeScrollOffset,
+
+  offsetParent: Element.Methods.getOffsetParent,
+
+  page: Element.Methods.viewportOffset,
+
+  clone: function(source, target, options) {
+    options = options || { };
+    return Element.clonePosition(target, source, options);
+  }
+};
+
+/*--------------------------------------------------------------------------*/
+
+if (!document.getElementsByClassName) document.getElementsByClassName = function(instanceMethods){
+  function iter(name) {
+    return name.blank() ? null : "[contains(concat(' ', @class, ' '), ' " + name + " ')]";
+  }
+
+  instanceMethods.getElementsByClassName = Prototype.BrowserFeatures.XPath ?
+  function(element, className) {
+    className = className.toString().strip();
+    var cond = /\s/.test(className) ? $w(className).map(iter).join('') : iter(className);
+    return cond ? document._getElementsByXPath('.//*' + cond, element) : [];
+  } : function(element, className) {
+    className = className.toString().strip();
+    var elements = [], classNames = (/\s/.test(className) ? $w(className) : null);
+    if (!classNames && !className) return elements;
+
+    var nodes = $(element).getElementsByTagName('*');
+    className = ' ' + className + ' ';
+
+    for (var i = 0, child, cn; child = nodes[i]; i++) {
+      if (child.className && (cn = ' ' + child.className + ' ') && (cn.include(className) ||
+          (classNames && classNames.all(function(name) {
+            return !name.toString().blank() && cn.include(' ' + name + ' ');
+          }))))
+        elements.push(Element.extend(child));
+    }
+    return elements;
+  };
+
+  return function(className, parentElement) {
+    return $(parentElement || document.body).getElementsByClassName(className);
+  };
+}(Element.Methods);
+
+/*--------------------------------------------------------------------------*/
+
+Element.ClassNames = Class.create();
+Element.ClassNames.prototype = {
+  initialize: function(element) {
+    this.element = $(element);
+  },
+
+  _each: function(iterator) {
+    this.element.className.split(/\s+/).select(function(name) {
+      return name.length > 0;
+    })._each(iterator);
+  },
+
+  set: function(className) {
+    this.element.className = className;
+  },
+
+  add: function(classNameToAdd) {
+    if (this.include(classNameToAdd)) return;
+    this.set($A(this).concat(classNameToAdd).join(' '));
+  },
+
+  remove: function(classNameToRemove) {
+    if (!this.include(classNameToRemove)) return;
+    this.set($A(this).without(classNameToRemove).join(' '));
+  },
+
+  toString: function() {
+    return $A(this).join(' ');
+  }
+};
