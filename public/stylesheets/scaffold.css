@@ -1,4 +1,8 @@
 body { 
      background-color: #fff; 
      color: #333; 
-     background:url(../images/Stoc
+     background:url(../images/StockGraph.png) no-repeat 5em 20em ;
+      }
+
+body, p, ol, ul, td {
+  font-family: verdana, arial, helveti
