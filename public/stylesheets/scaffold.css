@@ -30,4 +30,10 @@ div.field, div.actions {
 
 .field_with_errors {
   padding: 2px;
-  b
+  background-color: red;
+  display: table;
+}
+
+#error_explanation {
+  width: 250px;
+  border:
