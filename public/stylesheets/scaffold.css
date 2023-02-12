@@ -36,4 +36,8 @@ div.field, div.actions {
 
 #error_explanation {
   width: 250px;
-  border:
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  bac
