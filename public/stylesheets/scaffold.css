@@ -40,4 +40,9 @@ div.field, div.actions {
   padding: 7px;
   padding-bottom: 0;
   margin-bottom: 20px;
-  bac
+  background-color: #f0f0f0;
+}
+
+#error_explanation h2 {
+  text-align: left;
+  fon
