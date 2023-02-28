@@ -1,1 +1,6 @@
-# Read about fixtures at http://ar.rubyonrails.org/classe
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  date: 2011-11-10
+  update: 2011-11-10 04:12:27
+  symbol: My
