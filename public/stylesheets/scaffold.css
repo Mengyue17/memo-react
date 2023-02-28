@@ -45,4 +45,8 @@ div.field, div.actions {
 
 #error_explanation h2 {
   text-align: left;
-  fon
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  margin
