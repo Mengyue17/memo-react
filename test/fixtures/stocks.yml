@@ -3,4 +3,11 @@
 one:
   date: 2011-11-10
   update: 2011-11-10 04:12:27
-  symbol: My
+  symbol: MyString
+  name: MyString
+  low: 1.5
+  current: 1.5
+  high: 1.5
+  exchange: MyString
+
+t
