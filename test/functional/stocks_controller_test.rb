@@ -1,3 +1,8 @@
 require 'test_helper'
 
-class StocksCont
+class StocksControllerTest < ActionController::TestCase
+  setup do
+    @stock = stocks(:one)
+  end
+
+  tes
