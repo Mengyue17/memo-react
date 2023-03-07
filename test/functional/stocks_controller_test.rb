@@ -5,4 +5,7 @@ class StocksControllerTest < ActionController::TestCase
     @stock = stocks(:one)
   end
 
-  tes
+  test "should get index" do
+    get :index
+    assert_response :success
+    assert_not_nil assign
