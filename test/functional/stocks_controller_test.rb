@@ -21,4 +21,9 @@ class StocksControllerTest < ActionController::TestCase
       post :create, :stock => @stock.attributes
     end
 
-    assert_redirected_to stock_pa
+    assert_redirected_to stock_path(assigns(:stock))
+  end
+
+  test "should show stock" do
+    get :show, :id => @stock.to_param
+   
