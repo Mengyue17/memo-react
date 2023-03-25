@@ -14,4 +14,7 @@ class StocksControllerTest < ActionController::TestCase
   test "should get new" do
     get :new
     assert_response :success
-  
+  end
+
+  test "should create stock" do
+    assert_difference('Stock.count')
