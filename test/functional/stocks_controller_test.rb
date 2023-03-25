@@ -17,4 +17,8 @@ class StocksControllerTest < ActionController::TestCase
   end
 
   test "should create stock" do
-    assert_difference('Stock.count')
+    assert_difference('Stock.count') do
+      post :create, :stock => @stock.attributes
+    end
+
+    assert_redirected_to stock_pa
