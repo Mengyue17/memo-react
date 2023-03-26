@@ -26,4 +26,9 @@ class StocksControllerTest < ActionController::TestCase
 
   test "should show stock" do
     get :show, :id => @stock.to_param
-   
+    assert_response :success
+  end
+
+  test "should get edit" do
+    get :edit, :id => @stock.to_param
+    as
