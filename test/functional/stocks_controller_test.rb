@@ -41,4 +41,7 @@ class StocksControllerTest < ActionController::TestCase
 
   test "should destroy stock" do
     assert_difference('Stock.count', -1) do
-      delet
+      delete :destroy, :id => @stock.to_param
+    end
+
+    assert_redirected_to stoc
