@@ -38,3 +38,7 @@ class StocksControllerTest < ActionController::TestCase
     put :update, :id => @stock.to_param, :stock => @stock.attributes
     assert_redirected_to stock_path(assigns(:stock))
   end
+
+  test "should destroy stock" do
+    assert_difference('Stock.count', -1) do
+      delet
