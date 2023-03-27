@@ -35,4 +35,6 @@ class StocksControllerTest < ActionController::TestCase
   end
 
   test "should update stock" do
-    put :update, :id => @stock.to_param
+    put :update, :id => @stock.to_param, :stock => @stock.attributes
+    assert_redirected_to stock_path(assigns(:stock))
+  end
