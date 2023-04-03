@@ -44,4 +44,6 @@ class StocksControllerTest < ActionController::TestCase
       delete :destroy, :id => @stock.to_param
     end
 
-    assert_redirected_to stoc
+    assert_redirected_to stocks_path
+  end
+end
