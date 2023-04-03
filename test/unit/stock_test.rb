@@ -1,3 +1,8 @@
 require 'test_helper'
 
-class StockTest < ActiveSupport::TestCa
+class StockTest < ActiveSupport::TestCase
+  # Replace this with your real tests.
+  test "the truth" do
+    assert true
+  end
+end
